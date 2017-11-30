@@ -1,14 +1,18 @@
-# Интернет магазин avktechno
+# Installation
+### Backend
+1) install mysql
+2) cd backend
+3) npm install
 
-## Установка проекта:
-требования:
-node >= 8.0.0
-MySQL >= 14.0 Distrib 5.7.9
+### Frontend
+1) cd frontend
+3) npm install
 
-1) yarn install или npm install
-2) установить себе mysql server
+# Run
+### Backend
+1) cd backend
+2) npm run dev
 
-## Запуск проекта
-В двух разных сессиях терминала:
-1) запустить frontend приложение: yarn run dev или npm run dev
-2) запустить backend приложение: yarn run server:dev
+### Frontend
+1) cd frontend
+2) npm run dev
