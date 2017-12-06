@@ -17,6 +17,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-shadow': 'off',
     'no-console': 'off',
+    'no-return-assign': 'off',
     'object-shorthand': 'off',
   },
   globals: {}

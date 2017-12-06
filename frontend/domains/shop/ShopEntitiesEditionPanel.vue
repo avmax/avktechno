@@ -13,6 +13,7 @@
         v-model="val.value"
         :label="val.label"
         :multi-line="val.control === 'textfield'"
+        :key="key"
         :rules="val.required ? rules.text.required : null"/>
       </template>
 
@@ -21,6 +22,11 @@
       @click="save"
       :disabled="!valid">
         Сохранить изменения
+      </v-btn>
+      <v-btn
+      color="primary"
+      @click="cancel">
+        Прекратить изменения
       </v-btn>
 
     </v-layout>
@@ -32,7 +38,7 @@
 
 
 <script>
-import { ADD_CATEGORY } from '~/domains/shop/shop.state';
+import { ADD_CATEGORY, CANCEL_EDITION } from '~/domains/shop/shop.state';
 import { addCategory } from '~/domains/shop/shop.api';
 
 export default {
@@ -67,6 +73,9 @@ export default {
       addCategory(category)
         .then(({ data }) => this.$store.commit(`shop/${ADD_CATEGORY}`, data))
         .catch(err => console.error(err.response.data));
+    },
+    cancel() {
+      this.$store.commit(`shop/${CANCEL_EDITION}`);
     },
   },
 };

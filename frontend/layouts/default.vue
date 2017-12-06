@@ -1,54 +1,47 @@
 <template>
-  <v-app id="avmax">
-    <nuxt/>
+  <v-app id="inspire" dark>
+    <v-navigation-drawer
+    :value="isEditionPanelOpened"
+    disable-route-watcher
+    clipped
+    fixed
+    app>
+      <shop-entities-edition-panel v-if="isEditionPanelOpened"/>
+    </v-navigation-drawer>
+
+    <v-toolbar app fixed clipped-left>
+      <v-toolbar-title>Application</v-toolbar-title>
+      <router-link class="mr-3 ml-3" to="/">Index</router-link>
+      <router-link class="mr-3" to="/categories">Categories</router-link>
+      <router-link class="mr-3" to="/auth">Auth</router-link>
+    </v-toolbar>
+
+    <v-content>
+      <v-container fluid fill-height>
+        <nuxt/>
+      </v-container>
+    </v-content>
+
+    <v-footer app fixed>
+      <span>&copy; 2017</span>
+    </v-footer>
   </v-app>
 </template>
 
+<script>
+import ShopEntitiesEditionPanel from '~/domains/shop/ShopEntitiesEditionPanel.vue';
+
+export default {
+  name: 'shop-entities-layout',
+  components: {
+    ShopEntitiesEditionPanel,
+  },
+  computed: {
+    isEditionPanelOpened() { return !!this.$store.state.shop.entityBeingEdited; },
+  },
+};
+</script>
+
 <style>
 @import url(../node_modules/vuetify/dist/vuetify.css);
-
-html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
 </style>
