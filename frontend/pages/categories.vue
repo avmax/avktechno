@@ -13,7 +13,7 @@
 <script>
 import ShopEntitiesContainer from '~/domains/shop/ShopEntitiesContainer.vue';
 
-import { LOAD_CATEGORIES } from '~/domains/shop/shop.state';
+import { GET_ENTITIES } from '~/domains/shop/shop.state';
 
 import { mapState } from 'vuex';
 
@@ -21,15 +21,10 @@ import { mapState } from 'vuex';
 export default {
   name: 'page-categories',
   components: {
-    'shop-entities-container': ShopEntitiesContainer,
+    ShopEntitiesContainer,
   },
   fetch({ store }) {
-    return store.dispatch(`shop/${LOAD_CATEGORIES}`);
-  },
-  data() {
-    return {
-      isLoaded: false,
-    };
+    return store.dispatch(`shop/${GET_ENTITIES}`, { entityType: 'category' });
   },
   computed: mapState({
     categories: state => state.shop.categories,

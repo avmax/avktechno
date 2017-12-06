@@ -3,24 +3,22 @@
 
   <card-collection-base
   @addCard="onAddCard"
+  @editCard="onEditCard"
   @removeCard="onRemoveCard"
   :cards="items"
   :isEditionEnabled="isEditionEnabled"/>
-
 </div>
 </template>
 
 
-
 <script>
   import CardCollectionBase from '~/domains/card/CardCollectionBase.vue';
-  import { removeCategory } from '~/domains/shop/shop.api';
-  import { CREATE_CATEGORY, REMOVE_CATEGORY } from '@/domains/shop/shop.state';
+  import { ADD_ENTITY, EDIT_ENTITY, REMOVE_ENTITY } from '@/domains/shop/shop.state';
 
   export default {
     name: 'shop-entities-container',
     components: {
-      'card-collection-base': CardCollectionBase,
+      CardCollectionBase,
     },
     computed: {
       isEditionEnabled() { return this.$store.state.user.isAdmin; },
@@ -31,29 +29,18 @@
     },
     methods: {
       onAddCard() {
-        switch (this.type) {
-          case 'category':
-            this.$store.commit(`shop/${CREATE_CATEGORY}`);
-            break;
-          default:
-            break;
-        }
+        this.$store.dispatch(`shop/${ADD_ENTITY}`, this.type);
       },
-      onRemoveCard(cardId) {
-        switch (this.type) {
-          case 'category':
-            removeCategory(cardId)
-              .then(() => this.$store.commit(`shop/${REMOVE_CATEGORY}`, cardId))
-              .catch(err => console.error(err.response.data));
-            break;
-          default:
-            break;
-        }
+      onEditCard(card) {
+        this.$store.dispatch(`shop/${EDIT_ENTITY}`, { entityType: this.type, entityData: card });
+      },
+      onRemoveCard(id) {
+        this.$store.dispatch(`shop/${REMOVE_ENTITY}`, { entityType: this.type, entityId: id })
+          .catch(err => console.log(err));
       },
     },
   };
 </script>
-
 
 
 <style>

@@ -35,7 +35,6 @@ db.connect(async (err) => {
       subtitle char(120) NOT NULL,
       description TEXT NOT NULL,
       image_url char(120) NOT NULL,
-      image_description char(120) NOT NULL,
       price char(60) NOT NULL,
       brand int NOT NULL,
       category int NOT NULL,
@@ -75,8 +74,10 @@ db.connect(async (err) => {
     `);
 
     console.log('база данных успешно создана');
+    db.end();
 
   } catch(error) {
     console.log('при создании базы данных произошел проеб: ', error);
+    db.end();
   }
 });

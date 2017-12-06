@@ -1,66 +1,134 @@
-import { getCategories } from '~/domains/shop/shop.api';
+import {
+  categoriesState, categoriesMutations, categoriesActions,
+  SAVE_CATEGORY_EDITS, CANCEL_CATEGORY_EDITION,
+  GET_CATEGORIES, ADD_CATEGORY, EDIT_CATEGORY, REMOVE_CATEGORY,
+} from './shop-category.state';
 
-const LOAD_CATEGORIES = 'загрузить категории';
-const CREATE_CATEGORY = 'создать категорию';
-const ADD_CATEGORY = 'добавить категорию';
-const REMOVE_CATEGORY = 'удалить категорию';
-const CANCEL_EDITION = 'прекратить изменение сущности';
+const SAVE_ENTITY_EDITS = 'сохранить изменения сущности';
+const CANCEL_ENTITY_EDITION = 'прекратить изменение сущности';
+
+const ADD_ENTITY = 'добавить сущность';
+const EDIT_ENTITY = 'править сущность';
+const REMOVE_ENTITY = 'удалить сущность';
+const GET_ENTITIES = 'загрузить сущности';
 
 
 export const state = () => ({
   entityBeingEdited: null,
-  categories: [],
+  entityBeingEditedId: null,
+  entityBeingEditedType: null,
+  entityEditionType: null,
+  ...categoriesState,
 });
 
 export const mutations = {
-  [ADD_CATEGORY](state, category) {
+  [CANCEL_ENTITY_EDITION](state) {
     state.entityBeingEdited = null;
-    state.categories.push(category);
+    state.entityBeingEditedType = null;
+    state.entityEditionType = null;
   },
-  [CREATE_CATEGORY](state) {
-    state.entityBeingEdited = {
-      title: {
-        label: 'Заголовок',
-        value: null,
-        required: true,
-        control: 'input',
-      },
-      description: {
-        label: 'Текст',
-        value: null,
-        required: true,
-        control: 'textfield',
-      },
-      imgUrl: {
-        label: 'URL Картинки',
-        value: null,
-        required: true,
-        control: 'input',
-      },
-    };
-  },
-  [REMOVE_CATEGORY](state, categoryId) {
-    let index;
-    state.categories.forEach((category, i) => {
-      if (category.id === categoryId) {
-        index = i;
-      }
-    });
-    state.categories.splice(index, 1);
-  },
-  [CANCEL_EDITION](state) {
-    state.entityBeingEdited = null;
-  },
+  ...categoriesMutations,
 };
 
 export const actions = {
-  [LOAD_CATEGORIES]({ state, commit }) {
-    if (state.categories && state.categories.length > 0) { return Promise.resolve(); }
-    return getCategories()
-      .then(({ data }) => data.forEach(category => commit(ADD_CATEGORY, category)))
-      .catch(err => console.error(err.response.data));
+  [ADD_ENTITY]({ dispatch }, entityType) {
+    let ACTION;
+
+    switch (entityType) {
+      case 'category':
+        ACTION = ADD_CATEGORY;
+        break;
+      default:
+        break;
+    }
+
+    dispatch(ACTION);
   },
+  [EDIT_ENTITY]({ dispatch }, { entityType, entityData }) {
+    let ACTION;
+
+    switch (entityType) {
+      case 'category':
+        ACTION = EDIT_CATEGORY;
+        break;
+      default:
+        break;
+    }
+
+    dispatch(ACTION, entityData);
+  },
+  async [REMOVE_ENTITY]({ dispatch }, { entityType, entityId }) {
+    let ACTION;
+
+    switch (entityType) {
+      case 'category':
+        ACTION = REMOVE_CATEGORY;
+        break;
+      default:
+        break;
+    }
+
+    try {
+      const res = await dispatch(ACTION, entityId);
+      return Promise.resolve(res);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  [CANCEL_ENTITY_EDITION]({ state, dispatch }) {
+    const entityType = state.entityBeingEditedType;
+    let ACTION;
+
+    switch (entityType) {
+      case 'category':
+        ACTION = CANCEL_CATEGORY_EDITION;
+        break;
+      default:
+        break;
+    }
+
+    dispatch(ACTION);
+  },
+  async [SAVE_ENTITY_EDITS]({ state, dispatch }, entityData) {
+    const entityType = state.entityBeingEditedType;
+    let ACTION;
+
+    switch (entityType) {
+      case 'category':
+        ACTION = SAVE_CATEGORY_EDITS;
+        break;
+      default:
+        break;
+    }
+
+    try {
+      const res = await dispatch(ACTION, entityData);
+      return Promise.resolve(res);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  async [GET_ENTITIES]({ dispatch }, { entityType }) {
+    let ACTION;
+
+    switch (entityType) {
+      case 'category':
+        ACTION = GET_CATEGORIES;
+        break;
+      default:
+        break;
+    }
+
+    try {
+      const res = await dispatch(ACTION);
+      return Promise.resolve(res);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  ...categoriesActions,
 };
 
+export { SAVE_ENTITY_EDITS, CANCEL_ENTITY_EDITION };
+export { GET_ENTITIES, ADD_ENTITY, EDIT_ENTITY, REMOVE_ENTITY };
 
-export { LOAD_CATEGORIES, ADD_CATEGORY, CREATE_CATEGORY, CANCEL_EDITION, REMOVE_CATEGORY };

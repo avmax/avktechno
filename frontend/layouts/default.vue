@@ -1,7 +1,7 @@
 <template>
-  <v-app id="inspire" dark>
+  <v-app id="avmax" dark>
     <v-navigation-drawer
-    :value="isEditionPanelOpened"
+    v-model="isEditionPanelOpened"
     disable-route-watcher
     clipped
     fixed
@@ -30,6 +30,7 @@
 
 <script>
 import ShopEntitiesEditionPanel from '~/domains/shop/ShopEntitiesEditionPanel.vue';
+import { CANCEL_ENTITY_EDITION } from '~/domains/shop/shop.state';
 
 export default {
   name: 'shop-entities-layout',
@@ -37,11 +38,26 @@ export default {
     ShopEntitiesEditionPanel,
   },
   computed: {
-    isEditionPanelOpened() { return !!this.$store.state.shop.entityBeingEdited; },
+    isEditionPanelOpened: {
+      get() {
+        return !!this.$store.state.shop.entityBeingEdited;
+      },
+      set(v) {
+        console.log('set', v);
+        if (!v) {
+          this.$store.commit(`shop/${CANCEL_ENTITY_EDITION}`);
+        }
+      },
+    },
   },
 };
 </script>
 
 <style>
 @import url(../node_modules/vuetify/dist/vuetify.css);
+
+.page {
+  width: 100%;
+  height: 100%;
+}
 </style>

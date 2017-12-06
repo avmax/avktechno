@@ -13,13 +13,13 @@
       <card-base
       class="avm-card-collection__card"
       :title="card.title"
-      :text="card.text"
+      :text="card.description"
       :imgUrl="card.imgUrl">
       </card-base>
       <div class="avm-card-collection__card-controls"
       v-if="isEditionEnabled">
         <v-btn class="avm-card-collection__card-control"
-        @click="editCard"
+        @click="editCard(card)"
         fab small>
           <v-icon class="avm-card-collection__card-control-icon">edit</v-icon>
         </v-btn>
@@ -53,7 +53,6 @@
 </template>
 
 
-
 <script>
 import CardBase from '~/domains/card/CardBase.vue';
 
@@ -70,8 +69,8 @@ export default {
     addCard() {
       this.$emit('addCard');
     },
-    editCard() {
-      this.$emit('editCard');
+    editCard(cardData) {
+      this.$emit('editCard', cardData);
     },
     removeCard(id) {
       this.$emit('removeCard', id);
@@ -81,8 +80,7 @@ export default {
 </script>
 
 
-
-<style>
+<style lang="scss">
 #avmax {
 .avm-card-collection {
   &__card-holder {
@@ -96,7 +94,7 @@ export default {
   }
 
   &__card-control-icon {
-    color: black;
+    color: white;
   }
 
   &__ghost {
@@ -107,7 +105,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.6);
 
     &-button {
-      color: yellow;
+      color: yellowgreen;
       background-color: black;
     }
   }

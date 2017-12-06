@@ -1,13 +1,10 @@
 <template>
 <div class="page page_auth">
-
-  <h1>СТРАНИЦА АВТОРИЗАЦИИ</h1>
-
   <div class="page__content">
     <v-layout row justify-center>
       <v-divider></v-divider>
-      <v-flex xs4>
-
+      <v-flex xs12 md4 lg3>
+        <h1 class="headline mb-3">Авторизация</h1>
         <v-form v-model="valid">
           <v-layout column>
 
@@ -23,12 +20,15 @@
             v-model="form.value.password"
             :rules="form.rules.password"
             type="password"
+            class="mb-3"
             required/>
 
             <v-btn
-            color="primary"
             @click="submit"
-            :disabled="!valid">
+            :disabled="!valid"
+            class="mt-0 mr-0 mb-0 ml-0"
+            color="primary"
+            large>
               Войти
             </v-btn>
 
@@ -86,9 +86,18 @@ export default {
 </script>
 
 
-
-<style>
+<style lang="scss">
 #avmax {
+.page_auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  .page {
+    &__content {
+      width: 100%;
+    }
+  }
+}
 }
 </style>

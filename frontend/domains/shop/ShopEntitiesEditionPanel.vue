@@ -1,6 +1,5 @@
 <template>
 <div class="shop-entities-edition-panel">
-
   <h3>Редактировать сущность</h3>
 
   <v-form
@@ -31,15 +30,13 @@
 
     </v-layout>
   </v-form>
-
 </div>
 </template>
 
 
 
 <script>
-import { ADD_CATEGORY, CANCEL_EDITION } from '~/domains/shop/shop.state';
-import { addCategory } from '~/domains/shop/shop.api';
+import { SAVE_ENTITY_EDITS, CANCEL_ENTITY_EDITION } from '~/domains/shop/shop.state';
 
 export default {
   name: 'shop-entities-edition-panel',
@@ -65,17 +62,19 @@ export default {
   },
   methods: {
     save() {
-      const category = { };
+      const entityData = { };
+      const dispatch = this.$store.dispatch;
 
       Object.keys(this.controls).forEach((key) => {
-        category[key] = this.controls[key].value;
+        entityData[key] = this.controls[key].value;
       });
-      addCategory(category)
-        .then(({ data }) => this.$store.commit(`shop/${ADD_CATEGORY}`, data))
-        .catch(err => console.error(err.response.data));
+
+      dispatch(`shop/${SAVE_ENTITY_EDITS}`, entityData)
+        .catch(err => console.log('panel bad, err: ', err));
     },
     cancel() {
-      this.$store.commit(`shop/${CANCEL_EDITION}`);
+      const commit = this.$store.commit;
+      commit(`shop/${CANCEL_ENTITY_EDITION}`);
     },
   },
 };

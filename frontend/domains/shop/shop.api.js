@@ -6,12 +6,16 @@ function getCategories() {
   return axios.get(`${APP_CONFIG.baseURL}/categories`);
 }
 
-function addCategory(category) {
-  return axios.post(`${APP_CONFIG.baseURL}/admin/categories/add`, category);
+function postCategory(category) {
+  return axios.post(`${APP_CONFIG.baseURL}/admin/categories/post`, category);
 }
 
-function removeCategory(categoryId) {
-  return axios.delete(`${APP_CONFIG.baseURL}/admin/categories/remove`, { data: { id: categoryId } });
+function putCategory(category) {
+  return axios.put(`${APP_CONFIG.baseURL}/admin/categories/put`, category);
 }
 
-export { getCategories, addCategory, removeCategory };
+function deleteCategory(categoryId) {
+  return axios.delete(`${APP_CONFIG.baseURL}/admin/categories/delete`, { data: { id: categoryId } });
+}
+
+export { getCategories, postCategory, putCategory, deleteCategory };

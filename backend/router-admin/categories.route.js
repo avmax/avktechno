@@ -4,7 +4,7 @@ const db = require('../db/index');
 const CategoryError = require('../errors').CategoryError;
 
 
-exports.add = (req, res, next) => {
+exports.post = (req, res, next) => {
   const body = req.body || { };
 
   db.query(
@@ -16,14 +16,25 @@ exports.add = (req, res, next) => {
   );
 };
 
+exports.put = (req, res, next) => {
+  const body = req.body || { };
 
-exports.remove = (req, res, next) => {
+  db.query(
+    `UPDATE categories SET title='${body.title}', description='${body.description}', imgUrl='${body.imgUrl}' WHERE id=${body.id};`,
+    (err, result) => {
+      if (err) { next(new CategoryError(`Ошибка при изменении категории. id: ${body.id}`, err)); }
+      else { res.status(200).send(body); }
+    }
+  );
+};
+
+exports.delete = (req, res, next) => {
   const id = req.body.id;
 
   db.query(
     `DELETE FROM categories WHERE id = ${id}`,
     (err, result) => {
-      if (err) { next(new CategoryError(`Ошибка при удалении категории ${id}`, err)); }
+      if (err) { next(new CategoryError(`Ошибка при удалении категории. id: ${id}`, err)); }
       else { res.sendStatus(200); }
     }
   );
