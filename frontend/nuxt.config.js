@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   // Headers of the page
   head: {
-    title: 'avktechno-ssr',
+    title: 'Avktechno',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -11,7 +11,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons', rel: 'stylesheet' }
+      { href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons', rel: 'stylesheet' },
     ],
   },
   // Customize the progress bar color
@@ -22,16 +22,17 @@ module.exports = {
   build: {
     vendor: ['vuetify', 'axios'],
     postcss: [
-      //eslint-disable-next-line
+      // eslint-disable-next-line
       require('postcss-cssnext')(),
-      //eslint-disable-next-line
+      // eslint-disable-next-line
       require('postcss-responsive-type')(),
-      //eslint-disable-next-line
+      // eslint-disable-next-line
       require('postcss-nested')(),
     ],
     // Run ESLint on save
     extend(config, ctx) {
       config.resolve.alias['~domains'] = path.join('.', 'domains');
+      config.resolve.alias['~utils'] = path.join('.', 'utils');
       if (ctx.dev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',

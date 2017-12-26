@@ -6,7 +6,6 @@ const CategoryError = require('../errors').CategoryError;
 
 exports.post = (req, res, next) => {
   const body = req.body || { };
-
   db.query(
     `INSERT INTO categories (title, description, imgUrl) VALUES ('${body.title}', '${body.description}', '${body.imgUrl}');`,
     (err, result) => {
@@ -18,7 +17,6 @@ exports.post = (req, res, next) => {
 
 exports.put = (req, res, next) => {
   const body = req.body || { };
-
   db.query(
     `UPDATE categories SET title='${body.title}', description='${body.description}', imgUrl='${body.imgUrl}' WHERE id=${body.id};`,
     (err, result) => {

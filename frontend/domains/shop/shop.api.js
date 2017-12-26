@@ -1,21 +1,19 @@
+/* eslint-disable */
 import axios from 'axios';
-// eslint-disable-next-line
 import APP_CONFIG from '~/config';
 
-function getCategories() {
-  return axios.get(`${APP_CONFIG.baseURL}/categories`);
+class Categories {
+  get() { return axios.get(`${APP_CONFIG.baseURL}/categories`); }
+  post(category) { return axios.post(`${APP_CONFIG.baseURL}/admin/categories`, category); }
+  put(category) { return axios.put(`${APP_CONFIG.baseURL}/admin/categories`, category); }
+  delete(categoryId) { return axios.delete(`${APP_CONFIG.baseURL}/admin/categories`, { data: { id: categoryId } }); }
 }
 
-function postCategory(category) {
-  return axios.post(`${APP_CONFIG.baseURL}/admin/categories/post`, category);
-}
+class Api {
+  constructor() {
+    this.category = new Categories();
+  };
+};
 
-function putCategory(category) {
-  return axios.put(`${APP_CONFIG.baseURL}/admin/categories/put`, category);
-}
-
-function deleteCategory(categoryId) {
-  return axios.delete(`${APP_CONFIG.baseURL}/admin/categories/delete`, { data: { id: categoryId } });
-}
-
-export { getCategories, postCategory, putCategory, deleteCategory };
+const api = new Api();
+export default api;

@@ -6,7 +6,7 @@
     clipped
     fixed
     app>
-      <shop-entities-edition-panel v-if="isEditionPanelOpened"/>
+      <the-shop-edition-panel-container v-if="isEditionPanelOpened"/>
     </v-navigation-drawer>
 
     <v-toolbar app fixed clipped-left>
@@ -29,23 +29,22 @@
 </template>
 
 <script>
-import ShopEntitiesEditionPanel from '~/domains/shop/ShopEntitiesEditionPanel.vue';
-import { CANCEL_ENTITY_EDITION } from '~/domains/shop/shop.state';
+import TheShopEditionPanelContainer from '~/domains/shop/TheShopEditionPanelContainer.vue';
+// import { CANCEL_ENTITY_EDITION } from '~/domains/shop/shop.state';
 
 export default {
-  name: 'shop-entities-layout',
+  name: 'default-layout',
   components: {
-    ShopEntitiesEditionPanel,
+    TheShopEditionPanelContainer,
   },
   computed: {
     isEditionPanelOpened: {
       get() {
-        return !!this.$store.state.shop.entityBeingEdited;
+        return this.$store.state.shop.edition.isEnabled;
       },
       set(v) {
-        console.log('set', v);
         if (!v) {
-          this.$store.commit(`shop/${CANCEL_ENTITY_EDITION}`);
+          // this.$store.commit(`shop/${CANCEL_ENTITY_EDITION}`);
         }
       },
     },

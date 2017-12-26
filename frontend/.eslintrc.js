@@ -17,8 +17,11 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-shadow': 'off',
     'no-console': 'off',
+    'func-names': 'off',
+    'space-before-function-paren': 'off',
     'no-return-assign': 'off',
     'object-shorthand': 'off',
+    'no-unused-vars': 1,
   },
   globals: {}
 };

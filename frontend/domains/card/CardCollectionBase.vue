@@ -24,7 +24,7 @@
           <v-icon class="avm-card-collection__card-control-icon">edit</v-icon>
         </v-btn>
         <v-btn class="avm-card-collection__card-control"
-        @click="removeCard(card.id)"
+        @click="removeCard(card)"
         fab small>
           <v-icon class="avm-card-collection__card-control-icon">clear</v-icon>
         </v-btn>
@@ -69,11 +69,11 @@ export default {
     addCard() {
       this.$emit('addCard');
     },
-    editCard(cardData) {
-      this.$emit('editCard', cardData);
+    editCard(model) {
+      this.$emit('editCard', model);
     },
-    removeCard(id) {
-      this.$emit('removeCard', id);
+    removeCard(model) {
+      this.$emit('removeCard', model);
     },
   },
 };

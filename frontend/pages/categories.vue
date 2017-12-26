@@ -2,7 +2,7 @@
   <div class="page page_categories">
     <h1>Страница с категориями</h1>
     <shop-entities-container
-      type="category"
+      :type="type"
       :items="categories">
     </shop-entities-container>
   </div>
@@ -13,7 +13,10 @@
 <script>
 import ShopEntitiesContainer from '~/domains/shop/ShopEntitiesContainer.vue';
 
-import { GET_ENTITIES } from '~/domains/shop/shop.state';
+import {
+  ENTITY_TYPES,
+  LOAD_ENTITIES,
+} from '~/domains/shop/shop.state';
 
 import { mapState } from 'vuex';
 
@@ -23,12 +26,20 @@ export default {
   components: {
     ShopEntitiesContainer,
   },
-  fetch({ store }) {
-    return store.dispatch(`shop/${GET_ENTITIES}`, { entityType: 'category' });
+  // fetch({ store }) {
+  //   return store.dispatch(LOAD_ENTITIES(ENTITY_TYPES.category));
+  // },
+  data() {
+    return {
+      type: ENTITY_TYPES.category,
+    };
   },
   computed: mapState({
-    categories: state => state.shop.categories,
+    categories: state => state.shop[ENTITY_TYPES.category],
   }),
+  mounted() {
+    this.$store.dispatch(LOAD_ENTITIES(ENTITY_TYPES.category));
+  },
 };
 </script>
 

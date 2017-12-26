@@ -5,7 +5,7 @@
   @addCard="onAddCard"
   @editCard="onEditCard"
   @removeCard="onRemoveCard"
-  :cards="items"
+  :cards="cards"
   :isEditionEnabled="isEditionEnabled"/>
 </div>
 </template>
@@ -21,22 +21,26 @@
       CardCollectionBase,
     },
     computed: {
-      isEditionEnabled() { return this.$store.state.user.isAdmin; },
+      isEditionEnabled() {
+        return this.$store.state.user.isAdmin && !this.$store.state.shop.edition.isEnabled;
+      },
+      cards() {
+        return Object.keys(this.items).map(key => this.items[key]);
+      },
     },
     props: {
-      items: Array,
+      items: Object,
       type: String,
     },
     methods: {
       onAddCard() {
-        this.$store.dispatch(`shop/${ADD_ENTITY}`, this.type);
+        this.$store.dispatch(ADD_ENTITY(this.type));
       },
-      onEditCard(card) {
-        this.$store.dispatch(`shop/${EDIT_ENTITY}`, { entityType: this.type, entityData: card });
+      onEditCard(model) {
+        this.$store.dispatch(EDIT_ENTITY(this.type), model.id);
       },
-      onRemoveCard(id) {
-        this.$store.dispatch(`shop/${REMOVE_ENTITY}`, { entityType: this.type, entityId: id })
-          .catch(err => console.log(err));
+      onRemoveCard(model) {
+        this.$store.dispatch(REMOVE_ENTITY(this.type), model.id);
       },
     },
   };

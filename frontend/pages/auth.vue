@@ -76,7 +76,7 @@ export default {
     submit() {
       signIn(this.form.value)
         .then(({ data }) => {
-          this.$store.commit(`user/${SIGN_IN}`, data);
+          this.$store.commit(SIGN_IN, data);
           this.$router.push({ name: 'categories' });
         })
         .catch(err => console.log(err.response.data));

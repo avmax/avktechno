@@ -1,134 +1,75 @@
+import isEmpty from 'lodash/fp/isEmpty';
+import api from './shop.api';
+
 import {
-  categoriesState, categoriesMutations, categoriesActions,
-  SAVE_CATEGORY_EDITS, CANCEL_CATEGORY_EDITION,
-  GET_CATEGORIES, ADD_CATEGORY, EDIT_CATEGORY, REMOVE_CATEGORY,
-} from './shop-category.state';
-
-const SAVE_ENTITY_EDITS = 'сохранить изменения сущности';
-const CANCEL_ENTITY_EDITION = 'прекратить изменение сущности';
-
-const ADD_ENTITY = 'добавить сущность';
-const EDIT_ENTITY = 'править сущность';
-const REMOVE_ENTITY = 'удалить сущность';
-const GET_ENTITIES = 'загрузить сущности';
+  shopEditionStoreModule,
+  ADD_ENTITY,
+  EDIT_ENTITY,
+  REMOVE_ENTITY,
+  CREATE_ENTITY,
+  SAVE_EDITION,
+  STOP_EDITION,
+} from './shop-edition.state';
 
 
-export const state = () => ({
-  entityBeingEdited: null,
-  entityBeingEditedId: null,
-  entityBeingEditedType: null,
-  entityEditionType: null,
-  ...categoriesState,
-});
+const LOAD_ENTITIES = type => `загрузить сущности типа ${type}`;
 
-export const mutations = {
-  [CANCEL_ENTITY_EDITION](state) {
-    state.entityBeingEdited = null;
-    state.entityBeingEditedType = null;
-    state.entityEditionType = null;
-  },
-  ...categoriesMutations,
+
+const state = (entityTypes) => {
+  const s = { ...shopEditionStoreModule.state() };
+  Object.values(entityTypes).forEach(val => s[val] = {});
+  return s;
 };
 
-export const actions = {
-  [ADD_ENTITY]({ dispatch }, entityType) {
-    let ACTION;
-
-    switch (entityType) {
-      case 'category':
-        ACTION = ADD_CATEGORY;
-        break;
-      default:
-        break;
-    }
-
-    dispatch(ACTION);
-  },
-  [EDIT_ENTITY]({ dispatch }, { entityType, entityData }) {
-    let ACTION;
-
-    switch (entityType) {
-      case 'category':
-        ACTION = EDIT_CATEGORY;
-        break;
-      default:
-        break;
-    }
-
-    dispatch(ACTION, entityData);
-  },
-  async [REMOVE_ENTITY]({ dispatch }, { entityType, entityId }) {
-    let ACTION;
-
-    switch (entityType) {
-      case 'category':
-        ACTION = REMOVE_CATEGORY;
-        break;
-      default:
-        break;
-    }
-
-    try {
-      const res = await dispatch(ACTION, entityId);
-      return Promise.resolve(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  },
-  [CANCEL_ENTITY_EDITION]({ state, dispatch }) {
-    const entityType = state.entityBeingEditedType;
-    let ACTION;
-
-    switch (entityType) {
-      case 'category':
-        ACTION = CANCEL_CATEGORY_EDITION;
-        break;
-      default:
-        break;
-    }
-
-    dispatch(ACTION);
-  },
-  async [SAVE_ENTITY_EDITS]({ state, dispatch }, entityData) {
-    const entityType = state.entityBeingEditedType;
-    let ACTION;
-
-    switch (entityType) {
-      case 'category':
-        ACTION = SAVE_CATEGORY_EDITS;
-        break;
-      default:
-        break;
-    }
-
-    try {
-      const res = await dispatch(ACTION, entityData);
-      return Promise.resolve(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  },
-  async [GET_ENTITIES]({ dispatch }, { entityType }) {
-    let ACTION;
-
-    switch (entityType) {
-      case 'category':
-        ACTION = GET_CATEGORIES;
-        break;
-      default:
-        break;
-    }
-
-    try {
-      const res = await dispatch(ACTION);
-      return Promise.resolve(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  },
-  ...categoriesActions,
+const mutations = (entityTypes) => {
+  const m = { ...shopEditionStoreModule.mutations(entityTypes) };
+  return m;
 };
 
-export { SAVE_ENTITY_EDITS, CANCEL_ENTITY_EDITION };
-export { GET_ENTITIES, ADD_ENTITY, EDIT_ENTITY, REMOVE_ENTITY };
+const actions = (entityTypes) => {
+  const loadEntities = function(key, val) {
+    return async ({ state, commit }) => {
+      if (!isEmpty(state[val])) { return state[val]; }
+      try {
+        const { data } = await api[key].get();
+        data.forEach(dataItem => commit(ADD_ENTITY(val), dataItem));
+        return data;
+      } catch (err) {
+        console.log(LOAD_ENTITIES(val), err);
+        return err;
+      }
+    };
+  };
 
+  const a = { ...shopEditionStoreModule.actions(entityTypes) };
+
+  Object.keys(entityTypes).forEach((key) => {
+    const val = entityTypes[key];
+    a[LOAD_ENTITIES(val)] = loadEntities(key, val);
+  });
+
+  return a;
+};
+
+
+const ENTITY_TYPES = {
+  category: '<категория>',
+};
+
+const module = {
+  state: state(ENTITY_TYPES),
+  mutations: mutations(ENTITY_TYPES),
+  actions: actions(ENTITY_TYPES),
+};
+
+export {
+  module,
+  ENTITY_TYPES,
+  LOAD_ENTITIES,
+  ADD_ENTITY,
+  EDIT_ENTITY,
+  REMOVE_ENTITY,
+  CREATE_ENTITY,
+  SAVE_EDITION,
+  STOP_EDITION,
+};
