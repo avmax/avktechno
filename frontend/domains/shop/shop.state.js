@@ -53,7 +53,8 @@ const actions = (entityTypes) => {
 
 
 const ENTITY_TYPES = {
-  category: '<категория>',
+  category: 'категория',
+  brand: 'брэнд',
 };
 
 const module = {

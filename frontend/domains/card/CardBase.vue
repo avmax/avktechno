@@ -1,10 +1,8 @@
 <template>
 <v-card class="avm-card">
-
-  <v-card-media class="avm-card__media" :src=imgUrl></v-card-media>
-  <v-card-title class="avm-card__title">{{title}}</v-card-title>
-  <v-card-text class="avm-card__text">{{text}}</v-card-text>
-
+  <v-card-media class="avm-card__media" :src="imgUrl"></v-card-media>
+  <v-card-title class="avm-card__title">{{name}}</v-card-title>
+  <v-card-text class="avm-card__text">{{title}}</v-card-text>
 </v-card>
 </template>
 
@@ -15,8 +13,8 @@ export default {
   name: 'card-base',
   props: {
     imgUrl: String,
+    name: String,
     title: String,
-    text: String,
   },
 };
 </script>

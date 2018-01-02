@@ -8,6 +8,13 @@
     @apply="apply"
     @abort="abort"
     />
+    <the-shop-edition-panel-brand
+    v-if="isTypeBrand"
+    :value="value"
+    @change="onPanelChange"
+    @apply="apply"
+    @abort="abort"
+    />
     <h4 v-if="message">{{message}}</h4>
   </div>
 </template>
@@ -15,12 +22,14 @@
 <script>
 import { mapState } from 'vuex';
 import TheShopEditionPanelCategory from '~/domains/shop/TheShopEditionPanelCategory.vue';
+import TheShopEditionPanelBrand from '~/domains/shop/TheShopEditionPanelBrand.vue';
 import { ENTITY_TYPES, EDIT_ENTITY, SAVE_EDITION, STOP_EDITION } from '~/domains/shop/shop.state';
 
 export default {
   name: 'the-shop-edition-panel-container',
   components: {
     TheShopEditionPanelCategory,
+    TheShopEditionPanelBrand,
   },
   data() {
     return {
@@ -33,6 +42,7 @@ export default {
       value({ shop }) { return shop.edition.value; },
     }),
     isTypeCategory() { return this.type === ENTITY_TYPES.category; },
+    isTypeBrand() { return this.type === ENTITY_TYPES.brand; },
   },
   methods: {
     onPanelChange(v) {

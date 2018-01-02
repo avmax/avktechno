@@ -47,10 +47,10 @@ db.connect(async (err) => {
       id int NOT NULL AUTO_INCREMENT,
       name char(30) NOT NULL UNIQUE,
       title char(120) NOT NULL,
-      subtitle char(120) NOT NULL,
-      description TEXT(120) NOT NULL,
-      image_url char(120) NOT NULL,
-      image_description char(120) NOT NULL,
+      subtitle char(120),
+      description TEXT(120),
+      imgUrl char(120) NOT NULL,
+      imgDescription char(120),
       PRIMARY KEY (id)
       );
     `);
@@ -58,9 +58,12 @@ db.connect(async (err) => {
     await query(`
       CREATE TABLE categories (
       id int(10) AUTO_INCREMENT,
+      name char(30) NOT NULL UNIQUE,
       title char(120) NOT NULL,
-      description char(120) NOT NULL,
+      subtitle char(120),
+      description char(120),
       imgUrl char(120) NOT NULL,
+      imgDescription char(120),
       PRIMARY KEY (id)
       );
   `);

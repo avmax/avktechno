@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h3>Редактировать категорию</h3>
+  <h3>Редактировать брэнд</h3>
 
   <v-form
     ref="form"
@@ -41,7 +41,7 @@ import TheShopEditionPanelEntity from './TheShopEditionPanelEntity';
 import { validatorRequired } from '~/utils/validators.js';
 
 export default {
-  name: 'the-shop-edition-panel-category',
+  name: 'the-shop-edition-panel-brand',
   mixins: [TheShopEditionPanelEntity],
   data() {
     return {

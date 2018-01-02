@@ -9,9 +9,17 @@ class Categories {
   delete(categoryId) { return axios.delete(`${APP_CONFIG.baseURL}/admin/categories`, { data: { id: categoryId } }); }
 }
 
+class Brands {
+  get() { return axios.get(`${APP_CONFIG.baseURL}/brands`); }
+  post(category) { return axios.post(`${APP_CONFIG.baseURL}/admin/brands`, category); }
+  put(category) { return axios.put(`${APP_CONFIG.baseURL}/admin/brands`, category); }
+  delete(categoryId) { return axios.delete(`${APP_CONFIG.baseURL}/admin/brands`, { data: { id: categoryId } }); }
+}
+
 class Api {
   constructor() {
     this.category = new Categories();
+    this.brand = new Brands();
   };
 };
 

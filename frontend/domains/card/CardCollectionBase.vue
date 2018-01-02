@@ -1,9 +1,11 @@
 <template>
-<div class="avm-card-collection">
-
+<div class="avm-card-collection py-3">
+  <div class="mb-3">
+    <h2 class="display-3 avm-card-collection__header-title" v-if="name">{{name}} <slot name="controls"/></h2>
+    <h3 class="display-2" v-if="title">{{title}}</h3>
+  </div>
   <v-layout
-  class="avm-card-collection__layout"
-  v-if="cards"
+  v-if="cards || isEditionEnabled"
   row justify-start wrap>
     <v-flex
     class="avm-card-collection__card-holder"
@@ -11,34 +13,38 @@
     :key="card.id"
     xs12 md5 lg3 mb-5 mr-5>
       <card-base
-      class="avm-card-collection__card"
+      :name="card.name"
       :title="card.title"
-      :text="card.description"
-      :imgUrl="card.imgUrl">
-      </card-base>
+      :imgUrl="card.imgUrl"
+      />
       <div class="avm-card-collection__card-controls"
       v-if="isEditionEnabled">
-        <v-btn class="avm-card-collection__card-control"
+        <v-btn
         @click="editCard(card)"
         fab small>
-          <v-icon class="avm-card-collection__card-control-icon">edit</v-icon>
+          <v-icon color="white">edit</v-icon>
         </v-btn>
-        <v-btn class="avm-card-collection__card-control"
+        <v-btn
         @click="removeCard(card)"
         fab small>
-          <v-icon class="avm-card-collection__card-control-icon">clear</v-icon>
+          <v-icon color="white">clear</v-icon>
         </v-btn>
       </div>
     </v-flex>
     <v-flex
     v-if="isEditionEnabled"
     xs12 md5 lg3 mb-5 mr-5>
-      <div class="avm-carCollection__card avm-card-collection__ghost">
-        <v-btn class="avm-card-collection__ghost-button"
-         @click="addCard"
-         fab large>
-          <v-icon class="avm-card-collection__ghost-icon">add</v-icon>
-        </v-btn>
+      <div class="avm-card-collection__ghost">
+        <card-base
+        title="lololo"
+        description="lololo"/>
+        <div class="avm-card-collection__ghost-controls">
+          <v-btn class="avm-card-collection__ghost-button"
+          @click="addCard"
+          fab large>
+            <v-icon>add</v-icon>
+          </v-btn>
+        </div>
       </div>
     </v-flex>
   </v-layout>
@@ -48,7 +54,6 @@
   class="avm-card-collection__spinner"
   indeterminate
   color="green"/>
-
 </div>
 </template>
 
@@ -62,6 +67,8 @@ export default {
     'card-base': CardBase,
   },
   props: {
+    name: String,
+    title: String,
     cards: Array,
     isEditionEnabled: Boolean,
   },
@@ -83,8 +90,12 @@ export default {
 <style lang="scss">
 #avmax {
 .avm-card-collection {
-  &__card-holder {
-    position: relative;
+  &__header {
+    &-title {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
   }
 
   &__card-controls {
@@ -93,16 +104,24 @@ export default {
     right: 0;
   }
 
-  &__card-control-icon {
-    color: white;
+  &__card-holder {
+    position: relative;
   }
 
   &__ghost {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.6);
+    position: relative;
+
+    &-controls {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+    }
 
     &-button {
       color: yellowgreen;
