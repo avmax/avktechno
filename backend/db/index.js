@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const utils = require('util');
 
 
 
@@ -9,6 +10,14 @@ const db = mysql.createConnection({
   database: 'avktechno'
 });
 
+db.q = utils.promisify(db.query.bind(db));
 
-
-module.exports = db;
+exports.tables = {
+  brands: 'brands',
+  categories: 'categories',
+  products: 'products',
+  categoriesBrands: '\`categories-brands\`',
+  categoriesProducts: '\`categories-products\`',
+}
+exports.query = utils.promisify(db.query.bind(db));
+exports.db = db;

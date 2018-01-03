@@ -3,6 +3,7 @@ import api from './shop.api';
 
 import {
   shopEditionStoreModule,
+  EDITION_TYPES,
   ADD_ENTITY,
   EDIT_ENTITY,
   REMOVE_ENTITY,
@@ -53,8 +54,8 @@ const actions = (entityTypes) => {
 
 
 const ENTITY_TYPES = {
-  category: 'категория',
-  brand: 'брэнд',
+  category: 'category',
+  brand: 'brand',
 };
 
 const module = {
@@ -66,6 +67,7 @@ const module = {
 export {
   module,
   ENTITY_TYPES,
+  EDITION_TYPES,
   LOAD_ENTITIES,
   ADD_ENTITY,
   EDIT_ENTITY,

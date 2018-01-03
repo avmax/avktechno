@@ -36,8 +36,8 @@
     xs12 md5 lg3 mb-5 mr-5>
       <div class="avm-card-collection__ghost">
         <card-base
-        title="lololo"
-        description="lololo"/>
+        name="lololo"
+        title="lololo"/>
         <div class="avm-card-collection__ghost-controls">
           <v-btn class="avm-card-collection__ghost-button"
           @click="addCard"

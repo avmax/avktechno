@@ -23,7 +23,7 @@
 import { mapState } from 'vuex';
 import TheShopEditionPanelCategory from '~/domains/shop/TheShopEditionPanelCategory.vue';
 import TheShopEditionPanelBrand from '~/domains/shop/TheShopEditionPanelBrand.vue';
-import { ENTITY_TYPES, EDIT_ENTITY, SAVE_EDITION, STOP_EDITION } from '~/domains/shop/shop.state';
+import { ENTITY_TYPES, EDITION_TYPES, EDIT_ENTITY, SAVE_EDITION, STOP_EDITION } from '~/domains/shop/shop.state';
 
 export default {
   name: 'the-shop-edition-panel-container',
@@ -46,7 +46,9 @@ export default {
   },
   methods: {
     onPanelChange(v) {
-      this.$store.commit(EDIT_ENTITY(this.type), v);
+      if (this.$store.state.shop.editionType === EDITION_TYPES.edit) {
+        this.$store.commit(EDIT_ENTITY(this.type), v);
+      }
     },
     async apply(value) {
       try {

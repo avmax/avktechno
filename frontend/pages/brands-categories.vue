@@ -1,6 +1,6 @@
 <template>
-  <div class="page page_categories">
-    <h1>Страница с категориями</h1>
+  <div class="page page_brands-categories">
+    <h1>BRANDS - CATEGORIES</h1>
     <shop-entities-container
       :type="type"
       :subtype="subtype">
@@ -16,14 +16,14 @@ import ShopEntitiesContainer from '~/domains/shop/ShopEntitiesContainer.vue';
 import { ENTITY_TYPES } from '~/domains/shop/shop.state';
 
 export default {
-  name: 'page-categories',
+  name: 'page-brands-categories',
   components: {
     ShopEntitiesContainer,
   },
   data() {
     return {
-      type: ENTITY_TYPES.category,
-      subtype: ENTITY_TYPES.brand,
+      type: ENTITY_TYPES.brand,
+      subtype: ENTITY_TYPES.category,
     };
   },
 };
@@ -32,7 +32,7 @@ export default {
 
 
 <style>
-.page_categories {
+.page_brands-categories {
   width: 100%;
 }
 </style>

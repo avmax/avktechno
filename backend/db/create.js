@@ -24,20 +24,21 @@ db.connect(async (err) => {
     `);
 
     await query(`
+      ALTER DATABASE avktechno CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+    `)
+
+    await query(`
       USE avktechno
     `);
 
     await query(`
       CREATE TABLE products (
       id int NOT NULL AUTO_INCREMENT,
-      name char(30) NOT NULL UNIQUE,
-      title char(120) NOT NULL,
-      subtitle char(120) NOT NULL,
-      description TEXT NOT NULL,
-      image_url char(120) NOT NULL,
-      price char(60) NOT NULL,
-      brand int NOT NULL,
-      category int NOT NULL,
+      name char(64) NOT NULL UNIQUE,
+      title char(128) NOT NULL,
+      subtitle char(128) DEFAULT 'some product subtitle',
+      imgUrl char(128) DEFAULT 'http://lorempixel.com/400/200/sports/1/',
+      id_brand int NOT NULL,
       PRIMARY KEY (id)
       );
     `);
@@ -45,35 +46,57 @@ db.connect(async (err) => {
     await query(`
       CREATE TABLE brands (
       id int NOT NULL AUTO_INCREMENT,
-      name char(30) NOT NULL UNIQUE,
-      title char(120) NOT NULL,
-      subtitle char(120),
-      description TEXT(120),
-      imgUrl char(120) NOT NULL,
-      imgDescription char(120),
+      name char(64) NOT NULL UNIQUE,
+      title char(128) NOT NULL,
+      subtitle char(128) DEFAULT 'some brand subtitle',
+      imgUrl char(128) DEFAULT 'http://lorempixel.com/400/200/sports/1/',
       PRIMARY KEY (id)
       );
     `);
 
     await query(`
       CREATE TABLE categories (
-      id int(10) AUTO_INCREMENT,
-      name char(30) NOT NULL UNIQUE,
-      title char(120) NOT NULL,
-      subtitle char(120),
-      description char(120),
-      imgUrl char(120) NOT NULL,
-      imgDescription char(120),
+      id int NOT NULL AUTO_INCREMENT,
+      name char(64) NOT NULL UNIQUE,
+      title char(128) NOT NULL,
+      subtitle char(128) DEFAULT 'some category subtitle',
+      imgUrl char(128) DEFAULT 'http://lorempixel.com/400/200/sports/1/',
       PRIMARY KEY (id)
       );
-  `);
-
-    await query(`
-      ALTER TABLE products ADD CONSTRAINT product_fk0 FOREIGN KEY (brand) REFERENCES brands(id);
     `);
 
     await query(`
-      ALTER TABLE products ADD CONSTRAINT product_fk1 FOREIGN KEY (category) REFERENCES categories(id);
+      CREATE TABLE \`categories-brands\` (
+        id_category int NOT NULL,
+        id_brand int NOT NULL
+      );
+    `);
+
+    await query(`
+      CREATE TABLE \`categories-products\` (
+        id_category int NOT NULL,
+        id_product int NOT NULL
+      );
+    `);
+
+    await query(`
+      ALTER TABLE products ADD CONSTRAINT products_fk0 FOREIGN KEY (id_brand) REFERENCES brands(id);
+    `);
+
+    await query(`
+      ALTER TABLE \`categories-brands\` ADD CONSTRAINT \`categories-brands_fk0\` FOREIGN KEY (id_category) REFERENCES categories(id);
+    `);
+
+    await query(`
+      ALTER TABLE \`categories-brands\` ADD CONSTRAINT \`categories-brands_fk1\` FOREIGN KEY (id_brand) REFERENCES brands(id);
+    `);
+
+    await query(`
+      ALTER TABLE \`categories-products\` ADD CONSTRAINT \`categories-products_fk0\` FOREIGN KEY (id_category) REFERENCES categories(id);
+    `);
+
+    await query(`
+      ALTER TABLE \`categories-products\` ADD CONSTRAINT \`categories-products_fk1\` FOREIGN KEY (id_product) REFERENCES products(id);
     `);
 
     console.log('база данных успешно создана');

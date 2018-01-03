@@ -12,7 +12,8 @@
     <v-toolbar app fixed clipped-left>
       <v-toolbar-title>Application</v-toolbar-title>
       <router-link class="mr-3 ml-3" to="/">Index</router-link>
-      <router-link class="mr-3" to="/categories">Categories</router-link>
+      <router-link class="mr-3" to="/categories-brands">Categories-brands</router-link>
+      <router-link class="mr-3" to="/brands-categories">Brands-categories</router-link>
       <router-link class="mr-3" to="/auth">Auth</router-link>
     </v-toolbar>
 

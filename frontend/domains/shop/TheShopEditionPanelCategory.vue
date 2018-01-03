@@ -59,7 +59,6 @@ export default {
       rules: {
         name: [validatorRequired()],
         title: [validatorRequired()],
-        imgUrl: [validatorRequired()],
       },
     };
   },

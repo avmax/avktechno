@@ -1,14 +1,14 @@
 import Vue from 'vue';
-import { assign } from 'lodash/fp';
+import { assign, isEmpty } from 'lodash/fp';
 import api from './shop.api';
 
 const START_EDITION = 'начать редактирование магазина';
 const STOP_EDITION = 'прекратить редактирование магазина';
-const SAVE_EDITION = type => `сохранить изменения ${type}`;
-const ADD_ENTITY = type => `добавить сущность типа ${type}`;
-const EDIT_ENTITY = type => `изменить сущность типа ${type}`;
-const REMOVE_ENTITY = type => `удалить сущность типа ${type}`;
-const CREATE_ENTITY = type => `создать сущность типа ${type}`;
+const SAVE_EDITION = type => `сохранить изменения <${type}>`;
+const ADD_ENTITY = type => `добавить сущность типа <${type}>`;
+const EDIT_ENTITY = type => `изменить сущность типа <${type}>`;
+const REMOVE_ENTITY = type => `удалить сущность типа <${type}>`;
+const CREATE_ENTITY = type => `создать сущность типа <${type}>`;
 
 
 const EDITION_TYPES = {
@@ -87,11 +87,12 @@ const mutations = (entitiyTypes) => {
 
 const actions = (entitiyTypes) => {
   const addEntity = function(key, val) {
-    return (context) => {
+    return (context, payload = {}) => {
       const { commit } = context;
       commit(START_EDITION, {
         entityType: val,
         editionType: EDITION_TYPES.create,
+        entity: payload,
       });
     };
   };
@@ -132,8 +133,19 @@ const actions = (entitiyTypes) => {
       if (edition.editionType === EDITION_TYPES.create) {
         try {
           const { data } = await api[key].post(entity);
-          commit(ADD_ENTITY(val), data);
+          const { refs } = data;
           edition.backup = null;
+          commit(ADD_ENTITY(val), data);
+
+          if (!isEmpty(refs)) {
+            Object.keys(refs).forEach((k) => {
+              refs[k].forEach((v) => {
+                const ref = { ...state[k][v] };
+                ref.refs[key].push(data.id);
+                commit(EDIT_ENTITY(k), ref);
+              });
+            });
+          }
         } catch (err) {
           console.log(SAVE_EDITION(val), err);
           throw err;
@@ -167,6 +179,7 @@ const shopEditionStoreModule = { state, mutations, actions };
 
 export {
   shopEditionStoreModule,
+  EDITION_TYPES,
   SAVE_EDITION,
   STOP_EDITION,
   ADD_ENTITY,

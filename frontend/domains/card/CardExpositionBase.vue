@@ -11,7 +11,7 @@
         :title="collection.title"
         :cards="collection.cards"
         :is-edition-enabled="isEditionEnabled"
-        @addCard="addCard"
+        @addCard="addCard(collection)"
         @editCard="editCard"
         @removeCard="removeCard">
           <div
@@ -61,8 +61,8 @@ export default {
     isEditionEnabled: Boolean,
   },
   methods: {
-    addCard() {
-      this.$emit('addCard');
+    addCard(model) {
+      this.$emit('addCard', model);
     },
     editCard(model) {
       this.$emit('editCard', model);

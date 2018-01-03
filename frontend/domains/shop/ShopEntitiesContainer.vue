@@ -2,7 +2,7 @@
 <div class="avm-shop-entities-container">
 
   <card-exposition-base
-  v-if="collections"
+  v-if="isReady"
   :collections="collections"
   :isEditionEnabled="isEditionEnabled"
   @addCard="onAddCard"
@@ -37,11 +37,23 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      isReady: false,
+    };
+  },
   computed: {
     ...mapState({
       collections({ shop }) {
-        const collections = Object.values(shop[this.type]).map((val) => {
-          const collection = { ...val, cards: Object.values(shop[this.subtype]) };
+        let collections = [];
+
+        collections = Object.values(shop[this.type]).map((val) => {
+          const collection = { ...val };
+          if (val.refs[this.subtype]) {
+            collection.cards = val.refs[this.subtype]
+              .map(id => shop[this.subtype][id])
+              .filter(v => !!v);
+          }
           return collection;
         });
         return collections;
@@ -51,13 +63,14 @@ export default {
       return this.$store.state.user.isAdmin && !this.$store.state.shop.edition.isEnabled;
     },
   },
-  beforeMount() {
-    this.$store.dispatch(LOAD_ENTITIES(this.type));
-    this.$store.dispatch(LOAD_ENTITIES(this.subtype));
+  async beforeMount() {
+    await this.$store.dispatch(LOAD_ENTITIES(this.type));
+    await this.$store.dispatch(LOAD_ENTITIES(this.subtype));
+    this.isReady = true;
   },
   methods: {
-    onAddCard() {
-      this.$store.dispatch(ADD_ENTITY(this.subtype));
+    onAddCard(model) {
+      this.$store.dispatch(ADD_ENTITY(this.subtype), { [this.type]: [model.id] });
     },
     onEditCard(model) {
       this.$store.dispatch(EDIT_ENTITY(this.subtype), model.id);
