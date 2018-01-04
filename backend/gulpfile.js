@@ -1,11 +1,9 @@
 const gulp = require('gulp');
-
 const gulpsync = require('gulp-sync')(gulp);
-
 const gls = require('gulp-live-server');
 
-const server = gls('./index', { env: process.env });
 
+const server = gls('./app', { env: process.env });
 
 gulp.task('start', () => {
   server.start.apply(server);

@@ -9,9 +9,8 @@
         Nuxt.js project {{subtitle}}
       </h2>
       <div class="page__links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
+        <a href="https://nuxtjs.org/" target="_blank" class="button--green mr-5">Documentation</a>
         <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
-        <router-link to="/categories">Categories</router-link>
       </div>
     </div>
   </section>

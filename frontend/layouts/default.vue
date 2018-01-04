@@ -6,20 +6,40 @@
     clipped
     fixed
     app>
-      <the-shop-edition-panel-container v-if="isEditionPanelOpened"/>
+      <component :is="editionPanel"/>
     </v-navigation-drawer>
 
     <v-toolbar app fixed clipped-left>
       <v-toolbar-title>Application</v-toolbar-title>
       <router-link class="mr-3 ml-3" to="/">Index</router-link>
-      <router-link class="mr-3" to="/categories-brands">Categories-brands</router-link>
-      <router-link class="mr-3" to="/brands-categories">Brands-categories</router-link>
+      <router-link class="mr-3" to="/categories">Categories</router-link>
+      <router-link class="mr-3" to="/brands">Brands</router-link>
       <router-link class="mr-3" to="/auth">Auth</router-link>
     </v-toolbar>
 
     <v-content>
       <v-container fluid fill-height>
-        <nuxt/>
+        <v-layout column>
+          <v-flex
+          v-if="notifications && notifications.length"
+          xs12>
+            <v-alert
+            v-for="(notification, index) in notifications"
+            :type="notification.type"
+            :value="true"
+            dismissible
+            class="text-xs-center"
+            style="width: 100%; color: black;"
+            transition="slide-y-transition"
+            @input="notificationClose(index)"
+            :key="`index-${index}`">
+              {{notification.message}}
+            </v-alert>
+          </v-flex>
+          <v-flex xs12>
+            <nuxt/>
+          </v-flex>
+        </v-layout>
       </v-container>
     </v-content>
 
@@ -30,15 +50,43 @@
 </template>
 
 <script>
-import TheShopEditionPanelContainer from '~/domains/shop/TheShopEditionPanelContainer.vue';
+import { mapState } from 'vuex';
+import { NOTIFICATION_CLOSE } from '~/domains/common/state.notification';
+import { ENTITY_TYPES } from '~/domains/shop/state.shop';
+import ShopEditionPanelCategory from '~/domains/shop/ShopEditionPanelCategory.vue';
+import ShopEditionPanelBrand from '~/domains/shop/ShopEditionPanelBrand.vue';
+import ShopEditionPanelProduct from '~/domains/shop/ShopEditionPanelProduct.vue';
 // import { CANCEL_ENTITY_EDITION } from '~/domains/shop/shop.state';
 
 export default {
   name: 'default-layout',
   components: {
-    TheShopEditionPanelContainer,
+    ShopEditionPanelCategory,
+    ShopEditionPanelBrand,
+    ShopEditionPanelProduct,
   },
   computed: {
+    ...mapState({
+      notifications: ({ notification }) => notification.items,
+      editionPanel({ shop }) {
+        let component;
+        switch (shop.edition.entityType) {
+          case (ENTITY_TYPES.brand):
+            component = ShopEditionPanelBrand;
+            break;
+          case (ENTITY_TYPES.category):
+            component = ShopEditionPanelCategory;
+            break;
+          case (ENTITY_TYPES.product):
+            component = ShopEditionPanelProduct;
+            break;
+          default:
+            component = null;
+        }
+
+        return component;
+      },
+    }),
     isEditionPanelOpened: {
       get() {
         return this.$store.state.shop.edition.isEnabled;
@@ -49,6 +97,9 @@ export default {
         }
       },
     },
+  },
+  methods: {
+    notificationClose(index) { this.$store.commit(NOTIFICATION_CLOSE, index); },
   },
 };
 </script>

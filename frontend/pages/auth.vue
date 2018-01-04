@@ -46,8 +46,8 @@
 
 
 <script>
-import { SIGN_IN } from '~/domains/user/user.state';
-import { signIn } from '~/domains/user/user.api';
+import { USER_SIGN_IN } from '~/domains/user/state.user';
+import { signIn } from '~/domains/user/api.user';
 
 export default {
   name: 'page-auth',
@@ -76,7 +76,7 @@ export default {
     submit() {
       signIn(this.form.value)
         .then(({ data }) => {
-          this.$store.commit(SIGN_IN, data);
+          this.$store.commit(USER_SIGN_IN, data);
           this.$router.push({ name: 'categories' });
         })
         .catch(err => console.log(err.response.data));

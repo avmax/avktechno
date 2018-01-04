@@ -11,7 +11,9 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "lodash": "^4.17.4",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.28.6"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

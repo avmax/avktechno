@@ -4,6 +4,8 @@ const validatorRequired = message => (v) => {
     return message;
   } else if (v === '') {
     return message;
+  } else if (Array.isArray(v) && v.length === 0) {
+    return message;
   }
   return true;
 };
