@@ -2,7 +2,9 @@
   <v-app id="avmax" dark>
     <v-navigation-drawer
     v-model="isEditionPanelOpened"
+    disable-resize-watcher
     disable-route-watcher
+    mobile-break-point="1080"
     clipped
     fixed
     app>
@@ -14,7 +16,15 @@
       <router-link class="mr-3 ml-3" to="/">Index</router-link>
       <router-link class="mr-3" to="/categories">Categories</router-link>
       <router-link class="mr-3" to="/brands">Brands</router-link>
-      <router-link class="mr-3" to="/auth">Auth</router-link>
+      <!-- <router-link class="mr-3" to="/auth">Auth</router-link> -->
+      <v-layout row justify-end align-center>
+        <v-flex xs2 align-center>
+          <v-switch
+          :label="`${isUserSignedIn ? 'Выйти' : 'Войти'}`"
+          v-model="isUserSignedIn"
+          style="height: 30px;"/>
+        </v-flex>
+      </v-layout>
     </v-toolbar>
 
     <v-content>
@@ -51,12 +61,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import { NOTIFICATION_CLOSE } from '~/domains/common/state.notification';
-import { ENTITY_TYPES } from '~/domains/shop/state.shop';
+import { ENTITY_TYPES, NOTIFICATION_CLOSE, USER_SIGN_IN, USER_SIGN_OUT } from '~/domains/shop/state.shop';
 import ShopEditionPanelCategory from '~/domains/shop/ShopEditionPanelCategory.vue';
 import ShopEditionPanelBrand from '~/domains/shop/ShopEditionPanelBrand.vue';
 import ShopEditionPanelProduct from '~/domains/shop/ShopEditionPanelProduct.vue';
-// import { CANCEL_ENTITY_EDITION } from '~/domains/shop/shop.state';
 
 export default {
   name: 'default-layout',
@@ -88,14 +96,13 @@ export default {
       },
     }),
     isEditionPanelOpened: {
-      get() {
-        return this.$store.state.shop.edition.isEnabled;
-      },
-      set(v) {
-        if (!v) {
-          // this.$store.commit(`shop/${CANCEL_ENTITY_EDITION}`);
-        }
-      },
+      get() { return this.$store.state.shop.edition.isEnabled; },
+      set() { },
+    },
+    isUserSignedIn: {
+      get() { return this.$store.state.user.isSignedIn; },
+      // eslint-disable-next-line
+      set(v) { v ? this.$store.commit(USER_SIGN_IN, true) : this.$store.commit(USER_SIGN_OUT); },
     },
   },
   methods: {

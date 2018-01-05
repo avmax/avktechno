@@ -1,5 +1,5 @@
 <template>
-  <section class="page container">
+  <section class="page container" id="page-index">
     <div>
       <logo/>
       <h1 class="page">
@@ -32,13 +32,12 @@ export default {
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+#page-index {
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
 
 .page {
   &__title {
@@ -62,5 +61,5 @@ export default {
     padding-top: 15px;
   }
 }
-
+}
 </style>

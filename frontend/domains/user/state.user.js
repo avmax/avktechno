@@ -1,18 +1,23 @@
 const USER_SIGN_IN = 'вход в учетку';
+const USER_SIGN_OUT = 'выход из учетки';
 
 
 const state = () => ({
-  isLoggedIn: true,
+  isSignedIn: true,
   isAdmin: true,
 });
 
 const mutations = {
   [USER_SIGN_IN](state, isAdmin) {
-    state.isLoggedIn = true;
+    state.isSignedIn = true;
     state.isAdmin = isAdmin;
+  },
+  [USER_SIGN_OUT](state) {
+    state.isSignedIn = false;
+    state.isAdmin = false;
   },
 };
 
 
 export const module = { state, mutations };
-export { USER_SIGN_IN };
+export { USER_SIGN_IN, USER_SIGN_OUT };

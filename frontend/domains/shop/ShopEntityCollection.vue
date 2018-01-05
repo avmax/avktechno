@@ -1,8 +1,8 @@
 <template>
-<div class="avm-shop-entity-collection py-3">
+<div class="shop-entity-collection py-3">
   <div class="mb-3">
     <h2
-    class="avm-shop-entity-collection__header-name display-1 mb-2"
+    class="shop-entity-collection__header-name display-1 mb-2"
     v-if="model.name || isEditionEnabled">
       {{model.name}}
         <div
@@ -21,19 +21,21 @@
           </v-btn>
         </div>
     </h2>
-    <h3 class="avm-shop-entity-collection__header-title heading" v-if="model.title">{{model.title}}</h3>
+    <h3 class="shop-entity-collection__header-title heading" v-if="model.title">{{model.title}}</h3>
   </div>
   <v-layout
   row justify-start wrap>
     <v-flex
-    v-if="isEditionEnabled"
+    v-if="isEditionAvailable"
     xs12 md5 lg3 mb-5 mr-5>
-      <div class="avm-shop-entity-collection__ghost">
+      <div class="shop-entity-collection__ghost">
         <card-base
         name="lololo"
         title="lololo"/>
-        <div class="avm-shop-entity-collection__ghost-controls">
-          <v-btn class="avm-shop-entity-collection__ghost-button"
+        <div class="shop-entity-collection__ghost-controls">
+          <v-btn
+          v-if="isEditionEnabled"
+          class="shop-entity-collection__ghost-button"
           @click="add"
           fab large>
             <v-icon>add</v-icon>
@@ -102,7 +104,7 @@ export default {
 
 <style lang="scss">
 #avmax {
-.avm-shop-entity-collection {
+.shop-entity-collection {
   &__header {
     &-name {
       display: flex;
@@ -127,11 +129,6 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: black;
-    }
-
-    &-button {
-      color: yellowgreen;
       background-color: black;
     }
   }

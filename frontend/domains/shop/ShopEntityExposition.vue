@@ -1,20 +1,24 @@
 <template>
-  <v-layout class="avm-shop-entity-exposition" column>
+  <v-layout class="shop-entity-exposition" column>
     <template v-if="isReady">
       <v-flex
-      v-if="isEditionEnabled" xs12>
-        <div class="avm-shop-entity-exposition__ghost">
+      v-if="isEditionAvailable" xs12>
+        <div class="shop-entity-exposition__ghost my-3">
           <card-base
           name="lololo"
           title="lololo"/>
-          <div class="avm-shop-entity-exposition__ghost-controls">
-            <v-btn @click="add" fab large>
+          <div class="shop-entity-exposition__ghost-controls">
+            <v-btn
+            class="shop-entity-exposition__ghost-button"
+            v-if="isEditionEnabled"
+            @click="add"
+            fab large>
               <v-icon>add</v-icon>
             </v-btn>
           </div>
         </div>
       </v-flex>
-      <v-flex v-for="id in model" :key="id" xs12>
+      <v-flex v-for="id in model" :key="id" xs12 class="my-3">
         <shop-entity-collection :id="id" :type="type" :subtype="subtype"/>
         <v-divider/>
       </v-flex>
@@ -26,7 +30,7 @@
       align-center
       justify-center>
         <v-progress-circular
-        class="avm-shop-entities-container__spinner"
+        class="shop-entities-container__spinner"
         size="128 "
         indeterminate
         color="red"/>
@@ -66,6 +70,7 @@ export default {
   },
   computed: {
     ...mapState({
+      isEditionAvailable: ({ user }) => user.isAdmin,
       isEditionEnabled: ({ shop, user }) => user.isAdmin && !shop.edition.isEnabled,
     }),
     model() { return this.$store.getters.entities(this.type); },
@@ -81,7 +86,8 @@ export default {
 </script>
 
 <style>
-.avm-shop-entity-exposition {
+#avmax {
+.shop-entity-exposition {
   &__ghost {
     position: relative;
 
@@ -97,6 +103,7 @@ export default {
       align-items: center;
     }
   }
+}
 }
 </style>
 

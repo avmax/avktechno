@@ -1,5 +1,5 @@
 <template>
-<div class="avm-shop-entity-item">
+<div class="shop-entity-item">
   <card-base
   v-if="model"
   :name="model.name"
@@ -7,7 +7,7 @@
   :imgUrl="model.imgUrl"
   />
 
-  <div class="avm-shop-entity-item__controls"
+  <div class="shop-entity-item__controls"
   v-if="isEditionEnabled">
     <v-btn
     @click="edit()"
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style>
-.avm-shop-entity-item {
+.shop-entity-item {
   position: relative;
 
   &__controls {

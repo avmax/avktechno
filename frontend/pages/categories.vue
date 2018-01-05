@@ -2,7 +2,12 @@
   <v-layout
   class="page"
   column>
-    <h1>Страница категории</h1>
+      <div class="page__header">
+        <h1>Страница категории</h1>
+        <v-switch
+        :label="`${!isInverted ? 'Показать бренды' : 'Показать продукты'}`"
+        v-model="isInverted"/>
+      </div>
     <v-flex xs12>
       <shop-entity-exposition
       :type="type"
@@ -27,6 +32,16 @@ export default {
       type: ENTITY_TYPES.category,
       subtype: ENTITY_TYPES.product,
     };
+  },
+  computed: {
+    isInverted: {
+      get() { return this.subtype !== ENTITY_TYPES.product; },
+      set() {
+        this.subtype = this.subtype !== ENTITY_TYPES.product
+          ? ENTITY_TYPES.product
+          : ENTITY_TYPES.brand;
+      },
+    },
   },
 };
 </script>

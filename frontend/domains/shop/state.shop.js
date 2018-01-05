@@ -1,6 +1,14 @@
-import { NOTIFICATION_TYPES, NOTIFICATION_OPEN } from '~/domains/common/state.notification';
-import isEmpty from 'lodash/fp/isEmpty';
-import api from './api.shop';
+import {
+  NOTIFICATION_TYPES,
+  NOTIFICATION_OPEN,
+  NOTIFICATION_CLOSE,
+  NOTIFICATION_LAST_CLOSE,
+} from '~/domains/common/state.notification';
+
+import {
+  USER_SIGN_IN,
+  USER_SIGN_OUT,
+} from '~/domains/user/state.user';
 
 import {
   shopEditionStoreModule,
@@ -12,6 +20,10 @@ import {
   EDITION_SAVE,
   EDITION_STOP,
 } from './state.shop-edition';
+
+import api from './api.shop';
+// eslint-disable-next-line
+import isEmpty from 'lodash/fp/isEmpty';
 
 
 const ENTITY_LOAD = type => `загрузить сущности типа <${type}>`;
@@ -86,6 +98,8 @@ export {
   module,
   ENTITY_TYPES,
   EDITION_TYPES,
+  NOTIFICATION_TYPES,
+
   ENTITY_LOAD,
   ENTITY_ADD,
   ENTITY_EDIT,
@@ -93,4 +107,11 @@ export {
   ENTITY_CREATE,
   EDITION_SAVE,
   EDITION_STOP,
+
+  NOTIFICATION_OPEN,
+  NOTIFICATION_CLOSE,
+  NOTIFICATION_LAST_CLOSE,
+
+  USER_SIGN_IN,
+  USER_SIGN_OUT,
 };
