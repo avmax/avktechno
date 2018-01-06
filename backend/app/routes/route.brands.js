@@ -48,6 +48,22 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
   const body = req.body || { };
+
+  try {
+    const b = await db.m.b.findById(body.id);
+    await b.update(body);
+    res.status(200).send();
+  } catch(err) {
+    let message;
+    switch (err.constructor) {
+      case BrandError:
+        message = err.message;
+        break;
+      default:
+        message = 'сервер: Казус при обновлении бренда :(';
+    }
+    next(new BrandError(message, err));
+  }
 };
 
 exports.delete = async (req, res, next) => {

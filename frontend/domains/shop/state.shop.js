@@ -38,7 +38,7 @@ const state = (entityTypes) => {
 const getters = () => {
   const g = {
     entity: state => (type, id) => state[type][id],
-    entities: state => type => Object.keys(state[type]),
+    entities: state => type => Object.keys(state[type]).reverse(),
   };
 
   return g;

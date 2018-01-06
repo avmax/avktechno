@@ -16,6 +16,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'no-param-reassign': 'off',
     'consistent-return': 'off',
+    'no-confusing-arrow': 'off',
     'no-shadow': 'off',
     'no-console': 'off',
     'func-names': 'off',

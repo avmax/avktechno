@@ -49,6 +49,22 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
   const body = req.body || { };
+
+  try {
+    const c = await db.m.c.findById(body.id);
+    await c.update(body);
+    res.status(200).send();
+  } catch(err) {
+    let message;
+    switch (err.constructor) {
+      case CategoryError:
+        message = err.message;
+        break;
+      default:
+        message = 'сервер: Казус при обновлении категории :(';
+    }
+    next(new CategoryError(message, err));
+  }
 };
 
 exports.delete = async (req, res, next) => {

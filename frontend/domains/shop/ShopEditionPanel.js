@@ -28,7 +28,7 @@ export default {
       if (refs) {
         Object.keys(refs)
           .filter(key => !Array.isArray(refs[key]))
-          .forEach(key => refs[key] = [refs[key]]);
+          .forEach(key => refs[key] = refs[key] ? [refs[key]] : []);
 
         m = defaultsDeep({}, this.model);
         m.refs = refs;

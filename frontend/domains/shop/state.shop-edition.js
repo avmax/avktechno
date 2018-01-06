@@ -137,6 +137,7 @@ const actions = (entitiyTypes) => {
         await api[key].delete(id);
         commit(ENTITY_REMOVE(val), id);
       } catch (err) {
+        console.log(err);
         return Promise.reject(err);
       }
     };
@@ -165,6 +166,7 @@ const actions = (entitiyTypes) => {
             });
           }
         } catch (err) {
+          console.log(err);
           return Promise.reject(err);
         }
       } else {
@@ -182,17 +184,22 @@ const actions = (entitiyTypes) => {
               const toBePulled = difference(o, n);
               toBeInserted.forEach((v) => {
                 const ref = state[k][v];
-                ref.refs[key].push(entity.id);
+                if (ref) {
+                  ref.refs[val].push(entity.id);
+                }
               });
               toBePulled.forEach((v) => {
                 const ref = state[k][v];
-                ref.refs[val].splice(ref.refs[val].indexOf(entity.id), 1);
+                if (ref) {
+                  ref.refs[val].splice(ref.refs[val].indexOf(entity.id), 1);
+                }
               });
             });
           }
 
           edition.backup = null;
         } catch (err) {
+          console.log(err);
           return Promise.reject(err);
         }
       }
