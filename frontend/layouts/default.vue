@@ -12,19 +12,18 @@
     </v-navigation-drawer>
 
     <v-toolbar app fixed clipped-left>
-      <v-toolbar-title>Application</v-toolbar-title>
-      <router-link class="mr-3 ml-3" to="/">Index</router-link>
-      <router-link class="mr-3" to="/category">Categories</router-link>
-      <router-link class="mr-3" to="/brand">Brands</router-link>
-      <!-- <router-link class="mr-3" to="/auth">Auth</router-link> -->
-      <v-layout row justify-end align-center>
+      <v-toolbar-title>АВК-ТЕХНО</v-toolbar-title>
+      <router-link class="link mr-3 ml-3" to="/">Главная</router-link>
+      <router-link class="link mr-3" to="/category">Категории</router-link>
+      <router-link class="link mr-3" to="/brand">Бренды</router-link>
+      <!-- <v-layout row justify-end align-center>
         <v-flex xs2 align-center>
           <v-switch
           :label="`${isUserSignedIn ? 'Выйти' : 'Войти'}`"
           v-model="isUserSignedIn"
           style="height: 30px;"/>
         </v-flex>
-      </v-layout>
+      </v-layout> -->
     </v-toolbar>
 
     <v-content>
@@ -122,11 +121,11 @@ export default {
 };
 </script>
 
-<style>
-@import url(../node_modules/vuetify/dist/vuetify.css);
-
+<style lang="scss">
+#avmax {
 .page {
   width: 100%;
   height: 100%;
+}
 }
 </style>

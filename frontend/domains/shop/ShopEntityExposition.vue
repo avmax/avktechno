@@ -3,7 +3,7 @@
     <template v-if="isReady">
       <v-flex
       v-if="isEditionAvailable" xs12>
-        <div class="shop-entity-exposition__ghost my-3">
+        <div class="shop-entity-exposition__ghost mb-3">
           <card-base
           name="lololo"
           title="lololo"/>
@@ -18,7 +18,7 @@
           </div>
         </div>
       </v-flex>
-      <v-flex v-for="id in model" :key="id" xs12 class="my-3">
+      <v-flex v-for="id in model" :key="id" xs12 class="mb-4">
         <shop-entity-collection :id="id" :type="type" :subtype="subtype"/>
         <v-divider/>
       </v-flex>
@@ -29,11 +29,7 @@
       row
       align-center
       justify-center>
-        <v-progress-circular
-        class="shop-entities-container__spinner"
-        size="200"
-        indeterminate
-        color="red"/>
+        <grid-loader :loading="true"/>
       </v-layout>
     </template>
   </v-layout>
@@ -44,6 +40,7 @@ import {
   EDITION_ADD,
 } from '~/domains/barrel.state';
 import CardBase from '~/domains/common/CardBase.vue';
+import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import ShopEntity from './ShopEntity';
 import ShopEntityCollection from './ShopEntityCollection.vue';
 
@@ -52,6 +49,7 @@ export default {
   components: {
     ShopEntityCollection,
     CardBase,
+    GridLoader,
   },
   mixins: [ShopEntity],
   props: {
@@ -67,11 +65,6 @@ export default {
     },
     data: Array,
   },
-  data() {
-    return {
-      isReady: false,
-    };
-  },
   computed: {
     model() {
       return this.data
@@ -79,16 +72,20 @@ export default {
         : this.$store.getters.entities(this.type);
     },
   },
-  beforeMount() {
-    setTimeout(() => this.isReady = true, 500);
-  },
   methods: {
     add() { this.$store.dispatch(EDITION_ADD(this.type)); },
+  },
+  mounted() {
+    if (this.isEmpty) {
+      setTimeout(() => this.isReady = true, 500);
+    } else {
+      this.isReady = true;
+    }
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 #avmax {
 .shop-entity-exposition {
   &__ghost {

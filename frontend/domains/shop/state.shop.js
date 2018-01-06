@@ -19,7 +19,7 @@ const ENTITY_EDIT = type => `изменить сущность типа <${type}
 const ENTITY_REMOVE = type => `удалить сущность типа <${type}>`;
 
 
-const state = (entityTypes) => {
+const state = entityTypes => () => {
   const s = { };
   Object.values(entityTypes).forEach(val => s[val] = {});
   return s;

@@ -18,6 +18,10 @@ module.exports = {
   loading: { color: '#3B8070' },
   // Set plugins
   plugins: ['~plugins/vuetify'],
+  css: [
+    'vuetify/dist/vuetify.css',
+    { src: '~assets/link.post.css', lang: 'scss' },
+  ],
   // Build configuration
   build: {
     vendor: ['vuetify', 'axios'],

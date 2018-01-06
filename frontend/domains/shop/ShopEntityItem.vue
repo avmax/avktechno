@@ -2,25 +2,28 @@
 <div
 class="shop-entity-item"
 :class="{ 'shop-entity-item_loading' : !isReady }">
-  <card-base
-  v-if="isReady"
-  :name="model.name"
-  :title="model.title"
-  :imgUrl="model.imgUrl"
-  />
+  <v-fade-transition>
+    <card-base
+    v-if="isReady"
+    :name="model.name"
+    :title="model.title"
+    :imgUrl="model.imgUrl"
+    :link="{ name: `${type}-id`, params: { id: model.id }}"
+    />
+  </v-fade-transition>
 
-  <v-layout
-  v-else
-  fill-height
-  row
-  align-center
-  justify-center>
-    <v-progress-circular
-    class="shop-entities-container__spinner"
-    size="128"
-    indeterminate
-    color="red"/>
-  </v-layout>
+  <div
+  v-if="!isReady"
+  class="shop-entity-item__ghost">
+    <card-base
+    class="shop-entity-item__ghost-card"
+    name="lolo"
+    title="lolo"
+    />
+    <div class="shop-entity-item__ghost-spinner">
+      <grid-loader :loading="true"/>
+    </div>
+  </div>
 
   <div class="shop-entity-item__controls"
   v-if="isEditionEnabled">
@@ -39,6 +42,7 @@ class="shop-entity-item"
 </template>
 
 <script>
+import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import ShopEntity from './ShopEntity';
 
@@ -46,6 +50,7 @@ export default {
   name: 'shop-entity-item',
   components: {
     CardBase,
+    GridLoader,
   },
   mixins: [ShopEntity],
   props: {
@@ -69,15 +74,21 @@ export default {
     model() { return this.$store.getters.entity(this.type, this.id); },
   },
   mounted() {
-    setTimeout(() => this.isReady = true, 500);
+    if (this.isEmpty) {
+      setTimeout(() => this.isReady = true, 1000);
+    } else {
+      this.isReady = true;
+    }
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+#avmax {
 .shop-entity-item {
   position: relative;
   width: 100%;
+  height: 100%;
 
   &__controls {
     position: absolute;
@@ -88,5 +99,27 @@ export default {
     justify-content: flex-end;
     align-items: center;
   }
+
+  &__ghost {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    &-card {
+      opacity: 0;
+    }
+
+    &-spinner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
 }
 </style>

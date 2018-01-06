@@ -23,7 +23,7 @@ const EDITION_REMOVE = type => `edition: удалить сущность тип�
 const EDITION_SAVE = type => `edition: сохранить изменения <${type}>`;
 
 
-const state = () => ({
+const state = () => () => ({
   isEnabled: false,
   editionType: null,
   entityType: null,

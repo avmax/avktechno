@@ -3,7 +3,6 @@
   class="page"
   column>
     <div class="page__header">
-      <h1>Страница бренды</h1>
       <v-switch
       :label="`${!isInverted ? 'Показать категории' : 'Показать продукты'}`"
       v-model="isInverted"/>

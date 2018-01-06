@@ -1,0 +1,46 @@
+#avmax {
+.link {
+  position: relative;
+  color: white;
+  text-decoration: none;
+
+  &::after,
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(100%);
+    width: 0;
+    right: 0;
+    height: 2px;
+    background: white;
+  }
+
+  &::before {
+    transition: width .2s cubic-bezier(0.51, 0.18, 0, 0.88) .1s;
+  }
+
+  &::after {
+    transition: width .1s cubic-bezier(0.29, 0.18, 0.26, 0.83);
+  }
+
+  &:hover {
+    &::after,
+    &::before {
+      width: 100%;
+      left: 0;
+    }
+  }
+
+  &.nuxt-link-exact-active, &_active {
+    font-weight: bold;
+
+    &::after, &::before {
+      opacity: 0;
+    }
+
+    &:hover {
+      cursor: default;
+    }
+  }
+}
+}
