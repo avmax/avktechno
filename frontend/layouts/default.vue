@@ -14,8 +14,8 @@
     <v-toolbar app fixed clipped-left>
       <v-toolbar-title>Application</v-toolbar-title>
       <router-link class="mr-3 ml-3" to="/">Index</router-link>
-      <router-link class="mr-3" to="/categories">Categories</router-link>
-      <router-link class="mr-3" to="/brands">Brands</router-link>
+      <router-link class="mr-3" to="/category">Categories</router-link>
+      <router-link class="mr-3" to="/brand">Brands</router-link>
       <!-- <router-link class="mr-3" to="/auth">Auth</router-link> -->
       <v-layout row justify-end align-center>
         <v-flex xs2 align-center>
@@ -63,7 +63,13 @@
 
 <script>
 import { mapState } from 'vuex';
-import { ENTITY_TYPES, NOTIFICATION_CLOSE, USER_SIGN_IN, USER_SIGN_OUT } from '~/domains/shop/state.shop';
+import {
+  ENTITY_LOAD,
+  ENTITY_TYPES,
+  NOTIFICATION_CLOSE,
+  USER_SIGN_IN,
+  USER_SIGN_OUT,
+} from '~/domains/shop/state.shop';
 import ShopEditionPanelCategory from '~/domains/shop/ShopEditionPanelCategory.vue';
 import ShopEditionPanelBrand from '~/domains/shop/ShopEditionPanelBrand.vue';
 import ShopEditionPanelProduct from '~/domains/shop/ShopEditionPanelProduct.vue';
@@ -106,6 +112,9 @@ export default {
       // eslint-disable-next-line
       set(v) { v ? this.$store.commit(USER_SIGN_IN, true) : this.$store.commit(USER_SIGN_OUT); },
     },
+  },
+  async beforeMount() {
+    await this.$store.dispatch(ENTITY_LOAD());
   },
   methods: {
     notificationClose(index) { this.$store.commit(NOTIFICATION_CLOSE, index); },

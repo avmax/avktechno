@@ -3,7 +3,7 @@
   <div class="mb-3 shop-entity-collection__header">
     <h2 class="shop-entity-collection__header-name display-1 mb-2">
         <router-link
-        :to="{ name: type, params: { id: model.id }}">
+        :to="{ name: `${type}-id`, params: { id: model.id }}">
           {{model.name}}
         </router-link>
         <div

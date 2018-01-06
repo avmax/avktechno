@@ -42,7 +42,7 @@
 <script>
 import { mapState } from 'vuex';
 import CardBase from '~/domains/card/CardBase.vue';
-import { ENTITY_LOAD, ENTITY_ADD } from '@/domains/shop/state.shop';
+import { ENTITY_ADD } from '~/domains/shop/state.shop';
 import ShopEntityCollection from './ShopEntityCollection.vue';
 
 export default {
@@ -62,6 +62,7 @@ export default {
       required: true,
       default: null,
     },
+    data: Array,
   },
   data() {
     return {
@@ -73,10 +74,13 @@ export default {
       isEditionAvailable: ({ user }) => user.isAdmin,
       isEditionEnabled: ({ shop, user }) => user.isAdmin && !shop.edition.isEnabled,
     }),
-    model() { return this.$store.getters.entities(this.type); },
+    model() {
+      return this.data
+        ? this.data
+        : this.$store.getters.entities(this.type);
+    },
   },
-  async beforeMount() {
-    await this.$store.dispatch(ENTITY_LOAD());
+  beforeMount() {
     setTimeout(() => this.isReady = true, 500);
   },
   methods: {
