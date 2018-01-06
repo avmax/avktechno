@@ -1,10 +1,11 @@
 <template>
 <div class="shop-entity-collection py-3">
-  <div class="mb-3">
-    <h2
-    class="shop-entity-collection__header-name display-1 mb-2"
-    v-if="model.name || isEditionEnabled">
-      {{model.name}}
+  <div class="mb-3 shop-entity-collection__header">
+    <h2 class="shop-entity-collection__header-name display-1 mb-2">
+        <router-link
+        :to="{ name: type, params: { id: model.id }}">
+          {{model.name}}
+        </router-link>
         <div
         class="ml-2"
         v-if="isEditionEnabled"
@@ -23,35 +24,37 @@
     </h2>
     <h3 class="shop-entity-collection__header-title heading" v-if="model.title">{{model.title}}</h3>
   </div>
-  <v-layout
-  row justify-start wrap>
-    <v-flex
-    v-if="isEditionAvailable"
-    xs12 md5 lg3 mb-5 mr-5>
-      <div class="shop-entity-collection__ghost">
-        <card-base
-        name="lololo"
-        title="lololo"/>
-        <div class="shop-entity-collection__ghost-controls">
-          <v-btn
-          v-if="isEditionEnabled"
-          class="shop-entity-collection__ghost-button"
-          @click="add"
-          fab large>
-            <v-icon>add</v-icon>
-          </v-btn>
+  <v-container fluid class="pa-0" grid-list-xl>
+    <v-layout
+    row justify-start wrap>
+      <v-flex
+      v-if="isEditionAvailable"
+      xs12 md4 lg3>
+        <div class="shop-entity-collection__ghost">
+          <card-base
+          name="lololo"
+          title="lololo"/>
+          <div class="shop-entity-collection__ghost-controls">
+            <v-btn
+            v-if="isEditionEnabled"
+            class="shop-entity-collection__ghost-button"
+            @click="add"
+            fab large>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </div>
         </div>
-      </div>
-    </v-flex>
-    <v-flex v-for="id in items" :key="id" xs12 md5 lg3 mb-5 mr-5>
-      <shop-entity-item
-      :type="subtype"
-      :id="id"/>
-    </v-flex>
-    <v-flex v-if="(!items || !items.length) && !isEditionAvailable" xs12>
-      <h2 class="subheading text-xs-left py-5"> Увы, коллекция пуста</h2>
-    </v-flex>
-  </v-layout>
+      </v-flex>
+      <v-flex v-for="id in items" :key="id" xs12 md4 lg3>
+        <shop-entity-item
+        :type="subtype"
+        :id="id"/>
+      </v-flex>
+      <v-flex v-if="(!items || !items.length) && !isEditionAvailable" xs12>
+        <h2 class="subheading text-xs-left py-5"> Увы, коллекция пуста</h2>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </div>
 </template>
 

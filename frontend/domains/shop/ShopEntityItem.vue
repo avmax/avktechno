@@ -1,11 +1,26 @@
 <template>
-<div class="shop-entity-item">
+<div
+class="shop-entity-item"
+:class="{ 'shop-entity-item_loading' : !isReady }">
   <card-base
-  v-if="model"
+  v-if="isReady"
   :name="model.name"
   :title="model.title"
   :imgUrl="model.imgUrl"
   />
+
+  <v-layout
+  v-else
+  fill-height
+  row
+  align-center
+  justify-center>
+    <v-progress-circular
+    class="shop-entities-container__spinner"
+    size="128"
+    indeterminate
+    color="red"/>
+  </v-layout>
 
   <div class="shop-entity-item__controls"
   v-if="isEditionEnabled">
@@ -45,11 +60,19 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      isReady: false,
+    };
+  },
   computed: {
     model() { return this.$store.getters.entity(this.type, this.id); },
     ...mapState({
       isEditionEnabled: ({ shop, user }) => user.isAdmin && !shop.edition.isEnabled,
     }),
+  },
+  mounted() {
+    setTimeout(() => this.isReady = true, 500);
   },
   methods: {
     edit() { this.$store.dispatch(ENTITY_EDIT(this.type), this.model.id); },
@@ -61,6 +84,7 @@ export default {
 <style>
 .shop-entity-item {
   position: relative;
+  width: 100%;
 
   &__controls {
     position: absolute;

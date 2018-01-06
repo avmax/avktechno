@@ -47,7 +47,9 @@
             </v-alert>
           </v-flex>
           <v-flex xs12>
-            <nuxt/>
+            <v-container fill-height class="pa-0">
+              <nuxt/>
+            </v-container>
           </v-flex>
         </v-layout>
       </v-container>

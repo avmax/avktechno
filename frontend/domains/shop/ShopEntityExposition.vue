@@ -31,7 +31,7 @@
       justify-center>
         <v-progress-circular
         class="shop-entities-container__spinner"
-        size="128 "
+        size="200"
         indeterminate
         color="red"/>
       </v-layout>
@@ -77,7 +77,7 @@ export default {
   },
   async beforeMount() {
     await this.$store.dispatch(ENTITY_LOAD());
-    this.isReady = true;
+    setTimeout(() => this.isReady = true, 500);
   },
   methods: {
     add() { this.$store.dispatch(ENTITY_ADD(this.type)); },
