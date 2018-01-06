@@ -1,16 +1,18 @@
 <template>
-<div>
+<div @keyup.esc="handleAbort">
   <h3>{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
   <v-form
     ref="form"
+    @keyup.enter.native="handleSubmit"
     v-model="isValid">
     <v-layout column>
-      <template v-for="key in fields">
+      <template v-for="(key, index) in fields">
         <v-text-field
         v-model="model[key]"
         @input="onFormControlChange"
         :label="labels[key]"
         :multi-line="controls[key] === 'textfield'"
+        :autofocus="!index"
         :rules="rules[key]"
         :key="key"/>
       </template>
