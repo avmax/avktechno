@@ -65,36 +65,36 @@
 import { mapState } from 'vuex';
 import {
   ENTITY_LOAD,
-  ENTITY_TYPES,
-  NOTIFICATION_CLOSE,
   USER_SIGN_IN,
   USER_SIGN_OUT,
-} from '~/domains/shop/state.shop';
-import ShopEditionPanelCategory from '~/domains/shop/ShopEditionPanelCategory.vue';
-import ShopEditionPanelBrand from '~/domains/shop/ShopEditionPanelBrand.vue';
-import ShopEditionPanelProduct from '~/domains/shop/ShopEditionPanelProduct.vue';
+  NOTIFICATION_CLOSE,
+} from '~/domains/barrel.state';
+import { ENTITY_TYPES } from '~/domains/barrel.types';
+import EditionPanelCategory from '~/domains/edition/EditionPanelCategory.vue';
+import EditionPanelBrand from '~/domains/edition/EditionPanelBrand.vue';
+import EditionPanelProduct from '~/domains/edition/EditionPanelProduct.vue';
 
 export default {
   name: 'default-layout',
   components: {
-    ShopEditionPanelCategory,
-    ShopEditionPanelBrand,
-    ShopEditionPanelProduct,
+    EditionPanelCategory,
+    EditionPanelBrand,
+    EditionPanelProduct,
   },
   computed: {
     ...mapState({
-      notifications: ({ notification }) => notification.items,
-      editionPanel({ shop }) {
+      notifications: ({ ui }) => ui.notification,
+      editionPanel({ edition }) {
         let component;
-        switch (shop.edition.entityType) {
+        switch (edition.entityType) {
           case (ENTITY_TYPES.brand):
-            component = ShopEditionPanelBrand;
+            component = EditionPanelBrand;
             break;
           case (ENTITY_TYPES.category):
-            component = ShopEditionPanelCategory;
+            component = EditionPanelCategory;
             break;
           case (ENTITY_TYPES.product):
-            component = ShopEditionPanelProduct;
+            component = EditionPanelProduct;
             break;
           default:
             component = null;
@@ -104,7 +104,7 @@ export default {
       },
     }),
     isEditionPanelOpened: {
-      get() { return this.$store.state.shop.edition.isEnabled; },
+      get() { return this.$store.state.edition.isEnabled; },
       set() { },
     },
     isUserSignedIn: {

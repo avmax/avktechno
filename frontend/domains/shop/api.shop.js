@@ -41,5 +41,6 @@ class Api {
   };
 };
 
-const api = new Api();
-export default api;
+const ApiShop = new Api();
+// eslint-disable-next-line
+export { ApiShop };

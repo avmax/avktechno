@@ -39,15 +39,15 @@ class="shop-entity-item"
 </template>
 
 <script>
-import { ENTITY_EDIT, ENTITY_REMOVE } from '@/domains/shop/state.shop';
-import { mapState } from 'vuex';
-import CardBase from '~/domains/card/CardBase.vue';
+import CardBase from '~/domains/common/CardBase.vue';
+import ShopEntity from './ShopEntity';
 
 export default {
   name: 'shop-entity-item',
   components: {
     CardBase,
   },
+  mixins: [ShopEntity],
   props: {
     type: {
       type: String,
@@ -67,16 +67,9 @@ export default {
   },
   computed: {
     model() { return this.$store.getters.entity(this.type, this.id); },
-    ...mapState({
-      isEditionEnabled: ({ shop, user }) => user.isAdmin && !shop.edition.isEnabled,
-    }),
   },
   mounted() {
     setTimeout(() => this.isReady = true, 500);
-  },
-  methods: {
-    edit() { this.$store.dispatch(ENTITY_EDIT(this.type), this.model.id); },
-    remove() { this.$store.dispatch(ENTITY_REMOVE(this.type), this.model.id); },
   },
 };
 </script>

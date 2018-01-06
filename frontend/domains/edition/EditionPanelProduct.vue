@@ -59,13 +59,13 @@
 
 <script>
 import { defaultsDeep } from 'lodash/fp';
-import ShopEditionPanel from './ShopEditionPanel';
+import EditionPanel from './EditionPanel';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
 
 export default {
   name: 'shop-edition-panel-product',
-  mixins: [ShopEditionPanel],
+  mixins: [EditionPanel],
   data() {
     return {
       fields: ['name', 'title', 'imgUrl'],

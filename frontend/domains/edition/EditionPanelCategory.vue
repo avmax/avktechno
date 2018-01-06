@@ -1,6 +1,6 @@
 <template>
 <div @keyup.esc="handleAbort">
-  <h3>{{isTypeCreate ? 'Создать бренд' : 'Редактировать бренд'}}</h3>
+  <h3>{{isTypeCreate ? 'Создать категорию' : 'Редактировать категорию'}}</h3>
   <v-form
     ref="form"
     @keyup.enter.native="handleSubmit"
@@ -37,13 +37,13 @@
 
 
 <script>
-import ShopEditionPanel from './ShopEditionPanel';
+import EditionPanel from './EditionPanel';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
 
 export default {
   name: 'shop-edition-panel-category',
-  mixins: [ShopEditionPanel],
+  mixins: [EditionPanel],
   data() {
     return {
       fields: ['name', 'title', 'imgUrl'],

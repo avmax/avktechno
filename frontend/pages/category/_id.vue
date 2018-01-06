@@ -19,7 +19,7 @@
 
 <script>
 import ShopEntityExposition from '~/domains/shop/ShopEntityExposition.vue';
-import { ENTITY_TYPES } from '~/domains/shop/state.shop';
+import { ENTITY_TYPES } from '~/domains/barrel.types';
 
 export default {
   name: 'page-categories-brands',

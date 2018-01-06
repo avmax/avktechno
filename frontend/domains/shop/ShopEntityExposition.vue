@@ -40,9 +40,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import CardBase from '~/domains/card/CardBase.vue';
-import { ENTITY_ADD } from '~/domains/shop/state.shop';
+import {
+  EDITION_ADD,
+} from '~/domains/barrel.state';
+import CardBase from '~/domains/common/CardBase.vue';
+import ShopEntity from './ShopEntity';
 import ShopEntityCollection from './ShopEntityCollection.vue';
 
 export default {
@@ -51,6 +53,7 @@ export default {
     ShopEntityCollection,
     CardBase,
   },
+  mixins: [ShopEntity],
   props: {
     type: {
       type: String,
@@ -70,10 +73,6 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      isEditionAvailable: ({ user }) => user.isAdmin,
-      isEditionEnabled: ({ shop, user }) => user.isAdmin && !shop.edition.isEnabled,
-    }),
     model() {
       return this.data
         ? this.data
@@ -84,7 +83,7 @@ export default {
     setTimeout(() => this.isReady = true, 500);
   },
   methods: {
-    add() { this.$store.dispatch(ENTITY_ADD(this.type)); },
+    add() { this.$store.dispatch(EDITION_ADD(this.type)); },
   },
 };
 </script>

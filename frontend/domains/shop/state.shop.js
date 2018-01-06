@@ -1,36 +1,26 @@
+import { NOTIFICATION_OPEN } from '~/domains/barrel.state';
+
 import {
+  ENTITY_TYPES,
   NOTIFICATION_TYPES,
-  NOTIFICATION_OPEN,
-  NOTIFICATION_CLOSE,
-  NOTIFICATION_LAST_CLOSE,
-} from '~/domains/common/state.notification';
+} from '~/domains/barrel.types';
 
 import {
-  USER_SIGN_IN,
-  USER_SIGN_OUT,
-} from '~/domains/user/state.user';
+  ApiShop,
+} from '~/domains/barrel.api';
 
-import {
-  shopEditionStoreModule,
-  EDITION_TYPES,
-  ENTITY_ADD,
-  ENTITY_EDIT,
-  ENTITY_REMOVE,
-  ENTITY_CREATE,
-  EDITION_SAVE,
-  EDITION_STOP,
-} from './state.shop-edition';
-
-import api from './api.shop';
-// eslint-disable-next-line
-import isEmpty from 'lodash/fp/isEmpty';
+import Vue from 'vue';
+import { assign, isEmpty } from 'lodash/fp';
 
 
 const ENTITY_LOAD = type => `загрузить сущности типа <${type}>`;
+const ENTITY_ADD = type => `добавить сущность типа <${type}>`;
+const ENTITY_EDIT = type => `изменить сущность типа <${type}>`;
+const ENTITY_REMOVE = type => `удалить сущность типа <${type}>`;
 
 
 const state = (entityTypes) => {
-  const s = { ...shopEditionStoreModule.state() };
+  const s = { };
   Object.values(entityTypes).forEach(val => s[val] = {});
   return s;
 };
@@ -44,8 +34,44 @@ const getters = () => {
   return g;
 };
 
-const mutations = (entityTypes) => {
-  const m = { ...shopEditionStoreModule.mutations(entityTypes) };
+const mutations = (entitiyTypes) => {
+  const addEntity = function(type) {
+    return (state, payload) => {
+      Vue.set(state[type], payload.id, payload);
+    };
+  };
+
+  const editEntity = function(type) {
+    return (state, payload) => {
+      if (state[type][payload.id]) {
+        state[type][payload.id] = assign({}, payload);
+      }
+    };
+  };
+
+  const removeEntity = function(type) {
+    return (state, id) => {
+      const { refs } = state[type][id];
+      Object.keys(refs).forEach((key) => {
+        refs[key].forEach((i) => {
+          const ref = state[key][i];
+          if (ref && ref.refs) {
+            ref.refs[type].splice(ref.refs[type].indexOf(id), 1);
+          }
+        });
+      });
+      Vue.delete(state[type], id);
+    };
+  };
+
+  const m = { };
+
+  Object.values(entitiyTypes).forEach((val) => {
+    m[ENTITY_ADD(val)] = addEntity(val);
+    m[ENTITY_EDIT(val)] = editEntity(val);
+    m[ENTITY_REMOVE(val)] = removeEntity(val);
+  });
+
   return m;
 };
 
@@ -54,7 +80,7 @@ const actions = (entityTypes) => {
     return async ({ state, commit }) => {
       if (!isEmpty(state[val])) { return state[val]; }
       try {
-        const { data } = await api[key].get();
+        const { data } = await ApiShop[key].get();
         if (data) {
           data.forEach(dataItem => commit(ENTITY_ADD(val), dataItem));
         }
@@ -66,7 +92,6 @@ const actions = (entityTypes) => {
   };
 
   const a = {
-    ...shopEditionStoreModule.actions(entityTypes),
     [ENTITY_LOAD()]: ({ dispatch }) => {
       Object.values(entityTypes).forEach(v => dispatch(ENTITY_LOAD(v)));
     },
@@ -80,13 +105,6 @@ const actions = (entityTypes) => {
   return a;
 };
 
-
-const ENTITY_TYPES = {
-  category: 'category',
-  brand: 'brand',
-  product: 'product',
-};
-
 const module = {
   state: state(ENTITY_TYPES),
   mutations: mutations(ENTITY_TYPES),
@@ -96,22 +114,9 @@ const module = {
 
 export {
   module,
-  ENTITY_TYPES,
-  EDITION_TYPES,
-  NOTIFICATION_TYPES,
 
   ENTITY_LOAD,
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
-  ENTITY_CREATE,
-  EDITION_SAVE,
-  EDITION_STOP,
-
-  NOTIFICATION_OPEN,
-  NOTIFICATION_CLOSE,
-  NOTIFICATION_LAST_CLOSE,
-
-  USER_SIGN_IN,
-  USER_SIGN_OUT,
 };

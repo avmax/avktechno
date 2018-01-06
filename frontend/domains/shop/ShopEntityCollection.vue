@@ -60,9 +60,11 @@
 
 
 <script>
-import { ENTITY_ADD, ENTITY_EDIT, ENTITY_REMOVE } from '@/domains/shop/state.shop';
-import CardBase from '~/domains/card/CardBase.vue';
-import { mapState } from 'vuex';
+import {
+  EDITION_ADD,
+} from '~/domains/barrel.state';
+import CardBase from '~/domains/common/CardBase.vue';
+import ShopEntity from './ShopEntity';
 import ShopEntityItem from './ShopEntityItem.vue';
 
 export default {
@@ -71,6 +73,7 @@ export default {
     ShopEntityItem,
     CardBase,
   },
+  mixins: [ShopEntity],
   props: {
     type: {
       type: String,
@@ -89,17 +92,11 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      isEditionEnabled: ({ shop, user }) => user.isAdmin && !shop.edition.isEnabled,
-      isEditionAvailable: ({ user }) => user.isAdmin,
-    }),
     model() { return this.$store.getters.entity(this.type, this.id); },
     items() { return this.model.refs[this.subtype]; },
   },
   methods: {
-    add() { this.$store.dispatch(ENTITY_ADD(this.subtype), { [this.type]: this.model.id }); },
-    edit() { this.$store.dispatch(ENTITY_EDIT(this.type), this.model.id); },
-    remove() { this.$store.dispatch(ENTITY_REMOVE(this.type), this.model.id); },
+    add() { this.$store.dispatch(EDITION_ADD(this.subtype), { [this.type]: this.model.id }); },
   },
 };
 </script>

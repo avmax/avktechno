@@ -1,6 +1,16 @@
+import {
+  ENTITY_EDIT,
+  EDITION_SAVE,
+  EDITION_STOP,
+} from '~/domains/barrel.state';
+
+import {
+  EDITION_TYPES,
+} from '~/domains/barrel.types';
+
 import { mapState } from 'vuex';
 import { assign, defaultsDeep } from 'lodash/fp';
-import { EDITION_TYPES, ENTITY_EDIT, EDITION_SAVE, EDITION_STOP } from '~/domains/shop/state.shop';
+
 
 export default {
   data() {
@@ -12,10 +22,10 @@ export default {
   },
   computed: {
     ...mapState({
-      type({ shop }) { return shop.edition.entityType; },
-      value({ shop }) { return shop.edition.value; },
-      isTypeCreate: ({ shop }) => shop.edition.editionType === EDITION_TYPES.create,
-      isTypeEdit: ({ shop }) => shop.edition.editionType === EDITION_TYPES.edit,
+      type({ edition }) { return edition.entityType; },
+      value({ edition }) { return edition.value; },
+      isTypeCreate: ({ edition }) => edition.editionType === EDITION_TYPES.create,
+      isTypeEdit: ({ edition }) => edition.editionType === EDITION_TYPES.edit,
     }),
   },
   beforeMount() {
@@ -57,7 +67,7 @@ export default {
       this.abort();
     },
     abort() {
-      this.$store.commit(EDITION_STOP);
+      this.$store.dispatch(EDITION_STOP);
     },
   },
 };

@@ -19,5 +19,10 @@ const mutations = {
 };
 
 
-export const module = { state, mutations };
-export { USER_SIGN_IN, USER_SIGN_OUT };
+const module = { state, mutations };
+export {
+  module,
+
+  USER_SIGN_IN,
+  USER_SIGN_OUT,
+};

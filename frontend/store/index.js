@@ -1,11 +1,14 @@
-import Vuex from 'vuex';
-import createLogger from 'vuex/dist/logger';
 import { module as user } from '~/domains/user/state.user';
 import { module as shop } from '~/domains/shop/state.shop';
-import { module as notification } from '~/domains/common/state.notification';
+import { module as edition } from '~/domains/edition/state.edition';
+import { module as ui } from '~/domains/common/state.ui';
+
+import Vuex from 'vuex';
+import createLogger from 'vuex/dist/logger';
+
 
 const store = new Vuex.Store({
-  modules: { user, shop, notification },
+  modules: { shop, edition, ui, user },
   plugins: [createLogger()],
 });
 
