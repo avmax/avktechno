@@ -1,10 +1,11 @@
+const db = require('./db');
+const { server: config } = require('../config');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const server = express();
-const db = require('./db');
-
-const SERVER_PORT = process.env.SERVER_PORT || '4251';
+const PORT = config.port;
 
 
 server.use((req, res, next) => {
@@ -28,8 +29,8 @@ server.use((err, req, res, next) => {
 const start = async () => {
   try {
     await db.init();
-    server.listen(SERVER_PORT, () => {
-      console.log(`server is listening on port ${SERVER_PORT}`);
+    server.listen(PORT, () => {
+      console.log(`server is listening on port ${PORT}`);
     });
   } catch(err) {
     console.error('DB FAILURE:', err);
