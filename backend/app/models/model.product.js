@@ -31,7 +31,22 @@ module.exports = (sequelize, DataTypes) => {
           if (data) {
             data = data.toString('utf-8');
           }
+
+          if (data) {
+            data = data.split('___footer-title___');
+            data = {
+              title: data[0],
+              text: data[1],
+            };
+          } else {
+            data = { };
+          }
+
           return data;
+        },
+        set(v) {
+          let data = v.title + '___footer-title___' + v.text;
+          this.setDataValue('footer', data);
         },
       },
       price: {

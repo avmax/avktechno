@@ -1,11 +1,26 @@
 <template>
 <v-card class="card">
   <v-card-media class="card__media" :src="imgUrl"></v-card-media>
-  <v-card-title class="card__title title">{{name}}</v-card-title>
-  <v-card-text>{{title}}</v-card-text>
+  <v-card-title
+  class="card__title title">
+    {{name}}
+    <v-spacer/>
+    <strong
+    class="subheading"
+    style="text-decoration: underline;"
+    v-if="price">
+      Цена: {{price}} {{currency}}
+    </strong>
+    </v-card-title>
+  <v-card-text v-if="title">{{title}}</v-card-text>
+  <v-card-text v-if="description">{{description}}</v-card-text>
   <v-card-actions>
     <v-spacer/>
-    <router-link v-if="link" :to="link" class="link">Подробнее</router-link>
+    <router-link v-if="link" :to="link" class="link card__go">
+      <v-btn>
+        Читать подробно
+      </v-btn>
+    </router-link>
   </v-card-actions>
 </v-card>
 </template>
@@ -20,6 +35,9 @@ export default {
     imgUrl: String,
     name: String,
     title: String,
+    description: String,
+    price: Number,
+    currency: String,
   },
   methods: {
     explore() {
@@ -49,6 +67,12 @@ export default {
 
   &__text {
     padding-top: 0;
+  }
+
+  &__go {
+    &::before, &::after {
+      display: none;
+    }
   }
 }
 }

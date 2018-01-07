@@ -35,9 +35,14 @@
       :rows="1"/>
 
       <v-text-field
-      v-model="model.footer"
+      v-model="model.footer.title"
       @input="onFormControlChange"
-      label="Подвал"
+      label="Заголовок подвала"/>
+
+      <v-text-field
+      v-model="model.footer.text"
+      @input="onFormControlChange"
+      label="Текст подвала"
       multi-line
       :rows="1"/>
 
@@ -241,6 +246,7 @@ export default {
     refs.brand = refs.brand ? refs.brand[0] : [];
     refs.category = refs.category || [];
     this.model.refs = refs;
+    this.model.footer = this.model.footer || {};
   },
   methods: {
     featuresRemove(index) {

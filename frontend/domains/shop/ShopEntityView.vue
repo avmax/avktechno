@@ -48,6 +48,11 @@ class="shop-entity-view py-2"
           </div>
         </v-card-text>
       </v-card-text>
+      <template v-if="model.footer">
+        <v-divider/>
+        <v-card-text class="title pb-0">{{model.footer.title}}</v-card-text>
+        <v-card-text v-html="model.footer.text"/>
+      </template>
     </v-card>
   </v-fade-transition>
 

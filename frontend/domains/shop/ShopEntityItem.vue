@@ -7,6 +7,8 @@ class="shop-entity-item"
     v-if="isReady"
     :name="model.name"
     :title="model.title"
+    :price="model.price"
+    :currency="model.currency"
     :imgUrl="model.imgUrl"
     :link="{ name: `${type}-id`, params: { id: model.id }}"
     />
