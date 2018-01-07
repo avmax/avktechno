@@ -14,10 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       title: {
         type: DataTypes.STRING,
-        defaultValue: 'some brand title',
       },
       imgUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1234) ,
         defaultValue: 'http://lorempixel.com/400/200/sports/1/',
       },
     },

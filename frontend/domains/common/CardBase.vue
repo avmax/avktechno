@@ -31,7 +31,7 @@ export default {
 
 
 
-<style>
+<style land="scss" scoped>
 #avmax {
 .card {
   text-align: left;

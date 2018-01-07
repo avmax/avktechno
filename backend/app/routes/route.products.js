@@ -85,7 +85,6 @@ exports.post = async (req, res, next) => {
 exports.put = async (req, res, next) => {
   const body = req.body || { };
   const { refs } = body;
-
   try {
     if (!validateRefs(refs)) {
       throw new ProductError('refs херовые');

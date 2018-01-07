@@ -103,7 +103,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 #avmax {
 .shop-entity-collection {
   &__header {

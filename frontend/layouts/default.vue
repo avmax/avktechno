@@ -5,6 +5,8 @@
     disable-resize-watcher
     disable-route-watcher
     mobile-break-point="1080"
+    width="400"
+    class="pa-3"
     clipped
     fixed
     app>

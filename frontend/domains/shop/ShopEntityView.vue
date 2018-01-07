@@ -3,29 +3,48 @@
 class="shop-entity-view py-2"
 :class="{ 'shop-entity-view_loading' : !isReady }">
   <v-fade-transition>
-    <v-card v-if="isReady" class="shop-entity-view__card">
+    <v-card v-if="isReady && model" class="shop-entity-view__card">
       <v-card-media class="shop-entity-view__card-media" :src="model.imgUrl"/>
-      <v-card-title class="shop-entity-view__card-title headline">{{model.name}}</v-card-title>
-      <v-card-text class="shop-entity-view__card-description title">{{model.title}}</v-card-text>
-      <v-card-text
-      class="shop-entity-view__card-feature"
-      v-for="(f, i) in features"
-      :key="`feature-${i}`">
-        <div class="shop-entity-view__card-feature-icon"></div>
-        <div class="body-2">{{f}}</div>
-      </v-card-text>
-      <v-card-text
-      v-if="characheteristics"
-      class="shop-entity-view__card-characheteristics-holder">
+      <v-card-title class="shop-entity-view__card-name display-1">
+        {{model.name}}
+        <v-spacer/>
+        <v-chip
+        class="title"
+        v-if="model.price">
+          Цена: {{model.price}} {{model.currency}}
+        </v-chip>
+      </v-card-title>
+      <v-card-text v-if="model.title" class="shop-entity-view__card-title headline">{{model.title}}</v-card-text>
+      <v-card-text v-if="model.description" class="shop-entity-view__card-description title" v-html="model.description"/>
+      <v-divider/>
+      <template
+      v-for="(feature, index) in model.features">
         <v-card-text
-        v-for="(c, i) in characheteristics"
-        class="shop-entity-view__card-characheteristics"
+        class="shop-entity-view__card-feature"
+        :key="`feature-${index}`">
+          <div class="title mb-2" v-if="feature.title">{{feature.title}}</div>
+          <v-card-text
+          class="shop-entity-view__card-feature-item py-1 pb-"
+          v-for="(f, i) in feature.items"
+          :key="`feature-${index}-${i}`">
+            <div class="shop-entity-view__card-feature-icon"></div>
+            <div class="body-2">{{f}}</div>
+          </v-card-text>
+        </v-card-text>
+        <v-divider :key="`feature-${index}`"/>
+      </template>
+      <v-card-text
+      v-if="model.charachteristics && model.charachteristics.length"
+      class="shop-entity-view__card-charachteristics-holder">
+        <v-card-text
+        v-for="(c, i) in model.charachteristics"
+        class="shop-entity-view__card-charachteristics pa-0"
         :key="`characteristics-${i}`">
-          <div class="title mb-3">{{c.title}}</div>
-          <div class="shop-entity-view__card-characheteristics-item mt-1"
+          <div class="title mb-2">{{c.title}}</div>
+          <div class="shop-entity-view__card-charachteristics-item mt-1"
           v-for="(item, index) in c.items" :key="`characteristics-${i}-${index}`">
-            <span class="shop-entity-view__card-characheteristics-item-key subheading">{{item.key}}:</span>
-            <span class="shop-entity-view__card-characheteristics-item-val body-2 pl-2">{{item.val}}</span>
+            <span class="shop-entity-view__card-charachteristics-item-key subheading">{{item.key}}:</span>
+            <span class="shop-entity-view__card-charachteristics-item-val body-2 pl-2">{{item.val}}</span>
           </div>
         </v-card-text>
       </v-card-text>
@@ -59,6 +78,7 @@ class="shop-entity-view py-2"
 <script>
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
+import { isEmpty } from 'lodash/fp';
 import ShopEntity from './ShopEntity';
 
 export default {
@@ -83,145 +103,13 @@ export default {
   data() {
     return {
       isReady: false,
-      features: [
-        'Буровая установка JT100 с тягой 445 кН и крутящим моментом 16 270 Н/м - идеальное решение для прокладывания труб на большие расстояния или прокладывания труб большого диаметра.',
-        'Кран, входящий в комплектацию установки, предназначен для погрузки и разгрузки кассет со штангами, якорения шнеков анкерной системы, а также может использоваться для подсобных работ.',
-        // eslint-disable-next-line
-        `Закрытая кабина оператора скомплектована удобной системой управления и имеет прекрасную обзорность. JT100 All Terrain® — единственная буровая установка в своем классе, на которой предусмотрена установка и работа с двумя кассетами штанг. Таким образом, можно с помощью крана на установке поставить сверху дополнительную кассету со штангами и продолжать работать.`,
-        'Внедрена система автоматического контроля за свинчиванием буровых штанг, что значительно продлевает сорок их службы.',
-        'Благодаря возможности изменять скорость вращения шпинделя во время работы, JT100 All Terrain® является единственной скальной установкой, на которой возможно найти оптимальный баланс скорости вращения шпинделя и крутящего момента.',
-        'Двойная рейка и двусторонний привод каретки JT100 All Terrain®, многократно проверены в полевых условиях, отличаются надежностью, долговечностью и помогут справиться с поставленной задачей.',
-        'Мощный буровой насос 870 л/мин.',
-      ],
-      characheteristics: [
-        {
-          title: 'Размеры',
-          items: [
-            {
-              key: 'Длина',
-              val: '9.35м',
-            },
-            {
-              key: 'Ширна',
-              val: '2.57м',
-            },
-            {
-              key: 'Высота',
-              val: '2.79м',
-            },
-            {
-              key: 'Вес',
-              val: '21 400кг',
-            },
-          ],
-        },
-        {
-          title: 'Буровая штанга',
-          items: [
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-          ],
-        },
-        {
-          title: 'Буровая штанга',
-          items: [
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-          ],
-        },
-        {
-          title: 'Буровая штанга',
-          items: [
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-            {
-              key: 'Длина',
-              val: '4.31м',
-            },
-            {
-              key: 'Диаметр замка',
-              val: '114мм',
-            },
-            {
-              key: 'Диамтер штанги',
-              val: '92мм',
-            },
-          ],
-        },
-      ],
     };
   },
   computed: {
     model() { return this.$store.getters.entity(this.type, this.id); },
+    isEmpty() { return isEmpty(this.$store.state.shop[this.type][this.id]); },
   },
   mounted() {
-    console.log('inited');
     if (this.isEmpty) {
       setTimeout(() => this.isReady = true, 1000);
     } else {
@@ -231,7 +119,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #avmax {
 .shop-entity-view {
   position: relative;
@@ -239,6 +127,10 @@ export default {
   height: 100%;
 
   &__card {
+    .title {
+      line-height: 1.4em !important;
+    }
+
     &-media {
       height: 200px !important;
       background-color: white;
@@ -252,7 +144,7 @@ export default {
       font-weight: 400;
     }
 
-    &-characheteristics {
+    &-charachteristics {
       padding-left: 0;
       padding-right: 0;
     }
@@ -290,7 +182,7 @@ export default {
 
 @media all and (min-width: 768px) {
 .shop-entity-view {
-  max-width: 60%;
+  max-width: 720px;
   margin: 0 auto;
 
   &__card {
@@ -299,8 +191,10 @@ export default {
     }
 
     &-feature {
-      display: flex;
-      align-items: center;
+      &-item {
+        display: flex;
+        align-items: center;
+      }
 
       &-icon {
         width: 30px;
@@ -321,7 +215,7 @@ export default {
       }
     }
 
-    &-characheteristics {
+    &-charachteristics {
       display: inline-block;
       width: 50%;
       max-width: 300px;
@@ -332,6 +226,13 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
+      }
+
+      &-item {
+        &-key {
+          padding-bottom: 3px;
+          border-bottom: 1px solid;
+        }
       }
     }
   }

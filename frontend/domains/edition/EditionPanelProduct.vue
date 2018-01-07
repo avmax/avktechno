@@ -1,21 +1,162 @@
 <template>
 <div @keyup.esc="handleAbort">
-  <h3>{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
+  <h3 class="pb-3">{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
   <v-form
     ref="form"
-    @keyup.enter.native="handleSubmit"
     v-model="isValid">
     <v-layout column>
-      <template v-for="(key, index) in fields">
-        <v-text-field
-        v-model="model[key]"
-        @input="onFormControlChange"
-        :label="labels[key]"
-        :multi-line="controls[key] === 'textfield'"
-        :autofocus="!index"
-        :rules="rules[key]"
-        :key="key"/>
-      </template>
+      <v-text-field
+      v-model="model.name"
+      @input="onFormControlChange"
+      label="Название"
+      autofocus
+      :rules="rules.name"
+      required/>
+
+      <v-text-field
+      v-model="model.title"
+      @input="onFormControlChange"
+      label="Заголовок"
+      multi-line
+      :rows="1"/>
+
+      <v-text-field
+      v-model="model.description"
+      @input="onFormControlChange"
+      label="Описание"
+      multi-line
+      :rows="1"/>
+
+      <v-text-field
+      v-model="model.imgUrl"
+      @input="onFormControlChange"
+      label="Url картинки"
+      multi-line
+      :rows="1"/>
+
+      <v-text-field
+      v-model="model.footer"
+      @input="onFormControlChange"
+      label="Подвал"
+      multi-line
+      :rows="1"/>
+
+      <v-layout
+      row wrap
+      justify-space-between
+      class="mb-5">
+        <v-flex xs8>
+          <v-text-field
+          label="Цена"
+          @input="onFormControlChange"
+          type="number"
+          v-model="model.price"/>
+        </v-flex>
+        <v-flex xs3>
+          <v-select
+          label="Выберите Валюту"
+          :items="['₽', '$', '€']"
+          v-model="model.currency"
+          item-value="id"
+          max-height="400"
+          @input="onFormControlChange"
+          persistent-hint/>
+        </v-flex>
+      </v-layout>
+
+      <div class="features mb-5">
+        <v-form
+        class="features__item mb-3"
+        v-for="(f, index) in model.features"
+        :key="`features-${index}`">
+          <div class="features__item-header">
+            <v-text-field
+            v-model="model.features[index].title"
+            @input="onFormControlChange"
+            label="Заголовок списка"/>
+            <v-btn
+            @click="featuresRemove(index)"
+            fab small>
+              <v-icon>
+                remove
+              </v-icon>
+            </v-btn>
+          </div>
+          <div class="features__item-list"
+          v-for="(item, i) in model.features[index].items"
+          :key="`feature-${index}-${i}`">
+            <v-text-field
+            v-model="model.features[index].items[i]"
+            @input="onFormControlChange"
+            label="Элемент списка"
+            multi-line
+            :rows="1"
+            :rules="rules.features"
+            required/>
+            <v-btn
+            @click="featuresRemoveItem(index, i)"
+            fab small>
+              <v-icon>
+                remove
+              </v-icon>
+            </v-btn>
+          </div>
+          <v-btn class="ma-0" @click="featuresAddItem(index)">добавить</v-btn>
+        </v-form>
+        <v-btn class="ma-0" @click="featuresAdd">добавить список</v-btn>
+      </div>
+
+      <div class="charachteristics pt-2 mb-5">
+        <v-form
+        class="charachteristics__item mb-3"
+        v-for="(c, index) in model.charachteristics"
+        :key="`charachteristics-${index}`">
+          <div class="charachteristics__item-header">
+            <v-text-field
+            v-model="model.charachteristics[index].title"
+            @input="onFormControlChange"
+            label="Заголовок таблицы"/>
+            <v-btn
+            @click="charachteristicsRemove(index)"
+            fab small>
+              <v-icon>
+                remove
+              </v-icon>
+            </v-btn>
+          </div>
+          <v-layout
+          v-for="(item, i) in c.items"
+          :key="`charachteristics-${index}-${i}`">
+            <v-flex xs5>
+              <v-text-field
+              v-model="model.charachteristics[index].items[i].key"
+              @input="onFormControlChange"
+              label="свойство"
+              :rules="rules.charachteristics"
+              required/>
+            </v-flex>
+            <v-flex xs5 class="ml-2">
+              <v-text-field
+              v-model="model.charachteristics[index].items[i].val"
+              @input="onFormControlChange"
+              label="значение"
+              :rules="rules.charachteristics"
+              required/>
+            </v-flex>
+            <v-flex xs1>
+              <v-btn
+              @click="charachteristicsRemoveItem(index, i)"
+              fab small>
+                <v-icon>
+                  remove
+                </v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+          <v-btn class="ma-0 mb-1" @click="charachteristicsAddItem(index, i)">добавить</v-btn>
+        </v-form>
+        <v-btn class="ma-0" @click="charachteristicsAdd">добавить характеристику</v-btn>
+      </div>
 
       <v-select
       label="Выберите категории"
@@ -40,12 +181,13 @@
 
       <v-btn
       color="primary"
+      class="mt-3"
       @click="handleSubmit()"
       :disabled="!isValid">
         Сохранить изменения
       </v-btn>
       <v-btn
-      color="primary"
+      color="blue-grey lighten-1"
       @click="handleAbort()">
         Прекратить изменения
       </v-btn>
@@ -58,6 +200,7 @@
 
 
 <script>
+import Vue from 'vue';
 import { defaultsDeep } from 'lodash/fp';
 import EditionPanel from './EditionPanel';
 // eslint-disable-next-line
@@ -68,22 +211,18 @@ export default {
   mixins: [EditionPanel],
   data() {
     return {
-      fields: ['name', 'title', 'imgUrl'],
       labels: {
         name: 'Название',
         title: 'Заголовок',
         imgUrl: 'URL картинки',
       },
-      controls: {
-        title: 'textfield',
-      },
       rules: {
         name: [validatorRequired()],
-        refs: {
-          category: [validatorRequired()],
-          brand: [validatorRequired()],
-        },
+        imgUrl: [validatorRequired()],
+        features: [validatorRequired()],
+        charachteristics: [validatorRequired()],
       },
+      isValidCharachteristics: [],
     };
   },
   computed: {
@@ -103,5 +242,68 @@ export default {
     refs.category = refs.category || [];
     this.model.refs = refs;
   },
+  methods: {
+    featuresRemove(index) {
+      this.model.features.splice(index, 1);
+      this.onFormControlChange();
+    },
+    featuresAdd() {
+      if (!this.model.features) { Vue.set(this.model, 'features', []); }
+      this.model.features.push({ title: '', items: [''] });
+    },
+    featuresRemoveItem(index, i) {
+      this.model.features[index].items.splice(i, 1);
+      this.onFormControlChange();
+    },
+    featuresAddItem(index) {
+      this.model.features[index].items.push('');
+    },
+    charachteristicsRemove(index) {
+      this.model.charachteristics.splice(index, 1);
+      this.onFormControlChange();
+    },
+    charachteristicsAdd() {
+      if (!this.model.charachteristics) { Vue.set(this.model, 'charachteristics', []); }
+      this.model.charachteristics.push({
+        title: '',
+        items: [{ key: '', val: '' }],
+      });
+    },
+    charachteristicsRemoveItem(index, i) {
+      this.model.charachteristics[index].items.splice(i, 1);
+      this.onFormControlChange();
+    },
+    charachteristicsAddItem(index) {
+      this.model.charachteristics[index].items.push({ key: '', val: '' });
+    },
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+#avmax {
+.features {
+  &__item {
+    &-header {
+      display: flex;
+      align-items: center;
+    }
+
+    &-list {
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+}
+
+.charachteristics {
+  &__item {
+    &-header {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+}
+</style>
+

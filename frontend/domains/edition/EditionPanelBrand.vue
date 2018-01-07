@@ -6,19 +6,33 @@
     @keyup.enter.native="handleSubmit"
     v-model="isValid">
     <v-layout column>
-      <template v-for="(key, index) in fields">
-        <v-text-field
-        v-model="model[key]"
-        :label="labels[key]"
-        :multi-line="controls[key] === 'textfield'"
-        :rules="rules[key]"
-        :autofocus="!index"
-        @input="onFormControlChange"
-        :key="key"/>
-      </template>
+      <v-text-field
+      v-model="model.name"
+      @input="onFormControlChange"
+      label="Название"
+      autofocus
+      :rules="rules.name"
+      required/>
+
+      <v-text-field
+      v-model="model.title"
+      @input="onFormControlChange"
+      label="Заголовок"
+      multi-line
+      :rows="1"
+      />
+
+      <v-text-field
+      v-model="model.imgUrl"
+      @input="onFormControlChange"
+      label="Url картинки"
+      multi-line
+      :rows="1"
+      />
 
       <v-btn
       color="primary"
+      class="mt-3"
       @click="handleSubmit()"
       :disabled="!isValid">
         Сохранить изменения
@@ -46,15 +60,6 @@ export default {
   mixins: [EditionPanel],
   data() {
     return {
-      fields: ['name', 'title', 'imgUrl'],
-      labels: {
-        name: 'Название',
-        title: 'Заголовок',
-        imgUrl: 'URL картинки',
-      },
-      controls: {
-        title: 'textfield',
-      },
       rules: {
         name: [validatorRequired()],
       },

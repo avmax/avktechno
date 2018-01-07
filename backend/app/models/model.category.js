@@ -14,16 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       title: {
         type: DataTypes.STRING,
-        defaultValue: 'some category title',
       },
-      imgUrl: {
-        type: DataTypes.STRING,
-        defaultValue: 'http://lorempixel.com/400/200/sports/1/',
-      },
-    },
-    {
-      charset: 'utf8mb4',
-      collate: 'utf8mb4_unicode_ci',
     },
   );
 };
