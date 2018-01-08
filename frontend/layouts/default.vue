@@ -28,7 +28,7 @@
 
     <v-content>
       <v-container fluid fill-height>
-        <v-layout column>
+        <v-layout column style="width: 100%;">
           <v-flex
           v-if="notifications && notifications.length"
           class="mb-3" xs12>
@@ -45,11 +45,7 @@
               {{notification.message}}
             </v-alert>
           </v-flex>
-          <v-flex xs12>
-            <v-container fill-height class="pa-0">
-              <nuxt/>
-            </v-container>
-          </v-flex>
+            <nuxt/>
         </v-layout>
       </v-container>
     </v-content>

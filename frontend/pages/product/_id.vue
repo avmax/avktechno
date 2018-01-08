@@ -1,7 +1,5 @@
 <template>
-  <v-layout class="page">
-    <shop-entitity-view-product :type="type" :id="id"/>
-  </v-layout>
+  <shop-entitity-view-product :type="type" :id="id"/>
 </template>
 
 <script>

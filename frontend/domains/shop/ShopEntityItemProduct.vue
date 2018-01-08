@@ -1,35 +1,30 @@
 <template>
 <v-card class="shop-entity-item-product card">
   <template v-if="!ghost">
-    <v-card-media class="card__media" :src="imgUrl"/>
-    <v-card-title class="title shop-entity-item-product__header card__header pb-0">
-      <div style="padding-right: 20px;">{{name}}</div>
-      <div class="shop-entity-item-product__controls card__controls">
-        <v-btn
-        v-if="!isAddedToCart"
-        @click="addToCart()"
-        fab small color="teal">
-          <v-icon color="white">add_shopping_cart</v-icon>
-        </v-btn>
-        <v-btn
-        v-else
-        @click="removeFromCart()"
-        fab small color="red lighten-1">
-          <v-icon color="white">remove_shopping_cart</v-icon>
-        </v-btn>
-      </div>
-    </v-card-title>
-    <v-card-text class="subheading pb-0">Цена: {{price}} {{currency}}</v-card-text>
-    <v-card-text class="subheading card__info">{{info[hiddenType]}}</v-card-text>
-    <v-card-text v-if="title">{{title}}</v-card-text>
-    <v-card-text v-if="description">{{description}}</v-card-text>
-    <v-card-actions>
-      <v-spacer/>
-      <router-link v-if="link" :to="link" class="link card__go">
-        <v-btn>
-          Читать подробно
-        </v-btn>
-      </router-link>
+    <v-card-media class="card__media mb-3" :src="imgUrl"/>
+    <v-card-title class="card__text title pt-0">{{name}}</v-card-title>
+    <v-card-text class="card__text subheading pt-0">Цена: {{price}} {{currency}}</v-card-text>
+    <v-card-text class="card__text subheading card__info pt-0">{{info[hiddenType]}}</v-card-text>
+    <v-card-actions class="shop-entity-item-product__actions">
+      <v-layout column>
+        <v-flex xs12 class="pa-0">
+          <v-btn :to="link" nuxt class="shop-entity-item-product__action-item mb-2">
+            Узнать подробнее
+          </v-btn>
+        </v-flex>
+        <v-flex xs12 class="pa-0 pb-3">
+          <v-btn class="shop-entity-item-product__action-item"
+          v-if="!isAddedToCart"
+          @click="addToCart">
+            Добавить в корзину
+          </v-btn>
+          <v-btn class="shop-entity-item-product__action-item"
+          v-else
+          @click="removeFromCart">
+            Убрать из корзины
+          </v-btn>
+        </v-flex>
+      </v-layout>
     </v-card-actions>
   </template>
 
@@ -44,33 +39,21 @@
 </template>
 
 <script>
-import { CART_ITEM_ADD, CART_ITEM_REMOVE } from '~/domains/barrel.state';
+import ShopEntityProduct from './ShopEntityProduct';
 
 export default {
   name: 'shop-entity-item-product',
+  mixins: [ShopEntityProduct],
   props: {
     id: [Number, String],
     link: Object,
     imgUrl: String,
     name: String,
-    title: String,
     info: Object,
-    description: String,
-    price: Number,
+    price: [Number, String],
     currency: String,
     hiddenType: String,
     ghost: Boolean,
-  },
-  computed: {
-    isAddedToCart() { return this.$store.state.cart.items.indexOf(this.id) !== -1; },
-  },
-  methods: {
-    addToCart() {
-      this.$store.commit(CART_ITEM_ADD, this.id);
-    },
-    removeFromCart() {
-      this.$store.commit(CART_ITEM_REMOVE, this.id);
-    },
   },
 };
 </script>
@@ -80,9 +63,28 @@ export default {
 .shop-entity-item-product {
   position: relative;
   width: 100%;
+  max-width: calc(100vw - 50px);
+  height: 100% !important;
+  overflow: hidden;
 
   &__header {
     position: relative;
+  }
+
+  &__name {
+    width: 100%;
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__actions {
+    overflow: hidden;
+  }
+
+  &__action-item {
+    width: 100%;
+    text-align: center;
   }
 }
 }

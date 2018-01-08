@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
           if (data) {
             data = data.toString('utf-8');
           }
+          return data;
         },
       },
       footer: {
@@ -37,11 +38,14 @@ module.exports = (sequelize, DataTypes) => {
           if (data) {
             data = data.split('___footer-title___');
             data = {
-              title: data[0],
-              text: data[1],
+              title: data[0] || '',
+              text: data[1] || '',
             };
           } else {
-            data = { };
+            data = {
+              title: '',
+              text: '',
+            };
           }
 
           return data;

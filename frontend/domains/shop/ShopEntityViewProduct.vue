@@ -9,47 +9,63 @@ class="shop-entity-view-product py-2"
         {{model.name}}
         <v-spacer/>
         <v-chip
-        class="title"
+        class="shop-entity-view-product__card-price title"
+        label
+        outline
+        disabled
+        color="white"
         v-if="model.price">
           Цена: {{model.price}} {{model.currency}}
         </v-chip>
       </v-card-title>
-      <v-card-text v-if="model.title" class="shop-entity-view-product__card-title headline">{{model.title}}</v-card-text>
-      <v-card-text v-if="model.description" class="shop-entity-view-product__card-description title" v-html="model.description"/>
-      <v-divider/>
+      <v-card-text class="shop-entity-view-product__card-title headline mb-1">
+        {{model.title}}
+        <v-spacer/>
+        <v-btn
+        class="d-inline-block shop-entity-view-product__card-action ma-0"
+        v-if="!isAddedToCart"
+        @click="addToCart">
+          Добавить в корзину
+        </v-btn>
+        <v-btn
+        v-else
+        class="d-inline-block shop-entity-view-product__card-action ma-0"
+        @click="removeFromCart">
+          Убрать из корзины
+        </v-btn>
+      </v-card-text>
+      <v-card-text v-if="model.description" class="shop-entity-view-product__card-description subheading" v-html="model.description"/>
+      <v-divider class="my-4"/>
       <template
       v-for="(feature, index) in model.features">
         <v-card-text
         class="shop-entity-view-product__card-feature"
         :key="`feature-${index}`">
-          <div class="title mb-2" v-if="feature.title">{{feature.title}}</div>
+          <div class="title mt-0 mb-2" v-if="feature.title">{{feature.title}}</div>
           <v-card-text
           class="shop-entity-view-product__card-feature-item py-1 pb-"
           v-for="(f, i) in feature.items"
           :key="`feature-${index}-${i}`">
             <div class="shop-entity-view-product__card-feature-icon"></div>
-            <div class="body-2">{{f}}</div>
+            <div class="subheading">{{f}}</div>
           </v-card-text>
         </v-card-text>
-        <v-divider :key="`feature-${index}`"/>
+        <v-divider class="my-4" :key="`feature-${index}`"/>
       </template>
-      <v-card-text
-      v-if="model.charachteristics && model.charachteristics.length"
-      class="shop-entity-view-product__card-charachteristics-holder">
+      <template v-for="(c, i) in model.charachteristics">
         <v-card-text
-        v-for="(c, i) in model.charachteristics"
-        class="shop-entity-view-product__card-charachteristics pa-0"
+        class="shop-entity-view-product__card-charachteristics"
         :key="`characteristics-${i}`">
-          <div class="title mb-2">{{c.title}}</div>
+          <div class="title mt-0 mb-2">{{c.title}}</div>
           <div class="shop-entity-view-product__card-charachteristics-item mt-1"
           v-for="(item, index) in c.items" :key="`characteristics-${i}-${index}`">
             <span class="shop-entity-view-product__card-charachteristics-item-key subheading">{{item.key}}:</span>
             <span class="shop-entity-view-product__card-charachteristics-item-val body-2 pl-2">{{item.val}}</span>
           </div>
         </v-card-text>
-      </v-card-text>
+        <v-divider class="my-4" :key="`characteristics-${i}`"/>
+      </template>
       <template v-if="model.footer">
-        <v-divider/>
         <v-card-text class="title pb-0">{{model.footer.title}}</v-card-text>
         <v-card-text v-html="model.footer.text"/>
       </template>
@@ -85,6 +101,7 @@ import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import { isEmpty } from 'lodash/fp';
 import Editable from './Editable';
+import ShopEntityProduct from './ShopEntityProduct';
 
 export default {
   name: 'shop-entity-view-product',
@@ -92,7 +109,7 @@ export default {
     CardBase,
     GridLoader,
   },
-  mixins: [Editable],
+  mixins: [Editable, ShopEntityProduct],
   props: {
     type: {
       type: String,
@@ -145,13 +162,27 @@ export default {
       }
     }
 
+    &-title {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
     &-description {
       font-weight: 400;
     }
 
-    &-charachteristics {
-      padding-left: 0;
-      padding-right: 0;
+    .card__text {
+      white-space: normal;
+    }
+
+    &-price {
+      margin-top: 15px;
+    }
+
+    &-action {
+      margin-bottom: 40px !important;
     }
   }
 
@@ -185,6 +216,24 @@ export default {
 }
 
 
+
+@media all and (max-width: 768px) {
+.shop-entity-view-product {
+  &__card {
+    .display-1 {
+      font-size: 22px !important;
+      line-height: 34px !important;
+    }
+
+    .headline {
+      font-size: 18px !important;
+      line-height: 25px !important;
+    }
+  }
+}
+}
+
+
 @media all and (min-width: 768px) {
 .shop-entity-view-product {
   max-width: 720px;
@@ -193,6 +242,17 @@ export default {
   &__card {
     &-media {
       height: 400px !important;
+    }
+
+    &-title {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px !important;
+    }
+
+    &-action {
+      margin-bottom: 0px !important;
     }
 
     &-feature {
@@ -222,16 +282,7 @@ export default {
 
     &-charachteristics {
       display: inline-block;
-      width: 50%;
-      max-width: 300px;
       padding-right: 20px;
-
-      &-holder {
-        padding-left: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-      }
 
       &-item {
         &-key {

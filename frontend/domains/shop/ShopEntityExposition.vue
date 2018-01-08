@@ -41,7 +41,7 @@
           </v-btn>
         </div>
         <v-flex v-if="isEditionAvailable" xs12 md4 lg3>
-          <div class="shop-entity-exposition__ghost">
+          <div class="shop-entity-exposition__ghost shop-entity-exposition__ghost_type_item">
             <component :is="itemComponent" ghost/>
             <div class="shop-entity-exposition__ghost-controls">
               <v-btn
@@ -133,7 +133,8 @@ export default {
         const collection = {
           model: collectionModel,
           items: collectionModel.refs[this.subtype]
-            .map(id => this.$store.getters.entity(this.subtype, id)),
+            .map(id => this.$store.getters.entity(this.subtype, id))
+            .reverse(),
         };
 
         return collection;
@@ -204,6 +205,10 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    &_type_item {
+      height: 100%;
     }
   }
 }

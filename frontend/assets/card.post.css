@@ -13,16 +13,13 @@
     }
   }
 
-  &__info {
+  &__text {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-
-  &__go {
-    &::before, &::after {
-      display: none;
-    }
+    display: inline-block;
+    padding-top: 0 !important;
+    padding-bottom: 8px !important;
   }
 
   &__controls {

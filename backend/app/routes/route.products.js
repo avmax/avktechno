@@ -53,6 +53,8 @@ exports.post = async (req, res, next) => {
 
     const model = p.get({ plain: true });
     model.refs = refs;
+    model.info = await model.info;
+    model.refs = await model.refs;
     res.status(200).send(model);
   } catch(err) {
     let message;
