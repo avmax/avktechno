@@ -18,14 +18,13 @@
       <router-link class="link mr-3 ml-3" to="/">Главная</router-link>
       <router-link class="link mr-3" to="/category">Категории</router-link>
       <router-link class="link mr-3" to="/brand">Бренды</router-link>
-      <!-- <v-layout row justify-end align-center>
-        <v-flex xs2 align-center>
-          <v-switch
-          :label="`${isUserSignedIn ? 'Выйти' : 'Войти'}`"
-          v-model="isUserSignedIn"
-          style="height: 30px;"/>
-        </v-flex>
-      </v-layout> -->
+      <v-spacer></v-spacer>
+      <router-link class="mr-5" to="/cart">
+        <v-badge right v-model="itemsInCart">
+            <span slot="badge">{{itemsInCart}}</span>
+            <v-icon large color="grey lighten-1">shopping_cart</v-icon>
+          </v-badge>
+      </router-link>
     </v-toolbar>
 
     <v-content>
@@ -112,6 +111,10 @@ export default {
       get() { return this.$store.state.user.isSignedIn; },
       // eslint-disable-next-line
       set(v) { v ? this.$store.commit(USER_SIGN_IN, true) : this.$store.commit(USER_SIGN_OUT); },
+    },
+    itemsInCart: {
+      get() { return this.$store.state.cart.items.length; },
+      set() { },
     },
   },
   async beforeMount() {

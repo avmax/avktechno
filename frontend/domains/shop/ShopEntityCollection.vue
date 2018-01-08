@@ -2,56 +2,40 @@
 <div class="shop-entity-collection py-3">
   <div class="mb-3 shop-entity-collection__header">
     <h2 class="shop-entity-collection__header-name display-1 mb-2">
-        <router-link
-        class="link"
-        :to="{ name: `${type}-id`, params: { id: model.id }}">
-          {{model.name}}
-        </router-link>
-        <div
-        class="ml-2"
-        v-if="isEditionEnabled"
-        slot="controls">
-          <v-btn
-          @click="edit()"
-          fab small>
+        <slot name="link"/>
+
+        <div class="ml-2" v-if="isEditionEnabled">
+          <v-btn @click="edit()" fab small>
             <v-icon color="white">edit</v-icon>
           </v-btn>
-          <v-btn
-          @click="remove()"
-          fab small>
+          <v-btn @click="remove()" fab small>
             <v-icon color="white">clear</v-icon>
           </v-btn>
         </div>
     </h2>
-    <h3 class="shop-entity-collection__header-title heading" v-if="model.title">{{model.title}}</h3>
+
+    <h3 class="shop-entity-collection__header-title heading" v-if="title">{{title}}</h3>
   </div>
+
   <v-container fluid class="pa-0" grid-list-xl>
-    <v-layout
-    row justify-start wrap>
-      <v-flex
-      v-if="isEditionAvailable"
-      xs12 md4 lg3>
+    <v-layout row justify-start wrap>
+      <v-flex v-if="isEditionAvailable" xs12 md4 lg3>
         <div class="shop-entity-collection__ghost">
-          <card-base
-          name="lololo"
-          title="lololo"/>
+          <card-base name="lololo" title="lololo"/>
           <div class="shop-entity-collection__ghost-controls">
             <v-btn
             v-if="isEditionEnabled"
             class="shop-entity-collection__ghost-button"
-            @click="add"
-            fab large>
+            @click="add" fab large>
               <v-icon>add</v-icon>
             </v-btn>
           </div>
         </div>
       </v-flex>
-      <v-flex v-for="id in items" :key="id" xs12 md4 lg3>
-        <shop-entity-item
-        :type="subtype"
-        :id="id"/>
-      </v-flex>
-      <v-flex v-if="(!items || !items.length) && !isEditionAvailable" xs12>
+
+      <slot/>
+
+      <v-flex v-if="!$slots.default && !isEditionAvailable" xs12>
         <h2 class="subheading text-xs-left py-5"> Увы, коллекция пуста</h2>
       </v-flex>
     </v-layout>
@@ -61,43 +45,17 @@
 
 
 <script>
-import {
-  EDITION_ADD,
-} from '~/domains/barrel.state';
 import CardBase from '~/domains/common/CardBase.vue';
-import ShopEntity from './ShopEntity';
-import ShopEntityItem from './ShopEntityItem.vue';
+import { EditableDumb } from './Editable';
 
 export default {
   name: 'shop-entity-collection',
-  components: {
-    ShopEntityItem,
-    CardBase,
-  },
-  mixins: [ShopEntity],
+  components: { CardBase },
+  mixins: [EditableDumb],
   props: {
-    type: {
-      type: String,
-      required: true,
-      default: null,
-    },
-    subtype: {
-      type: String,
-      required: true,
-      default: null,
-    },
-    id: {
-      type: [String, Number],
-      required: true,
-      default: null,
-    },
-  },
-  computed: {
-    model() { return this.$store.getters.entity(this.type, this.id); },
-    items() { return this.model.refs[this.subtype]; },
-  },
-  methods: {
-    add() { this.$store.dispatch(EDITION_ADD(this.subtype), { [this.type]: this.model.id }); },
+    title: String,
+    isEditionEnabled: Boolean,
+    isEditionAvailable: Boolean,
   },
 };
 </script>

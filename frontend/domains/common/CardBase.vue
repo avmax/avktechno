@@ -1,17 +1,9 @@
 <template>
 <v-card class="card">
   <v-card-media class="card__media" :src="imgUrl"></v-card-media>
-  <v-card-title
-  class="card__title title">
-    {{name}}
-    <v-spacer/>
-    <strong
-    class="subheading"
-    style="text-decoration: underline;"
-    v-if="price">
-      Цена: {{price}} {{currency}}
-    </strong>
-    </v-card-title>
+  <v-card-title class="card__title title">{{name}}</v-card-title>
+  <v-card-text v-if="price" class="subheading">Цена: {{price}} {{currency}}</v-card-text>
+  <v-card-text v-else>&nbsp;</v-card-text>
   <v-card-text v-if="title">{{title}}</v-card-text>
   <v-card-text v-if="description">{{description}}</v-card-text>
   <v-card-actions>
@@ -38,11 +30,6 @@ export default {
     description: String,
     price: Number,
     currency: String,
-  },
-  methods: {
-    explore() {
-      this.$router.push(this.link);
-    },
   },
 };
 </script>

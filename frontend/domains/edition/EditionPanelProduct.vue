@@ -242,7 +242,8 @@ export default {
   },
   beforeMount() {
     this.model = this.value ? defaultsDeep({}, this.value) : {};
-    const { refs } = this.model;
+    let { refs } = this.model;
+    refs = refs || {};
     refs.brand = refs.brand ? refs.brand[0] : [];
     refs.category = refs.category || [];
     this.model.refs = refs;

@@ -2,16 +2,10 @@
   <v-layout
   class="page"
   column>
-    <div class="page__header">
-      <v-switch
-      :label="`${!isInverted ? 'Показать категории' : 'Показать продукты'}`"
-      v-model="isInverted"/>
-    </div>
-    <v-flex xs12>
-      <shop-entity-exposition
-      :type="type"
-      :subtype="subtype"/>
-    </v-flex>
+    <shop-entity-exposition
+    :type="type"
+    :subtype="subtype"
+    @invert="invert"/>
   </v-layout>
 </template>
 
@@ -32,14 +26,11 @@ export default {
       subtype: ENTITY_TYPES.product,
     };
   },
-  computed: {
-    isInverted: {
-      get() { return this.subtype !== ENTITY_TYPES.product; },
-      set() {
-        this.subtype = this.subtype !== ENTITY_TYPES.product
-          ? ENTITY_TYPES.product
-          : ENTITY_TYPES.category;
-      },
+  methods: {
+    invert() {
+      this.subtype = this.subtype !== ENTITY_TYPES.product
+        ? ENTITY_TYPES.product
+        : ENTITY_TYPES.category;
     },
   },
 };

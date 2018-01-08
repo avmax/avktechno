@@ -24,6 +24,11 @@ import {
   NOTIFICATION_LAST_CLOSE,
 } from '~/domains/common/state.ui';
 
+import {
+  CART_ITEM_ADD,
+  CART_ITEM_REMOVE,
+} from '~/domains/cart/state.cart';
+
 
 export {
   ENTITY_LOAD,
@@ -43,4 +48,9 @@ export {
   NOTIFICATION_OPEN,
   NOTIFICATION_CLOSE,
   NOTIFICATION_LAST_CLOSE,
+};
+
+export {
+  CART_ITEM_ADD,
+  CART_ITEM_REMOVE,
 };

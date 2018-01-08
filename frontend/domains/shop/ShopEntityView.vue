@@ -67,12 +67,12 @@ class="shop-entity-view py-2"
   <div class="shop-entity-view__controls"
   v-if="isEditionEnabled">
     <v-btn
-    @click="edit()"
+    @click="edit(type, id)"
     fab small>
       <v-icon color="white">edit</v-icon>
     </v-btn>
     <v-btn
-    @click="remove()"
+    @click="remove(type, id)"
     fab small>
       <v-icon color="white">clear</v-icon>
     </v-btn>
@@ -84,7 +84,7 @@ class="shop-entity-view py-2"
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import { isEmpty } from 'lodash/fp';
-import ShopEntity from './ShopEntity';
+import { EditableSmart } from './Editable';
 
 export default {
   name: 'shop-entity-view',
@@ -92,7 +92,7 @@ export default {
     CardBase,
     GridLoader,
   },
-  mixins: [ShopEntity],
+  mixins: [EditableSmart],
   props: {
     type: {
       type: String,

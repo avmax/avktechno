@@ -1,21 +1,8 @@
 <template>
 <div
 class="shop-entity-item"
-:class="{ 'shop-entity-item_loading' : !isReady }">
-  <v-fade-transition>
-    <card-base
-    v-if="isReady"
-    :name="model.name"
-    :title="model.title"
-    :price="model.price"
-    :currency="model.currency"
-    :imgUrl="model.imgUrl"
-    :link="{ name: `${type}-id`, params: { id: model.id }}"
-    />
-  </v-fade-transition>
-
-  <div
-  v-if="!isReady"
+:class="{ 'shop-entity-item_loading' : isLoading }">
+  <div v-if="isLoading"
   class="shop-entity-item__ghost">
     <card-base
     class="shop-entity-item__ghost-card"
@@ -27,26 +14,54 @@ class="shop-entity-item"
     </div>
   </div>
 
-  <div class="shop-entity-item__controls"
-  v-if="isEditionEnabled">
-    <v-btn
-    @click="edit()"
-    fab small>
-      <v-icon color="white">edit</v-icon>
-    </v-btn>
-    <v-btn
-    @click="remove()"
-    fab small>
-      <v-icon color="white">clear</v-icon>
-    </v-btn>
+  <v-fade-transition>
+    <card-base
+    v-if="!isLoading && model"
+    :name="model.name"
+    :title="model.title"
+    :price="model.price"
+    :currency="model.currency"
+    :imgUrl="model.imgUrl"
+    :link="{ name: `${type}-id`, params: { id: model.id }}"
+    />
+  </v-fade-transition>
+
+  <div v-if="!isLoading" class="shop-entity-item__controls">
+    <template v-if="isEditionEnabled">
+      <v-btn
+      @click="edit()"
+      fab small>
+        <v-icon color="white">edit</v-icon>
+      </v-btn>
+      <v-btn
+      @click="remove()"
+      fab small>
+        <v-icon color="white">clear</v-icon>
+      </v-btn>
+    </template>
+    <template v-else>
+      <v-btn
+      v-if="!isAddedToCart"
+      @click="addToCart()"
+      fab small>
+        <v-icon color="white">add_shopping_cart</v-icon>
+      </v-btn>
+      <v-btn
+      v-else
+      @click="removeFromCart()"
+      fab small>
+        <v-icon color="white">remove_shopping_cart</v-icon>
+      </v-btn>
+    </template>
   </div>
 </div>
 </template>
 
 <script>
+import { CART_ITEM_ADD, CART_ITEM_REMOVE } from '~/domains/barrel.state';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
-import ShopEntity from './ShopEntity';
+import { EditableDumb } from './Editable';
 
 export default {
   name: 'shop-entity-item',
@@ -54,33 +69,27 @@ export default {
     CardBase,
     GridLoader,
   },
-  mixins: [ShopEntity],
+  mixins: [EditableDumb],
   props: {
     type: {
       type: String,
       required: true,
       default: null,
     },
-    id: {
-      type: [String, Number],
-      required: true,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      isReady: false,
-    };
+    isLoading: Boolean,
+    model: Object,
+    isEditionEnabled: Boolean,
   },
   computed: {
-    model() { return this.$store.getters.entity(this.type, this.id); },
+    isAddedToCart() { return this.$store.state.cart.items.indexOf(this.model.id) !== -1; },
   },
-  mounted() {
-    if (this.isEmpty) {
-      setTimeout(() => this.isReady = true, 1000);
-    } else {
-      this.isReady = true;
-    }
+  methods: {
+    addToCart() {
+      this.$store.commit(CART_ITEM_ADD, this.model.id);
+    },
+    removeFromCart() {
+      this.$store.commit(CART_ITEM_REMOVE, this.model.id);
+    },
   },
 };
 </script>

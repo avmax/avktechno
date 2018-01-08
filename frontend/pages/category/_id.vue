@@ -3,15 +3,13 @@
   v-if="model"
   class="page"
   column>
-      <div class="page__header">
-        <h1>Страница категории {{model.name}}</h1>
-      </div>
-    <v-flex xs12>
-      <shop-entity-exposition
-      :data="model.refs.brand"
-      :type="type"
-      :subtype="subtype"/>
-    </v-flex>
+    <div class="page__header">
+      <h1>Страница категории {{model.name}}</h1>
+    </div>
+    <shop-entity-exposition
+    :data="data"
+    :type="type"
+    :subtype="subtype"/>
   </v-layout>
 </template>
 
@@ -34,6 +32,19 @@ export default {
   },
   computed: {
     model() { return this.$store.getters.entity(ENTITY_TYPES.category, this.$route.params.id); },
+    data() {
+      return this.model && this.model.refs[this.type].map((id) => {
+        const collectionModel = this.$store.getters.entity(this.type, id);
+        const collection = {
+          model: collectionModel,
+          items: collectionModel && collectionModel.refs[this.subtype]
+            .filter(id => this.model && this.model.refs[ENTITY_TYPES.product].indexOf(id) !== -1)
+            .map(id => this.$store.getters.entity(this.subtype, id)),
+        };
+
+        return collection;
+      });
+    },
   },
 };
 </script>
