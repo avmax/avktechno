@@ -1,65 +1,72 @@
 <template>
-  <section class="page container" id="page-index">
-    <div>
-      <logo/>
-      <h1 class="page">
-        avktechno-ssr
-      </h1>
-      <h2 class="page__subtitle">
-        Nuxt.js project {{subtitle}}
-      </h2>
-      <div class="page__links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green mr-5">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
+<v-container>
+  <v-layout class="page" column>
+    <section>
+      <div>
+        <h2 class="mb-3">О компании</h2>
+        <p>Компания <strong>АВК-ТЕХНО</strong> - официальный дилер <strong>BAROID (HALLIBURTON)</strong> в Российской Федерации.</p>
+        <p>Компания <strong>АВК-ТЕХНО</strong> на рынке уже 6 лет и за это время она прошла путь от только что зародившейся, до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: утсановки горизонтально-направленного бурения и комплектующих к ним, горно-шахтное оборудование и устаноновки для микротоннелирования, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих  заводов производителей! </p>
+        <p>Компания <strong>АВК-ТЕХНО</strong> с 2010 года обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p>
       </div>
-    </div>
-  </section>
+    </section>
+    <v-divider class="my-4"/>
+    <section>
+      <div>
+        <h2 class="mb-3">Наши возможности</h2>
+      </div>
+      <p>Компания <strong>АВК-ТЕХНО</strong> - официальный дилер <strong>BAROID (HALLIBURTON)</strong> в Российской Федерации.</p>
+      <p>Компания <strong>АВК-ТЕХНО</strong> появилась на свет в недалеком 2010 году, но за это время смогла покорить сердца своих заказчиков и партнеров. Мы с радостью осуществим Вашу мечту и поставим именно ту технику, которую Вы выбрали из обширного мира производителей. </p>
+      <p>Нам доставляет огромное удовольствие работать по всей России и иметь партнеров в самых удаленных ее точках. При этом больше всего поставок осуществляется в  Сибирь, Урал и Ставропольский край с их крупнейшими городами и развитыми регионами, в которых современные технологии ГНБ, микротоннелирование и горно-шахтная промышленность развивается огромными шагами!</p>
+      <p>Установки для горизонтально-направленного бурения, а также запчасти и комплектующие дляних, установки для открытых работ, горно-шахтное оборудование и технику для микротоннелирования, комплекты геотермального оборудования, буровые растворы <strong>Baroid</strong> и многое другое входит в нашу компетенцию.</p>
+      <p><strong>АВК-ТЕХНО</strong>осуществляет продажу и покупку новой и бывшей в употреблении техники по наиболее выгодным для вас ценам, предоставляя своим клиентам лучшие условия. Наша компания осуществляет ремонт, сервисное и гарантийное обслуживание. Мы предлагаем нашим клиентам и партнерам самые выгодные условия сотрудничества, оптимальные цены и широкий ассортимент продукции. Вам понравится быть нашим партнером.</p>
+    </section>
+    <v-divider class="my-4"/>
+    <section>
+      <div>
+        <h2 class="mb-3">Контакты</h2>
+      </div>
+      <div class="contacts__section">
+        <p>Телефон в Москве:</p>
+        <p class="pl-4"><a href="tel:+74952800575" class="green--text lighten-1">+7 (495) 280 0575</a></p>
+        <p>Наши менеджеры:</p>
+        <p class="pl-4">Екатерина: <a href="tel:+79776900403" class="green--text lighten-1">+7 (977) 690 0403</a></p>
+      </div>
+      <div class="contacts__section">
+        <p>Адрес офиса в Москве:</p>
+        <p class="pl-4">
+          <a href="https://yandex.ru/maps/-/CVhGBInc" class="green--text lighten-1">
+            <strong>АВК-ТЕХНО</strong> на Яндекс.Картах
+          </a>
+          <br>
+          г. Москва, Дмитровское шоссе, ул. Дубнинская 81. Склад "Евра 4"
+        </p>
+      </div>
+    </section>
+  </v-layout>
+</v-container>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue';
-
-export default {
-  components: {
-    Logo,
-  },
-  data() {
-    return {
-      subtitle: 'YEEEE ',
-    };
-  },
-};
+export default { };
 </script>
 
-<style>
-#page-index {
-min-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-text-align: center;
-
+<style lang="scss">
+#avmax {
 .page {
-  &__title {
-    font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-    display: block;
-    font-weight: 300;
-    font-size: 100px;
-    color: #35495e;
-    letter-spacing: 1px;
-  }
+  max-width: 800px;
 
-  &__subtitle {
-    font-weight: 300;
-    font-size: 42px;
-    color: #526488;
-    word-spacing: 5px;
-    padding-bottom: 15px;
+  p {
+    text-align: left;
   }
+}
 
-  &__links {
-    padding-top: 15px;
+
+@media all and (min-width: 768px) {
+.page {
+  p {
+    text-align: justify;
   }
+}
 }
 }
 </style>
