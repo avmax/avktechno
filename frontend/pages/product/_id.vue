@@ -1,16 +1,16 @@
 <template>
   <v-layout class="page">
-    <shop-entitity-view :type="type" :id="id"/>
+    <shop-entitity-view-product :type="type" :id="id"/>
   </v-layout>
 </template>
 
 <script>
-import ShopEntitityView from '~/domains/shop/ShopEntityView.vue';
+import ShopEntitityViewProduct from '~/domains/shop/ShopEntityViewProduct.vue';
 import { ENTITY_TYPES } from '~/domains/barrel.types';
 
 export default {
   components: {
-    ShopEntitityView,
+    ShopEntitityViewProduct,
   },
   data() {
     return {

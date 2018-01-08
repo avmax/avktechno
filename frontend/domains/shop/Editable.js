@@ -1,15 +1,7 @@
 import { mapState } from 'vuex';
 import { EDITION_ADD, EDITION_EDIT, EDITION_REMOVE } from '~/domains/barrel.state';
 
-const EditableDumb = {
-  methods: {
-    add() { this.$emit('add'); },
-    edit() { this.$emit('edit'); },
-    remove() { this.$emit('remove'); },
-  },
-};
-
-const EditableSmart = {
+const Editable = {
   computed: {
     ...mapState({
       isEditionAvailable: ({ user }) => user.isAdmin,
@@ -30,4 +22,4 @@ const EditableSmart = {
   },
 };
 
-export { EditableDumb, EditableSmart };
+export default Editable;

@@ -4,6 +4,7 @@
   <v-card-title class="card__title title">{{name}}</v-card-title>
   <v-card-text v-if="price" class="subheading">Цена: {{price}} {{currency}}</v-card-text>
   <v-card-text v-else>&nbsp;</v-card-text>
+  <v-card-text v-if="info" class="subheading">{{info}}</v-card-text>
   <v-card-text v-if="title">{{title}}</v-card-text>
   <v-card-text v-if="description">{{description}}</v-card-text>
   <v-card-actions>
@@ -27,6 +28,7 @@ export default {
     imgUrl: String,
     name: String,
     title: String,
+    info: String,
     description: String,
     price: Number,
     currency: String,

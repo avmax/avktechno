@@ -25,13 +25,8 @@ exports.get = async (req, res, next) => {
     let data = await db.m.p.findAll();
     data = await Promise.all(data.map(async (item) => {
       const model = item.get({ plain: true });
-      const category = await item.getCategories();
-      const brand = await item.getBrand();
-
-      model.refs = {
-        brand: brand ? [brand.get().id] : [],
-        category: category.map(c => c.get().id),
-      };
+      model.info = await model.info;
+      model.refs = await model.refs;
 
       return model;
     }));
@@ -45,25 +40,19 @@ exports.get = async (req, res, next) => {
 
 exports.post = async (req, res, next) => {
   const body = req.body || {};
+  let { refs } = body;
+
   try {
-    refs = {
-      brand: body.refs && body.refs.brand || [],
-      category: body.refs && body.refs.category || []
-    };
-
-    if (!validateRefs(refs)) {
-      throw new ProductError('refs херовые');
-    }
-
     const p = await db.m.p.create(body);
+    refs = {
+      brand: refs && refs.brand || [],
+      category: refs && refs.category || [],
+    };
+    await p.setCategories(refs.category);
+    await p.setBrand(refs.brand[0]);
+
     const model = p.get({ plain: true });
     model.refs = refs;
-
-    await p.addCategories(model.refs.category);
-    if (model.refs.brand[0]) {
-      await p.setBrand(model.refs.brand[0]);
-    }
-
     res.status(200).send(model);
   } catch(err) {
     let message;
@@ -84,19 +73,18 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
   const body = req.body || { };
-  const { refs } = body;
-  try {
-    if (!validateRefs(refs)) {
-      throw new ProductError('refs херовые');
-    }
+  let { refs } = body;
 
+  try {
     const p = await db.m.p.findById(body.id);
     await p.update(body);
-    await p.setCategories(refs.category);
-    if (refs.brand[0]) {
-      await p.setBrand(refs.brand[0])
-    }
 
+    refs = {
+      brand: refs && refs.brand || [],
+      category: refs && refs.category || [],
+    };
+    await p.setCategories(refs.category);
+    await p.setBrand(refs.brand[0]);
     res.status(200).send();
   } catch(err) {
     let message;

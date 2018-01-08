@@ -21,6 +21,7 @@ module.exports = {
   css: [
     'vuetify/dist/vuetify.css',
     { src: '~assets/link.post.css', lang: 'scss' },
+    { src: '~assets/card.post.css', lang: 'scss' },
   ],
   // Build configuration
   build: {

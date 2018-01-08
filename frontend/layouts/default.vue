@@ -16,8 +16,7 @@
     <v-toolbar app fixed clipped-left>
       <v-toolbar-title>АВК-ТЕХНО</v-toolbar-title>
       <router-link class="link mr-3 ml-3" to="/">Главная</router-link>
-      <router-link class="link mr-3" to="/category">Категории</router-link>
-      <router-link class="link mr-3" to="/brand">Бренды</router-link>
+      <router-link class="link mr-3" to="/product">Продукты</router-link>
       <v-spacer></v-spacer>
       <router-link class="mr-5" to="/cart">
         <v-badge right v-model="itemsInCart">

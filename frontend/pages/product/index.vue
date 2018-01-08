@@ -1,14 +1,12 @@
 <template>
-  <v-layout
-  class="page"
-  column>
+  <v-layout class="page" column>
     <div class="page__header">
-      <h1 class="text-xs-center">Все бренды</h1>
+      <h1 class="text-xs-left text-md-center">Все продукты</h1>
     </div>
     <shop-entity-exposition
     :type="type"
     :subtype="subtype"
-    :invert="{ false: 'Показать категории', true: 'Показать продукты' }"
+    :invert="{ false: 'категориям', true: 'брендам' }"
     @invert="invert"/>
   </v-layout>
 </template>
@@ -32,9 +30,9 @@ export default {
   },
   methods: {
     invert() {
-      this.subtype = this.subtype !== ENTITY_TYPES.product
-        ? ENTITY_TYPES.product
-        : ENTITY_TYPES.category;
+      this.type = this.type === ENTITY_TYPES.brand
+        ? ENTITY_TYPES.category
+        : ENTITY_TYPES.brand;
     },
   },
 };

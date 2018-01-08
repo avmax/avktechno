@@ -1,3 +1,5 @@
+const ProductError = require('../errors').ProductError;
+
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     'product',
@@ -128,6 +130,27 @@ module.exports = (sequelize, DataTypes) => {
             return item;
           }).join('___charachteristics___');
           this.setDataValue('charachteristics', data);
+        },
+      },
+    },
+    {
+      getterMethods: {
+        async refs() {
+          const category = await this.getCategories();
+          const brand = await this.getBrand();
+          const refs = {
+            brand: brand ? [brand.get().id] : [],
+            category: category.map(c => c.get().id),
+          }
+          return refs;
+        },
+        async info() {
+          const brand = await this.getBrand();
+          const category = await this.getCategories();
+          return {
+            brand: brand ? 'Бренд:' + brand.get({ plain: true }).name : null,
+            category: 'Категория: ' + category.map(c => c.get({ plain: true }).name).join(','),
+          };
         },
       },
     },

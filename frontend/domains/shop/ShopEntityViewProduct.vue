@@ -1,11 +1,11 @@
 <template>
 <div
-class="shop-entity-view py-2"
-:class="{ 'shop-entity-view_loading' : !isReady }">
+class="shop-entity-view-product py-2"
+:class="{ 'shop-entity-view-product_loading' : !isReady }">
   <v-fade-transition>
-    <v-card v-if="isReady && model" class="shop-entity-view__card">
-      <v-card-media class="shop-entity-view__card-media" :src="model.imgUrl"/>
-      <v-card-title class="shop-entity-view__card-name display-1">
+    <v-card v-if="isReady && model" class="shop-entity-view-product__card">
+      <v-card-media class="shop-entity-view-product__card-media" :src="model.imgUrl"/>
+      <v-card-title class="shop-entity-view-product__card-name display-1">
         {{model.name}}
         <v-spacer/>
         <v-chip
@@ -14,20 +14,20 @@ class="shop-entity-view py-2"
           Цена: {{model.price}} {{model.currency}}
         </v-chip>
       </v-card-title>
-      <v-card-text v-if="model.title" class="shop-entity-view__card-title headline">{{model.title}}</v-card-text>
-      <v-card-text v-if="model.description" class="shop-entity-view__card-description title" v-html="model.description"/>
+      <v-card-text v-if="model.title" class="shop-entity-view-product__card-title headline">{{model.title}}</v-card-text>
+      <v-card-text v-if="model.description" class="shop-entity-view-product__card-description title" v-html="model.description"/>
       <v-divider/>
       <template
       v-for="(feature, index) in model.features">
         <v-card-text
-        class="shop-entity-view__card-feature"
+        class="shop-entity-view-product__card-feature"
         :key="`feature-${index}`">
           <div class="title mb-2" v-if="feature.title">{{feature.title}}</div>
           <v-card-text
-          class="shop-entity-view__card-feature-item py-1 pb-"
+          class="shop-entity-view-product__card-feature-item py-1 pb-"
           v-for="(f, i) in feature.items"
           :key="`feature-${index}-${i}`">
-            <div class="shop-entity-view__card-feature-icon"></div>
+            <div class="shop-entity-view-product__card-feature-icon"></div>
             <div class="body-2">{{f}}</div>
           </v-card-text>
         </v-card-text>
@@ -35,16 +35,16 @@ class="shop-entity-view py-2"
       </template>
       <v-card-text
       v-if="model.charachteristics && model.charachteristics.length"
-      class="shop-entity-view__card-charachteristics-holder">
+      class="shop-entity-view-product__card-charachteristics-holder">
         <v-card-text
         v-for="(c, i) in model.charachteristics"
-        class="shop-entity-view__card-charachteristics pa-0"
+        class="shop-entity-view-product__card-charachteristics pa-0"
         :key="`characteristics-${i}`">
           <div class="title mb-2">{{c.title}}</div>
-          <div class="shop-entity-view__card-charachteristics-item mt-1"
+          <div class="shop-entity-view-product__card-charachteristics-item mt-1"
           v-for="(item, index) in c.items" :key="`characteristics-${i}-${index}`">
-            <span class="shop-entity-view__card-charachteristics-item-key subheading">{{item.key}}:</span>
-            <span class="shop-entity-view__card-charachteristics-item-val body-2 pl-2">{{item.val}}</span>
+            <span class="shop-entity-view-product__card-charachteristics-item-key subheading">{{item.key}}:</span>
+            <span class="shop-entity-view-product__card-charachteristics-item-val body-2 pl-2">{{item.val}}</span>
           </div>
         </v-card-text>
       </v-card-text>
@@ -58,13 +58,13 @@ class="shop-entity-view py-2"
 
   <div
   v-if="!isReady"
-  class="shop-entity-view__ghost">
-    <div class="shop-entity-view__ghost-spinner">
+  class="shop-entity-view-product__ghost">
+    <div class="shop-entity-view-product__ghost-spinner">
       <grid-loader :loading="true"/>
     </div>
   </div>
 
-  <div class="shop-entity-view__controls"
+  <div class="shop-entity-view-product__controls"
   v-if="isEditionEnabled">
     <v-btn
     @click="edit(type, id)"
@@ -84,15 +84,15 @@ class="shop-entity-view py-2"
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import { isEmpty } from 'lodash/fp';
-import { EditableSmart } from './Editable';
+import Editable from './Editable';
 
 export default {
-  name: 'shop-entity-view',
+  name: 'shop-entity-view-product',
   components: {
     CardBase,
     GridLoader,
   },
-  mixins: [EditableSmart],
+  mixins: [Editable],
   props: {
     type: {
       type: String,
@@ -126,7 +126,7 @@ export default {
 
 <style lang="scss" scoped>
 #avmax {
-.shop-entity-view {
+.shop-entity-view-product {
   position: relative;
   width: 100%;
   height: 100%;
@@ -186,7 +186,7 @@ export default {
 
 
 @media all and (min-width: 768px) {
-.shop-entity-view {
+.shop-entity-view-product {
   max-width: 720px;
   margin: 0 auto;
 

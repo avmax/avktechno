@@ -1,7 +1,7 @@
 <template>
   <v-layout class="page" column>
     <div class="page__header">
-      <h1 class="text-xs-center">Корзина</h1>
+      <h1 class="text-xs-left text-md-center">Корзина</h1>
     </div>
 
     <v-layout v-if="!data || !data.length" align-center justify-center>
@@ -22,7 +22,7 @@
       :type="type"
       :subtype="subtype"
       :data="data"
-      :invert="{ false: 'Показать бренды', true: 'Показать продукты' }"
+      :invert="{ false: 'брендам', true: 'категориям' }"
       @invert="invert"/>
     </template>
   </v-layout>
