@@ -21,7 +21,7 @@
     <v-layout row justify-start wrap>
       <v-flex v-if="isEditionAvailable" xs12 md4 lg3>
         <div class="shop-entity-collection__ghost">
-          <card-base name="lololo" title="lololo"/>
+          <card-base name="mock" title="mock"/>
           <div class="shop-entity-collection__ghost-controls">
             <v-btn
             v-if="isEditionEnabled"

@@ -4,7 +4,7 @@
   class="page"
   column>
     <div class="page__header">
-      <h1>Страница категории {{model.name}}</h1>
+      <h1 class="text-xs-center">Страница категории {{model.name}}</h1>
     </div>
     <shop-entity-exposition
     :data="data"

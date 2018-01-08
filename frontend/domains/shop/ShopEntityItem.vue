@@ -5,10 +5,7 @@ class="shop-entity-item"
   <div v-if="isLoading"
   class="shop-entity-item__ghost">
     <card-base
-    class="shop-entity-item__ghost-card"
-    name="lolo"
-    title="lolo"
-    />
+    class="shop-entity-item__ghost-card" name="mock" title="mock"/>
     <div class="shop-entity-item__ghost-spinner">
       <grid-loader :loading="true"/>
     </div>

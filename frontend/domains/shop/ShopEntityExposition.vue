@@ -3,13 +3,14 @@
   <template v-if="!isLoading">
     <div class="shop-entity-exposition__header">
       <v-switch
-      :label="`${!isInverted ? 'Показать бренды' : 'Показать продукты'}`"
+      v-if="invert"
+      :label="`${!isInverted ? invert.false : invert.true}`"
       v-model="isInverted"
-      @change="invert"/>
+      @change="handleInvert"/>
     </div>
 
     <v-flex v-if="isEditionAvailable" xs12>
-      <div class="shop-entity-exposition__ghost mb-3">
+      <div class="shop-entity-exposition__ghost my-3">
         <card-base name="|" title="|"/>
         <div class="shop-entity-exposition__ghost-controls">
           <v-btn
@@ -87,6 +88,7 @@ export default {
       required: true,
     },
     data: Array,
+    invert: Object,
   },
   data() {
     return {
@@ -120,7 +122,7 @@ export default {
     setTimeout(() => this.isLoadingItems = false, 1000);
   },
   methods: {
-    invert() { this.$emit('invert', this.isInverted); },
+    handleInvert() { this.$emit('invert', this.isInverted); },
   },
 };
 </script>

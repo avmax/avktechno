@@ -9,7 +9,7 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   response => response,
-  err => Promise.reject(err.response.data),
+  err => Promise.reject(err.response && err.response.data),
 );
 
 class Products {
@@ -42,5 +42,4 @@ class Api {
 };
 
 const ApiShop = new Api();
-// eslint-disable-next-line
 export { ApiShop };

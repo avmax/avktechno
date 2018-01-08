@@ -32,7 +32,7 @@
         <v-layout column>
           <v-flex
           v-if="notifications && notifications.length"
-          xs12>
+          class="mb-3" xs12>
             <v-alert
             v-for="(notification, index) in notifications"
             :type="notification.type"

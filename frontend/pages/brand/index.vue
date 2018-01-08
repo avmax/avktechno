@@ -2,9 +2,13 @@
   <v-layout
   class="page"
   column>
+    <div class="page__header">
+      <h1 class="text-xs-center">Все бренды</h1>
+    </div>
     <shop-entity-exposition
     :type="type"
     :subtype="subtype"
+    :invert="{ false: 'Показать категории', true: 'Показать продукты' }"
     @invert="invert"/>
   </v-layout>
 </template>
