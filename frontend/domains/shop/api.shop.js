@@ -9,7 +9,7 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   response => response,
-  err => Promise.reject(err.response && err.response.data),
+  err => Promise.reject(err && err.response && err.response.data),
 );
 
 class Products {

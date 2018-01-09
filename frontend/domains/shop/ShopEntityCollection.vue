@@ -10,7 +10,7 @@
   <v-container fluid class="pa-0" grid-list-xl>
     <v-layout row justify-start wrap>
       <slot/>
-      <v-flex v-if="!$slots.default && !isEditionAvailable" xs12>
+      <v-flex v-if="!$slots.default" xs12>
         <h2 class="subheading text-xs-left py-5"> Увы, коллекция пуста</h2>
       </v-flex>
     </v-layout>

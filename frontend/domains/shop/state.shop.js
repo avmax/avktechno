@@ -1,8 +1,8 @@
-import { NOTIFICATION_OPEN } from '~/domains/barrel.state';
+// import { NOTIFICATION_OPEN } from '~/domains/barrel.state';
 
 import {
   ENTITY_TYPES,
-  NOTIFICATION_TYPES,
+  // NOTIFICATION_TYPES,
 } from '~/domains/barrel.types';
 
 import {
@@ -84,16 +84,17 @@ const actions = (entityTypes) => {
         if (data) {
           data.forEach(dataItem => commit(ENTITY_ADD(val), dataItem));
         }
+        return Promise.resolve(data);
       } catch (err) {
-        commit(NOTIFICATION_OPEN, { message: `${ENTITY_LOAD(val)}: ${err.message}`, type: NOTIFICATION_TYPES.warning });
-        return Promise.reject(err.message);
+        console.log('err', err);
+        return Promise.reject(err && err.message);
       }
     };
   };
 
   const a = {
-    [ENTITY_LOAD()]: ({ dispatch }) => {
-      Object.values(entityTypes).forEach(v => dispatch(ENTITY_LOAD(v)));
+    nuxtServerInit({ dispatch }) {
+      return Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_LOAD(v))));
     },
   };
 

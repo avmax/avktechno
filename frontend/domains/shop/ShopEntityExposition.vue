@@ -138,7 +138,7 @@ export default {
         };
 
         return collection;
-      });
+      }).reverse();
 
       return collections;
     },
@@ -178,6 +178,10 @@ export default {
 <style lang="scss" scoped>
 #avmax {
 .shop-entity-exposition {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+
   &__item {
     position: relative;
 

@@ -50,7 +50,7 @@
 export default { };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #avmax {
 .page {
   max-width: 800px;

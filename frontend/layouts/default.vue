@@ -59,7 +59,6 @@
 <script>
 import { mapState } from 'vuex';
 import {
-  ENTITY_LOAD,
   USER_SIGN_IN,
   USER_SIGN_OUT,
   NOTIFICATION_CLOSE,
@@ -111,9 +110,6 @@ export default {
       get() { return this.$store.state.cart.items.length; },
       set() { },
     },
-  },
-  async beforeMount() {
-    await this.$store.dispatch(ENTITY_LOAD());
   },
   methods: {
     notificationClose(index) { this.$store.commit(NOTIFICATION_CLOSE, index); },
