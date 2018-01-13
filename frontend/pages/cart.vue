@@ -4,7 +4,7 @@
       <h1 class="text-xs-left text-md-center">Корзина</h1>
     </div>
 
-    <v-layout v-if="!data || !data.length" align-center justify-center>
+    <v-layout v-if="!collections || !collections.length" align-center justify-center>
       <h2>Корзина пуста</h2>
     </v-layout>
 
@@ -21,27 +21,31 @@
       <shop-entity-exposition
       :type="type"
       :subtype="subtype"
-      :data="data"
-      :invert="{ false: 'брендам', true: 'категориям' }"
-      @invert="invert"/>
+      :data="collections"/>
     </template>
   </v-layout>
 </template>
 
 <script>
 import ShopEntityExposition from '~/domains/shop/ShopEntityExposition.vue';
-import { ENTITY_TYPES, NOTIFICATION_TYPES } from '~/domains/barrel.types';
-import { NOTIFICATION_OPEN, NOTIFICATION_LAST_CLOSE } from '~/domains/barrel.state';
 import { ApiCart } from '~/domains/barrel.api';
+import { ENTITY_TYPES, NOTIFICATION_TYPES } from '~/domains/barrel.types';
+import {
+  NOTIFICATION_OPEN,
+  NOTIFICATION_LAST_CLOSE,
+} from '~/domains/barrel.state';
+import { defaultsDeep } from 'lodash/fp';
 
 export default {
   components: {
     ShopEntityExposition,
   },
+  layout: 'easy',
   data() {
     return {
       type: ENTITY_TYPES.category,
       subtype: ENTITY_TYPES.product,
+      hiddenType: ENTITY_TYPES.brand,
       form: {
         isValid: false,
         value: {
@@ -65,49 +69,58 @@ export default {
     };
   },
   computed: {
-    data() {
-      const data = this.$store.getters.entities(this.type).map((id) => {
-        const collectionModel = this.$store.getters.entity(this.type, id);
+    collections() {
+      const { state, getters } = this.$store;
+      const { cart } = state;
+
+      const collections = getters.entities(this.type).map((id) => {
+        const collectionModel = getters.entity(this.type, id);
         const collection = {
           model: collectionModel,
-          items: collectionModel && collectionModel.refs[this.subtype]
-            .filter(id => this.$store.state.cart.items.indexOf(id) !== -1)
-            .map(id => this.$store.getters.entity(this.subtype, id)),
+          items: collectionModel.refs[this.subtype]
+            .filter(id => cart.items.indexOf(id) !== -1)
+            .map((id) => {
+              const item = defaultsDeep({}, getters.entity(this.subtype, id));
+              if (item.info) {
+                item.info = item.info[this.hiddenType];
+              }
+              return item;
+            }),
         };
 
         return collection;
       });
 
-      return data.filter(c => c.items.length);
+      return collections.filter(c => c.items.length);
     },
     items() {
-      return this.$store.state.cart.items
-        .map(id => this.$store.getters.entity(ENTITY_TYPES.product, id));
+      const { state, getters } = this.$store;
+      const { cart } = state;
+      return cart.items
+        .map(id => getters.entity(ENTITY_TYPES.product, id));
     },
   },
   methods: {
-    invert() {
-      this.type = this.type === ENTITY_TYPES.brand
-        ? ENTITY_TYPES.category
-        : ENTITY_TYPES.brand;
-    },
     async submit() {
-      if (this.$refs.form.validate()) {
+      const { form } = this.$refs;
+      const { commit } = this.$store;
+
+      if (form.validate()) {
         const data = { val: this.form.value, items: this.items };
         try {
           await ApiCart.askForCall(data);
-          this.$store.commit(NOTIFICATION_OPEN, {
+          commit(NOTIFICATION_OPEN, {
             message: 'Спасибо! Вот-вот свяжемся с Вами!',
             type: NOTIFICATION_TYPES.success,
           });
-          setTimeout(() => this.$store.commit(NOTIFICATION_LAST_CLOSE), 3000);
-          this.$refs.form.reset();
+          commit(NOTIFICATION_LAST_CLOSE, 3000);
+          form.reset();
         } catch (err) {
-          this.$store.commit(NOTIFICATION_OPEN, {
+          commit(NOTIFICATION_OPEN, {
             message: 'Просим прощения, у нас произошла ошибка!',
             type: NOTIFICATION_TYPES.error,
           });
-          setTimeout(() => this.$store.commit(NOTIFICATION_LAST_CLOSE), 3000);
+          setTimeout(() => commit(NOTIFICATION_LAST_CLOSE), 3000);
         }
       }
     },

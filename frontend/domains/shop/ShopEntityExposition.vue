@@ -1,89 +1,70 @@
 <template>
 <v-layout class="shop-entity-exposition" column>
-  <template v-if="!isLoading">
-
-    <div class="shop-entity-exposition__header">
-      <v-switch
-      v-if="invert"
-      :label="`Сортировать по: ${!isInverted ? invert.false : invert.true}`"
-      v-model="isInverted"
-      @change="handleInvert"/>
-    </div>
-
-    <v-flex v-if="isEditionAvailable" xs12>
-      <div class="shop-entity-exposition__ghost my-3">
-        <component :is="itemComponent" ghost/>
-        <div class="shop-entity-exposition__ghost-controls">
-          <v-btn
-          v-if="isEditionEnabled"
-          @click="add(type)"
-          fab large>
-            <v-icon>add</v-icon>
-          </v-btn>
-        </div>
+  <v-flex v-if="isEditionAvailable" xs12>
+    <div class="shop-entity-exposition__ghost my-3">
+      <component :is="itemComponent" ghost/>
+      <div class="shop-entity-exposition__ghost-controls">
+        <v-btn
+        v-if="isEditionEnabled"
+        @click="add(type)"
+        fab large>
+          <v-icon>add</v-icon>
+        </v-btn>
       </div>
-    </v-flex>
+    </div>
+  </v-flex>
 
-    <v-flex v-for="c in model" :key="c.model.id" xs12 class="mb-4">
-      <shop-entity-collection
-      v-if="!isLoading"
-      class="shop-entity-exposition__collection"
-      :title="c.model.title"
-      :name="c.model.name"
-      :link="{ name: `${type}-id`, params: { id: c.model.id }}">
-        <div class="ml-2 d-inline-block" slot="header"
-        v-if="isEditionEnabled">
-          <v-btn @click="edit(type, c.model.id)" fab small>
-            <v-icon color="white">edit</v-icon>
-          </v-btn>
-          <v-btn @click="remove(type, c.model.id)" fab small>
-            <v-icon color="white">clear</v-icon>
-          </v-btn>
+  <v-flex v-for="c in model" :key="c.model.id" xs12 class="mb-4">
+    <shop-entity-collection
+    class="shop-entity-exposition__collection"
+    :title="c.model.title"
+    :name="c.model.name"
+    :link="{ name: `${type}-id`, params: { id: c.model.id }}">
+      <div class="ml-2 d-inline-block" slot="header"
+      v-if="isEditionEnabled">
+        <v-btn @click="edit(type, c.model.id)" fab small>
+          <v-icon color="white">edit</v-icon>
+        </v-btn>
+        <v-btn @click="remove(type, c.model.id)" fab small>
+          <v-icon color="white">clear</v-icon>
+        </v-btn>
+      </div>
+      <v-flex v-if="isEditionAvailable" xs12 md4 lg3>
+        <div class="shop-entity-exposition__ghost shop-entity-exposition__ghost_type_item">
+          <component :is="itemComponent" ghost/>
+          <div class="shop-entity-exposition__ghost-controls">
+            <v-btn
+            v-if="isEditionEnabled"
+            @click="add(subtype, type, c.model.id)"
+            fab large>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </div>
         </div>
-        <v-flex v-if="isEditionAvailable" xs12 md4 lg3>
-          <div class="shop-entity-exposition__ghost shop-entity-exposition__ghost_type_item">
-            <component :is="itemComponent" ghost/>
-            <div class="shop-entity-exposition__ghost-controls">
-              <v-btn
-              v-if="isEditionEnabled"
-              @click="add(subtype, type, c.model.id)"
-              fab large>
-                <v-icon>add</v-icon>
-              </v-btn>
-            </div>
+      </v-flex>
+      <v-flex v-for="s in c.items" :key="s.id" xs12 md4 lg3>
+        <div class="shop-entity-exposition__item">
+          <component
+          :is="itemComponent"
+          v-bind="s"
+          :link="{ name: `${subtype}-id`, params: { id: s.id }}"/>
+          <div v-if="isEditionEnabled" class="shop-entity-exposition__item-controls">
+            <v-btn
+            @click="edit(subtype, s.id)"
+            fab small>
+              <v-icon color="white">edit</v-icon>
+            </v-btn>
+            <v-btn
+            @click="remove(subtype, s.id)"
+            fab small>
+              <v-icon color="white">clear</v-icon>
+            </v-btn>
           </div>
-        </v-flex>
-        <v-flex v-for="s in c.items" :key="s.id" xs12 md4 lg3>
-          <div class="shop-entity-exposition__item">
-            <component
-            :is="itemComponent"
-            v-bind="s"
-            :link="{ name: `${subtype}-id`, params: { id: s.id }}"
-            :hiddenType="unusedType"/>
-            <div v-if="!isLoading && isEditionEnabled" class="shop-entity-exposition__item-controls">
-              <v-btn
-              @click="edit(subtype, s.id)"
-              fab small>
-                <v-icon color="white">edit</v-icon>
-              </v-btn>
-              <v-btn
-              @click="remove(subtype, s.id)"
-              fab small>
-                <v-icon color="white">clear</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </v-flex>
-      </shop-entity-collection>
-      <v-divider/>
-    </v-flex>
-  </template>
-
-  <template v-else>
-    <v-layout fill-height row align-center justify-center>
-      <grid-loader :loading="true"/>
-    </v-layout>
-  </template>
+        </div>
+      </v-flex>
+    </shop-entity-collection>
+    <v-divider/>
+  </v-flex>
 </v-layout>
 </template>
 
@@ -93,7 +74,6 @@ import ShopEntityCollection from '~/domains/shop/ShopEntityCollection.vue';
 import ShopEntityItemProduct from '~/domains/shop/ShopEntityItemProduct.vue';
 import ShopEntityItemBrand from '~/domains/shop/ShopEntityItemBrand.vue';
 import ShopEntityItemCategory from '~/domains/shop/ShopEntityItemCategory.vue';
-import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import Editable from './Editable';
 
 export default {
@@ -103,10 +83,13 @@ export default {
     ShopEntityItemProduct,
     ShopEntityItemBrand,
     ShopEntityItemCategory,
-    GridLoader,
   },
   mixins: [Editable],
   props: {
+    data: {
+      type: Array,
+      required: true,
+    },
     type: {
       type: String,
       required: true,
@@ -115,37 +98,9 @@ export default {
       type: String,
       required: true,
     },
-    data: Array,
-    invert: Object,
-  },
-  data() {
-    return {
-      isLoading: true,
-      isLoadingItems: true,
-      isInverted: false,
-    };
   },
   computed: {
-    collections() {
-      let collections = this.$store.getters.entities(this.type);
-      collections = collections.map((id) => {
-        const collectionModel = this.$store.getters.entity(this.type, id);
-        const collection = {
-          model: collectionModel,
-          items: collectionModel.refs[this.subtype]
-            .map(id => this.$store.getters.entity(this.subtype, id))
-            .reverse(),
-        };
-
-        return collection;
-      }).reverse();
-
-      return collections;
-    },
-    model() { return this.data || this.collections; },
-    unusedType() {
-      return Object.values(ENTITY_TYPES).filter(v => v !== this.type && v !== this.subtype)[0];
-    },
+    model() { return this.data; },
     itemComponent() {
       let cmp;
       switch (this.subtype) {
@@ -164,13 +119,6 @@ export default {
 
       return cmp;
     },
-  },
-  mounted() {
-    setTimeout(() => this.isLoading = false, 500);
-    setTimeout(() => this.isLoadingItems = false, 1000);
-  },
-  methods: {
-    handleInvert() { this.$emit('invert', this.isInverted); },
   },
 };
 </script>
@@ -218,4 +166,3 @@ export default {
 }
 }
 </style>
-

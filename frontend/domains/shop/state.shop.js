@@ -13,10 +13,10 @@ import Vue from 'vue';
 import { assign, isEmpty } from 'lodash/fp';
 
 
-const ENTITY_LOAD = type => `загрузить сущности типа <${type}>`;
-const ENTITY_ADD = type => `добавить сущность типа <${type}>`;
-const ENTITY_EDIT = type => `изменить сущность типа <${type}>`;
-const ENTITY_REMOVE = type => `удалить сущность типа <${type}>`;
+const ENTITY_LOAD = type => `shop: загрузить сущности типа <${type}>`;
+const ENTITY_ADD = type => `shop: добавить сущность типа <${type}>`;
+const ENTITY_EDIT = type => `shop: изменить сущность типа <${type}>`;
+const ENTITY_REMOVE = type => `shop: удалить сущность типа <${type}>`;
 
 
 const state = entityTypes => () => {
@@ -28,7 +28,7 @@ const state = entityTypes => () => {
 const getters = () => {
   const g = {
     entity: state => (type, id) => state[type][id],
-    entities: state => type => Object.keys(state[type]),
+    entities: state => type => Object.keys(state[type]).map(key => +key),
   };
 
   return g;
@@ -93,8 +93,11 @@ const actions = (entityTypes) => {
   };
 
   const a = {
-    nuxtServerInit({ dispatch }) {
-      return Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_LOAD(v))));
+    // nuxtServerInit({ dispatch }) {
+    //   return Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_LOAD(v))));
+    // },
+    [ENTITY_LOAD()]({ dispatch }) {
+      return Object.values(entityTypes).forEach(v => dispatch(ENTITY_LOAD(v)));
     },
   };
 

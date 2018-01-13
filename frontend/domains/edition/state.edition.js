@@ -2,6 +2,9 @@ import {
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
+
+  FILTER_ENTITY_AVAILABLE_ADD,
+  FILTER_ENTITY_AVAILABLE_REMOVE,
 } from '~/domains/barrel.state';
 import {
   EDITION_TYPES,
@@ -15,8 +18,8 @@ import { assign, difference } from 'lodash/fp';
 import { refsEqualIs } from './utils.edition';
 
 
-const EDITION_START = 'начать редактирование магазина';
-const EDITION_STOP = 'прекратить редактирование магазина';
+const EDITION_START = 'edition: начать редактирование магазина';
+const EDITION_STOP = 'edition: прекратить редактирование магазина';
 const EDITION_ADD = type => `edition: создать сущность типа <${type}>`;
 const EDITION_EDIT = type => `edition: изменить сущность типа <${type}>`;
 const EDITION_REMOVE = type => `edition: удалить сущность типа <${type}>`;
@@ -97,6 +100,7 @@ const actions = (entitiyTypes) => {
       try {
         await ApiShop[key].delete(id);
         commit(ENTITY_REMOVE(val), id);
+        commit(FILTER_ENTITY_AVAILABLE_REMOVE(val), id);
       } catch (err) {
         console.log(err);
         return Promise.reject(err);
@@ -132,6 +136,8 @@ const actions = (entitiyTypes) => {
               });
             });
           }
+
+          commit(FILTER_ENTITY_AVAILABLE_ADD(val), { id: data.id, name: data.name });
         } catch (err) {
           console.log(err);
           return Promise.reject(err);

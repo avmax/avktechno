@@ -4,7 +4,7 @@
     <v-card-media class="card__media mb-3" :src="imgUrl"/>
     <v-card-title class="card__text title pt-0">{{name}}</v-card-title>
     <v-card-text class="card__text subheading pt-0">Цена: {{price}} {{currency}}</v-card-text>
-    <v-card-text class="card__text subheading card__info pt-0">{{info[hiddenType]}}</v-card-text>
+    <v-card-text class="card__text subheading card__info pt-0">{{info}}</v-card-text>
     <v-card-actions class="shop-entity-item-product__actions">
       <v-layout column>
         <v-flex xs12 class="pa-0">
@@ -15,11 +15,13 @@
         <v-flex xs12 class="pa-0 pb-3">
           <v-btn class="shop-entity-item-product__action-item"
           v-if="!isAddedToCart"
+          color="teal"
           @click="addToCart">
             Добавить в корзину
           </v-btn>
           <v-btn class="shop-entity-item-product__action-item"
           v-else
+          color="red lighten-1"
           @click="removeFromCart">
             Убрать из корзины
           </v-btn>
@@ -49,10 +51,9 @@ export default {
     link: Object,
     imgUrl: String,
     name: String,
-    info: Object,
+    info: String,
     price: [Number, String],
     currency: String,
-    hiddenType: String,
     ghost: Boolean,
   },
 };

@@ -2,11 +2,16 @@ import { mapState } from 'vuex';
 import { EDITION_ADD, EDITION_EDIT, EDITION_REMOVE } from '~/domains/barrel.state';
 
 const Editable = {
+  props: {
+    isEditable: Boolean,
+  },
   computed: {
     ...mapState({
-      isEditionAvailable: ({ user }) => user.isAdmin,
-      isEditionEnabled: ({ edition, user }) => user.isAdmin && !edition.isEnabled,
+      isAdmin: ({ user }) => user.isAdmin,
+      isEnabled: ({ edition }) => edition.isEnabled,
     }),
+    isEditionAvailable() { return this.isAdmin && this.isEditable; },
+    isEditionEnabled() { return this.isAdmin && !this.isEnabled && this.isEditable; },
   },
   methods: {
     add(type, refType, refId) {

@@ -1,5 +1,5 @@
-const USER_SIGN_IN = 'вход в учетку';
-const USER_SIGN_OUT = 'выход из учетки';
+const USER_SIGN_IN = 'user: вход в учетку';
+const USER_SIGN_OUT = 'user: выход из учетки';
 
 
 const state = () => ({

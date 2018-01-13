@@ -51,6 +51,8 @@ module.exports = (sequelize, DataTypes) => {
           return data;
         },
         set(v) {
+          v.title = v.title || '';
+          v.title = v.text || '';
           let data = v.title + '___footer-title___' + v.text;
           this.setDataValue('footer', data);
         },

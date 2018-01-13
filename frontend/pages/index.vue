@@ -47,7 +47,9 @@
 </template>
 
 <script>
-export default { };
+export default {
+  layout: 'easy',
+};
 </script>
 
 <style lang="scss" scoped>

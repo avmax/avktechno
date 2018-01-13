@@ -7,9 +7,10 @@
       <h1 class="text-xs-left text-md-center">Страница категории {{model.name}}</h1>
     </div>
     <shop-entity-exposition
-    :data="data"
+    :data="collections"
     :type="type"
-    :subtype="subtype"/>
+    :subtype="subtype"
+    id-editable/>
   </v-layout>
 </template>
 
@@ -18,9 +19,15 @@
 <script>
 import ShopEntityExposition from '~/domains/shop/ShopEntityExposition.vue';
 import { ENTITY_TYPES } from '~/domains/barrel.types';
+import {
+  FILTER_ENTITY_AVAILABLE_SET,
+  FILTER_DROP,
+} from '~/domains/barrel.state';
+import { defaultsDeep } from 'lodash/fp';
 
 export default {
-  name: 'page-categories-brands',
+  name: 'page-category',
+  layout: 'hard',
   components: {
     ShopEntityExposition,
   },
@@ -28,23 +35,55 @@ export default {
     return {
       type: ENTITY_TYPES.brand,
       subtype: ENTITY_TYPES.product,
+      hiddenType: ENTITY_TYPES.category,
     };
   },
   computed: {
     model() { return this.$store.getters.entity(ENTITY_TYPES.category, this.$route.params.id); },
-    data() {
-      return this.model && this.model.refs[this.type].map((id) => {
-        const collectionModel = this.$store.getters.entity(this.type, id);
-        const collection = {
-          model: collectionModel,
-          items: collectionModel && collectionModel.refs[this.subtype]
-            .filter(id => this.model && this.model.refs[ENTITY_TYPES.product].indexOf(id) !== -1)
-            .map(id => this.$store.getters.entity(this.subtype, id)),
-        };
+    collections() {
+      const { state, getters } = this.$store;
+      const { filter } = state;
 
-        return collection;
-      });
+      return this.model.refs[this.type]
+        .filter(id => filter.chosen[this.type].indexOf(id) !== -1)
+        .map((id) => {
+          const collectionModel = getters.entity(this.type, id);
+          const collection = {
+            model: collectionModel,
+            items: collectionModel.refs[this.subtype]
+              .filter(id => this.model.refs[ENTITY_TYPES.product].indexOf(id) !== -1)
+              .map((id) => {
+                const item = defaultsDeep({}, getters.entity(this.subtype, id));
+                if (item.info) {
+                  item.info = item.info[this.hiddenType];
+                }
+                return item;
+              }),
+          };
+
+          return collection;
+        });
     },
+  },
+  created() {
+    const { commit, getters } = this.$store;
+    commit(FILTER_DROP);
+    const items = [];
+    const subitems = [];
+
+    this.model.refs[this.type]
+      .forEach((id) => {
+        const { name, refs } = getters.entity(this.type, id);
+        items.push({ id, name });
+        refs[this.subtype].forEach((id) => {
+          const { name } = getters.entity(this.subtype, id);
+          subitems.push({ id, name });
+        });
+      });
+    let COMMIT = FILTER_ENTITY_AVAILABLE_SET(this.type);
+    commit(COMMIT, items);
+    COMMIT = FILTER_ENTITY_AVAILABLE_SET(this.subtype);
+    commit(COMMIT, subitems);
   },
 };
 </script>

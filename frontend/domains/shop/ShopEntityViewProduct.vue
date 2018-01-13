@@ -5,7 +5,7 @@ class="shop-entity-view-product py-2"
   <v-fade-transition>
     <v-card v-if="isReady && model" class="shop-entity-view-product__card">
       <v-card-media class="shop-entity-view-product__card-media" :src="model.imgUrl"/>
-      <v-card-title class="shop-entity-view-product__card-name display-1">
+      <v-card-title class="shop-entity-view-product__card-header display-1">
         {{model.name}}
         <v-spacer/>
         <v-chip
@@ -24,12 +24,14 @@ class="shop-entity-view-product py-2"
         <v-btn
         class="d-inline-block shop-entity-view-product__card-action ma-0"
         v-if="!isAddedToCart"
+        color="teal"
         @click="addToCart">
           Добавить в корзину
         </v-btn>
         <v-btn
         v-else
         class="d-inline-block shop-entity-view-product__card-action ma-0"
+        color="red lighten-1"
         @click="removeFromCart">
           Убрать из корзины
         </v-btn>
@@ -97,6 +99,7 @@ class="shop-entity-view-product py-2"
 </template>
 
 <script>
+import { ENTITY_TYPES } from '~/domains/barrel.types';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import { isEmpty } from 'lodash/fp';
@@ -111,11 +114,6 @@ export default {
   },
   mixins: [Editable, ShopEntityProduct],
   props: {
-    type: {
-      type: String,
-      required: true,
-      default: null,
-    },
     id: {
       type: [String, Number],
       required: true,
@@ -124,6 +122,7 @@ export default {
   },
   data() {
     return {
+      type: ENTITY_TYPES.product,
       isReady: false,
     };
   },
@@ -220,6 +219,12 @@ export default {
 @media all and (max-width: 768px) {
 .shop-entity-view-product {
   &__card {
+    &-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .display-1 {
       font-size: 22px !important;
       line-height: 34px !important;
