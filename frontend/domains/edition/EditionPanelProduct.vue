@@ -206,28 +206,22 @@
 
 <script>
 import Vue from 'vue';
-import { defaultsDeep } from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 import EditionPanel from './EditionPanel';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
 
 export default {
-  name: 'shop-edition-panel-product',
+  name: 'edition-panel-product',
   mixins: [EditionPanel],
   data() {
     return {
-      labels: {
-        name: 'Название',
-        title: 'Заголовок',
-        imgUrl: 'URL картинки',
-      },
       rules: {
         name: [validatorRequired()],
         imgUrl: [validatorRequired()],
         features: [validatorRequired()],
         charachteristics: [validatorRequired()],
       },
-      isValidCharachteristics: [],
     };
   },
   computed: {
@@ -240,11 +234,11 @@ export default {
       return Object.values(categories).map(({ id, name }) => ({ id, name }));
     },
   },
-  beforeMount() {
-    this.model = this.value ? defaultsDeep({}, this.value) : {};
+  created() {
+    this.model = this.value ? cloneDeep(this.value) : {};
     let { refs } = this.model;
     refs = refs || {};
-    refs.brand = refs.brand ? refs.brand[0] : [];
+    refs.brand = refs.brand ? refs.brand[0] : null;
     refs.category = refs.category || [];
     this.model.refs = refs;
     this.model.footer = this.model.footer || {};
@@ -282,6 +276,17 @@ export default {
     },
     charachteristicsAddItem(index) {
       this.model.charachteristics[index].items.push({ key: '', val: '' });
+    },
+    getProperModel() {
+      const refs = cloneDeep(this.model.refs);
+      let m = {};
+      Object.keys(refs)
+        .filter(key => !Array.isArray(refs[key]))
+        .forEach(key => refs[key] = refs[key] ? [refs[key]] : []);
+
+      m = cloneDeep(this.model);
+      m.refs = refs;
+      return m;
     },
   },
 };

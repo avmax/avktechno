@@ -7,9 +7,8 @@ import {
 import {
   EDITION_TYPES,
 } from '~/domains/barrel.types';
-
+import { cloneDeep } from 'lodash/fp';
 import { mapState } from 'vuex';
-import { assign, defaultsDeep } from 'lodash/fp';
 
 
 export default {
@@ -28,35 +27,22 @@ export default {
       isTypeEdit: ({ edition }) => edition.editionType === EDITION_TYPES.edit,
     }),
   },
-  beforeMount() {
-    this.model = this.value || {};
+  created() {
+    this.model = this.value ? cloneDeep(this.value) : {};
   },
   methods: {
-    getCleanModel() {
-      const refs = assign({}, this.model.refs);
-      let m = {};
-      if (refs) {
-        Object.keys(refs)
-          .filter(key => !Array.isArray(refs[key]))
-          .forEach(key => refs[key] = refs[key] ? [refs[key]] : []);
-
-        m = defaultsDeep({}, this.model);
-        m.refs = refs;
-      } else {
-        m = this.model;
-      }
-
-      return m;
+    getProperModel() {
+      return this.model;
     },
     onFormControlChange() {
       if (this.isTypeEdit) {
-        this.$store.commit(ENTITY_EDIT(this.type), this.getCleanModel());
+        this.$store.commit(ENTITY_EDIT(this.type), this.getProperModel());
       }
     },
     async handleSubmit() {
       if (this.$refs.form.validate()) {
         try {
-          await this.$store.dispatch(EDITION_SAVE(this.type), this.getCleanModel());
+          await this.$store.dispatch(EDITION_SAVE(this.type), this.getProperModel());
           this.$store.commit(EDITION_STOP);
         } catch (err) {
           this.message = err.message || 'произошла ошибка :(';
@@ -64,9 +50,6 @@ export default {
       }
     },
     handleAbort() {
-      this.abort();
-    },
-    abort() {
       this.$store.dispatch(EDITION_STOP);
     },
   },

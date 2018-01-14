@@ -57,7 +57,7 @@
 import TheHeader from '~/domains/common/TheHeader.vue';
 import {
   NOTIFICATION_CLOSE,
-  ENTITY_LOAD,
+  ENTITY_ALL_LOAD,
   SPINNER_HIDE,
 } from '~/domains/barrel.state';
 import { ENTITY_TYPES } from '~/domains/barrel.types';
@@ -110,7 +110,7 @@ export default {
     notificationClose(index) { this.$store.commit(NOTIFICATION_CLOSE, index); },
   },
   beforeMount() {
-    this.$store.dispatch(ENTITY_LOAD());
+    this.$store.dispatch(ENTITY_ALL_LOAD());
     setTimeout(() => this.$store.commit(SPINNER_HIDE), 1000);
   },
 };

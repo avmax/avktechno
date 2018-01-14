@@ -20,39 +20,27 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.BLOB,
         get() {
-          let data = this.getDataValue('description');
-          if (data) {
-            data = data.toString('utf-8');
-          }
+          let data = this.getDataValue('description') || '';
+          data = data.toString('utf-8');
           return data;
         },
       },
       footer: {
         type: DataTypes.BLOB,
         get() {
-          let data = this.getDataValue('footer');
-          if (data) {
-            data = data.toString('utf-8');
-          }
-
-          if (data) {
-            data = data.split('___footer-title___');
-            data = {
-              title: data[0] || '',
-              text: data[1] || '',
-            };
-          } else {
-            data = {
-              title: '',
-              text: '',
-            };
-          }
+          let data = this.getDataValue('footer') || '';
+          data = data.toString('utf-8');
+          data = data.split('___footer-title___');
+          data = {
+            title: data[0] || '',
+            text: data[1] || '',
+          };
 
           return data;
         },
         set(v) {
           v.title = v.title || '';
-          v.title = v.text || '';
+          v.text = v.text || '';
           let data = v.title + '___footer-title___' + v.text;
           this.setDataValue('footer', data);
         },
@@ -72,29 +60,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BLOB,
         allowNull: true,
         get() {
-          let data = this.getDataValue('features');
-          if (data) {
-            data = data.toString('utf-8');
-          }
-
-          if (data) {
-            data = data.split('___feature___');
-            data = data.map(item => {
-              item = item.split('___feature-title___');
-              item = {
-                title: item[0],
-                items: item[1],
-              }
-              item.items = item.items.split('___feature-item___');
-              return item;
-            });
-          } else {
-            data = [];
-          }
+          let data = this.getDataValue('features') || '';
+          data = data.toString('utf-8');
+          data = data.split('___feature___').filter(item => !!item);
+          data = data.map(item => {
+            item = item.split('___feature-title___');
+            item = {
+              title: item[0],
+              items: item[1].split('___feature-item___'),
+            }
+            return item;
+          });
           return data;
         },
         set(v) {
-          let data = v.map(item => {
+          const data = v.map(item => {
             item.items = item.items.join('___feature-item___');
             item = item.title + '___feature-title___' + item.title + item.items;
             return item;
@@ -106,30 +86,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BLOB,
         allowNull: true,
         get() {
-          let data = this.getDataValue('charachteristics');
-          if (data) {
-            data = data.toString('utf-8');
-          }
-          if (data) {
-            data = data.split('___charachteristics___');
-            data = data.map(item => {
-              item = item.split('___charachteristics-title___');
-              item = {
-                title: item[0],
-                items: item[1],
-              };
-              item.items = item.items.split('___charachteristics-item___');
-              item.items = item.items.map(s => s.split('___charachteristics-kv___'));
-              item.items = item.items.filter(kv => kv[0] && kv[1]).map(kv => ({ key: kv[0], val: kv[1] }));
-              return item;
-            });
-          } else {
-            data = [];
-          }
+          let data = this.getDataValue('charachteristics') || '';
+          data = data.toString('utf-8');
+          data = data.split('___charachteristics___').filter(item => !!item);
+          data = data.map(item => {
+            item = item.split('___charachteristics-title___');
+            item = {
+              title: item[0],
+              items: item[1],
+            };
+            item.items = item.items.split('___charachteristics-item___');
+            item.items = item.items.map(s => s.split('___charachteristics-kv___'));
+            item.items = item.items.filter(kv => kv[0] && kv[1]).map(kv => ({ key: kv[0], val: kv[1] }));
+            return item;
+          });
           return data;
         },
         set(v) {
-          let data = v.map(item => {
+          const data = v.map(item => {
             if (!item.title) return;
             item.items = item.items.map(kv => kv.key + '___charachteristics-kv___' + kv.val);
             item = item.title + '___charachteristics-title___' + item.items.join('___charachteristics-item___');
@@ -154,8 +128,8 @@ module.exports = (sequelize, DataTypes) => {
           const brand = await this.getBrand();
           const category = await this.getCategories();
           return {
-            brand: brand ? 'Бренд:' + brand.get({ plain: true }).name : null,
-            category: 'Категория: ' + category.map(c => c.get({ plain: true }).name).join(','),
+            brand: brand ? 'Бренд: ' + brand.get({ plain: true }).name : null,
+            category: 'Категория: ' + category.map(c => c.get({ plain: true }).name).join(', '),
           };
         },
       },

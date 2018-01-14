@@ -23,7 +23,7 @@ import {
   FILTER_ENTITY_AVAILABLE_SET,
   FILTER_DROP,
 } from '~/domains/barrel.state';
-import { defaultsDeep } from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 
 export default {
   name: 'page-category',
@@ -53,7 +53,7 @@ export default {
             items: collectionModel.refs[this.subtype]
               .filter(id => this.model.refs[ENTITY_TYPES.product].indexOf(id) !== -1)
               .map((id) => {
-                const item = defaultsDeep({}, getters.entity(this.subtype, id));
+                const item = cloneDeep(getters.entity(this.subtype, id));
                 if (item.info) {
                   item.info = item.info[this.hiddenType];
                 }

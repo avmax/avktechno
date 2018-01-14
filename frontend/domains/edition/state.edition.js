@@ -14,7 +14,7 @@ import {
   ApiShop,
 } from '~/domains/barrel.api';
 
-import { assign, difference } from 'lodash/fp';
+import { difference, cloneDeep } from 'lodash/fp';
 import { refsEqualIs } from './utils.edition';
 
 
@@ -35,15 +35,15 @@ const state = () => () => ({
 });
 
 const mutations = () => {
-  const startEdition = (state, payload) => {
+  const editionStart = (state, payload) => {
     state.isEnabled = true;
     state.editionType = payload.editionType;
     state.entityType = payload.entityType;
     state.value = payload.entity || {};
-    state.backup = payload.entity && payload.entity.id ? assign({}, payload.entity) : null;
+    state.backup = payload.entity && payload.entity.id ? cloneDeep(payload.entity) : null;
   };
 
-  const stopEdition = (state) => {
+  const editionStop = (state) => {
     state.isEnabled = false;
     state.editionType = null;
     state.entityType = null;
@@ -52,15 +52,15 @@ const mutations = () => {
   };
 
   const m = {
-    [EDITION_START]: startEdition,
-    [EDITION_STOP]: stopEdition,
+    [EDITION_START]: editionStart,
+    [EDITION_STOP]: editionStop,
   };
 
   return m;
 };
 
 const actions = (entitiyTypes) => {
-  const addEntity = function(key, val) {
+  const editionAdd = function(key, val) {
     return (context, payload) => {
       const { commit } = context;
       const p = {
@@ -79,7 +79,7 @@ const actions = (entitiyTypes) => {
     };
   };
 
-  const editEntity = function(key, val) {
+  const editionEdit = function(key, val) {
     return (context, id) => {
       const { rootState, commit } = context;
       const entity = rootState.shop[val][id];
@@ -94,7 +94,7 @@ const actions = (entitiyTypes) => {
     };
   };
 
-  const removeEntity = function(key, val) {
+  const editionRemove = function(key, val) {
     return async (context, id) => {
       const { commit } = context;
       try {
@@ -108,13 +108,13 @@ const actions = (entitiyTypes) => {
     };
   };
 
-  const stopEdition = (context) => {
+  const editionStop = (context) => {
     const { state, commit } = context;
     if (state.backup) { commit(ENTITY_EDIT(state.entityType), state.backup); }
     commit(EDITION_STOP);
   };
 
-  const saveEdition = function(key, val) {
+  const editionSave = function(key, val) {
     return async (context, entity) => {
       const { state, rootState, commit } = context;
 
@@ -130,7 +130,7 @@ const actions = (entitiyTypes) => {
 
             Object.keys(refs).forEach((k) => {
               refs[k].forEach((v) => {
-                const ref = rootState.shop[k][v];
+                const ref = cloneDeep(rootState.shop[k][v]);
                 ref.refs[val].push(data.id);
                 commit(ENTITY_EDIT(k), ref);
               });
@@ -156,16 +156,18 @@ const actions = (entitiyTypes) => {
               const toBeInserted = difference(n, o);
               const toBePulled = difference(o, n);
               toBeInserted.forEach((v) => {
-                const ref = rootState.shop[k][v];
+                const ref = cloneDeep(rootState.shop[k][v]);
                 if (ref) {
                   ref.refs[val].push(entity.id);
+                  commit(ENTITY_EDIT(k), ref);
                 }
               });
 
               toBePulled.forEach((v) => {
-                const ref = rootState.shop[k][v];
+                const ref = cloneDeep(rootState.shop[k][v]);
                 if (ref) {
                   ref.refs[val].splice(ref.refs[val].indexOf(entity.id), 1);
+                  commit(ENTITY_EDIT(k), ref);
                 }
               });
             });
@@ -181,15 +183,15 @@ const actions = (entitiyTypes) => {
   };
 
   const a = {
-    [EDITION_STOP]: stopEdition,
+    [EDITION_STOP]: editionStop,
   };
 
   Object.keys(entitiyTypes).forEach((key) => {
     const val = entitiyTypes[key];
-    a[EDITION_ADD(val)] = addEntity(key, val);
-    a[EDITION_EDIT(val)] = editEntity(key, val);
-    a[EDITION_REMOVE(val)] = removeEntity(key, val);
-    a[EDITION_SAVE(val)] = saveEdition(key, val);
+    a[EDITION_ADD(val)] = editionAdd(key, val);
+    a[EDITION_EDIT(val)] = editionEdit(key, val);
+    a[EDITION_REMOVE(val)] = editionRemove(key, val);
+    a[EDITION_SAVE(val)] = editionSave(key, val);
   });
 
   return a;

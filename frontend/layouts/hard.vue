@@ -75,7 +75,7 @@
 import TheHeader from '~/domains/common/TheHeader.vue';
 import {
   NOTIFICATION_CLOSE,
-  ENTITY_LOAD,
+  ENTITY_ALL_LOAD,
   FILTER_VISIBILITY_TOGGLE,
   SPINNER_HIDE,
 } from '~/domains/barrel.state';
@@ -133,7 +133,7 @@ export default {
     filterPanelToggle() { this.$store.commit(FILTER_VISIBILITY_TOGGLE); },
   },
   beforeMount() {
-    this.$store.dispatch(ENTITY_LOAD());
+    this.$store.dispatch(ENTITY_ALL_LOAD());
     setTimeout(() => this.$store.commit(SPINNER_HIDE), 1000);
   },
 };

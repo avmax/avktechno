@@ -30,10 +30,10 @@ const start = async () => {
   try {
     await db.init();
     server.listen(PORT, () => {
-      console.log(`server is listening on port ${PORT}`);
+      console.log(`Сервер запущен на порту ${PORT}`);
     });
   } catch(err) {
-    console.error('DB FAILURE:', err);
+    console.error('БД НАЕБНУЛАСЬ:', err);
   }
 };
 

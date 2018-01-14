@@ -1,5 +1,5 @@
 import {
-  ENTITY_LOAD,
+  ENTITY_ALL_LOAD,
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
@@ -46,7 +46,7 @@ import {
 
 
 export {
-  ENTITY_LOAD,
+  ENTITY_ALL_LOAD,
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,

@@ -22,7 +22,7 @@ import {
   FILTER_DROP,
 } from '~/domains/barrel.state';
 import { mapState } from 'vuex';
-import { intersection, defaultsDeep } from 'lodash/fp';
+import { intersection, cloneDeep } from 'lodash/fp';
 
 export default {
   name: 'page-categories-brands',
@@ -45,7 +45,7 @@ export default {
             items: collectionModel.refs[this.subtype]
               .filter(id => filter.chosen[this.subtype].indexOf(id) !== -1)
               .map((id) => {
-                const item = defaultsDeep({}, getters.entity(this.subtype, id));
+                const item = cloneDeep(getters.entity(this.subtype, id));
                 if (item.info) {
                   item.info = item.info[this.hiddenType];
                 }

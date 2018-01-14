@@ -1,10 +1,13 @@
 const db = require('../db');
 const CategoryError = require('../errors').CategoryError;
-const { isEmpty, uniq } = require('lodash/fp');
+const { uniq } = require('lodash/fp');
+
 
 exports.get = async (req, res, next) => {
   const body = req.body || {};
-  try {
+
+  try
+  {
     let data = await db.m.c.findAll();
     data = await Promise.all(data.map(async (item) => {
       const model = item.get({ plain: true });
@@ -18,22 +21,27 @@ exports.get = async (req, res, next) => {
     }));
 
     res.status(200).send(data);
-  } catch(err) {
-    console.log(err);
+  }
+  catch(err)
+  {
     next(new CategoryError('сервер: Казус при загрузке категорий', err));
   }
 };
 
+
 exports.post = async (req, res, next) => {
   const body = req.body || {};
-  try {
+
+  try
+  {
     const c = await db.m.c.create(body);
     const model = c.get({ plain: true });
-
     model.refs = { brand: [], product: [] };
 
     res.status(200).send(model);
-  } catch(err) {
+  }
+  catch(err)
+  {
     let message;
     switch (err.constructor) {
       case db.s.UniqueConstraintError:
@@ -42,19 +50,24 @@ exports.post = async (req, res, next) => {
       default:
         message = 'сервер: Казус при добавлении категории :(';
     }
-    console.log(err);
+
     next(new CategoryError(message, err));
   }
 };
 
+
 exports.put = async (req, res, next) => {
   const body = req.body || { };
 
-  try {
+  try
+  {
     const c = await db.m.c.findById(body.id);
     await c.update(body);
+
     res.status(200).send();
-  } catch(err) {
+  }
+  catch(err)
+  {
     let message;
     switch (err.constructor) {
       case CategoryError:
@@ -63,24 +76,31 @@ exports.put = async (req, res, next) => {
       default:
         message = 'сервер: Казус при обновлении категории :(';
     }
+
     next(new CategoryError(message, err));
   }
 };
+
 
 exports.delete = async (req, res, next) => {
   const body = req.body || { };
   const { id } = body;
 
-  try {
+  try
+  {
     const c = await db.m.c.findById(id);
     c.destroy();
+
     res.status(200).send();
-  } catch(err) {
+  }
+  catch(err)
+  {
     let message;
     switch (err.constructor) {
       default:
         message = 'сервер: Казус при удалении категории :(';
     }
+
     next(new CategoryError(message, err));
   }
 };

@@ -1,10 +1,13 @@
 const db = require('../db');
 const BrandError = require('../errors').BrandError;
-const { isEmpty, uniq, flatten } = require('lodash/fp');
+const { uniq, flatten } = require('lodash/fp');
+
 
 exports.get = async (req, res, next) => {
   const body = req.body || {};
-  try {
+
+  try
+  {
     let data = await db.m.b.findAll();
     data = await Promise.all(data.map(async (item) => {
       const model = item.get({ plain: true });
@@ -16,23 +19,30 @@ exports.get = async (req, res, next) => {
       };
       return model;
     }));
+
     res.status(200).send(data);
-  } catch(err) {
+  }
+  catch(err)
+  {
     console.log(err);
     next(new BrandError('сервер: Казус при загрузке брендов', err));
   }
 };
 
+
 exports.post = async (req, res, next) => {
   const body = req.body || {};
-  try {
+
+  try
+  {
     const b = await db.m.b.create(body);
     const model = b.get({ plain: true });
-
     model.refs = { product: [], category: [] };
 
     res.status(200).send(model);
-  } catch(err) {
+  }
+  catch(err)
+  {
     let message;
     switch (err.constructor) {
       case db.s.UniqueConstraintError:
@@ -46,14 +56,19 @@ exports.post = async (req, res, next) => {
   }
 };
 
+
 exports.put = async (req, res, next) => {
   const body = req.body || { };
 
-  try {
+  try
+  {
     const b = await db.m.b.findById(body.id);
     await b.update(body);
+
     res.status(200).send();
-  } catch(err) {
+  }
+  catch(err)
+  {
     let message;
     switch (err.constructor) {
       case BrandError:
@@ -62,9 +77,11 @@ exports.put = async (req, res, next) => {
       default:
         message = 'сервер: Казус при обновлении бренда :(';
     }
+
     next(new BrandError(message, err));
   }
 };
+
 
 exports.delete = async (req, res, next) => {
   const body = req.body || { };

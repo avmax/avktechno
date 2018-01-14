@@ -34,7 +34,7 @@ import {
   NOTIFICATION_OPEN,
   NOTIFICATION_LAST_CLOSE,
 } from '~/domains/barrel.state';
-import { defaultsDeep } from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 
 export default {
   components: {
@@ -80,7 +80,7 @@ export default {
           items: collectionModel.refs[this.subtype]
             .filter(id => cart.items.indexOf(id) !== -1)
             .map((id) => {
-              const item = defaultsDeep({}, getters.entity(this.subtype, id));
+              const item = cloneDeep(getters.entity(this.subtype, id));
               if (item.info) {
                 item.info = item.info[this.hiddenType];
               }
