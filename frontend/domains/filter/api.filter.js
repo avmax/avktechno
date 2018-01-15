@@ -7,4 +7,4 @@ class Api {
 }
 
 const ApiFilter = new Api();
-export default ApiFilter;
+export { ApiFilter };

@@ -7,10 +7,11 @@
 
   <slot/>
 
-  <router-link to="/cart" nuxt style="width: 40px; min-width: 40px;" flat class="mr-4">
+  <router-link to="/cart" nuxt flat class="mr-4">
     <v-badge right :value="itemsInCart">
+      <span class="hidden-sm-and-down link link_uppercase">Корзина</span>
+      <v-icon class="hidden-md-and-up" large color="grey lighten-1">shopping_cart</v-icon>
       <span slot="badge">{{itemsInCart}}</span>
-      <v-icon large color="grey lighten-1">shopping_cart</v-icon>
     </v-badge>
   </router-link>
 </v-toolbar>

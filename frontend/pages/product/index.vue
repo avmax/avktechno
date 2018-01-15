@@ -4,6 +4,7 @@
       <h1 class="text-xs-left text-md-center">Все продукты</h1>
     </div>
     <shop-entity-exposition
+    v-if="isReady"
     :type="type"
     :subtype="subtype"
     :data="collections"
@@ -29,6 +30,11 @@ export default {
   layout: 'hard',
   components: {
     ShopEntityExposition,
+  },
+  data() {
+    return {
+      isReady: false,
+    };
   },
   computed: {
     collections() {
@@ -73,6 +79,7 @@ export default {
   },
   created() {
     const { commit, getters } = this.$store;
+
     commit(FILTER_DROP);
     commit(FILTER_TYPE_SET, ENTITY_TYPES.category);
     commit(FILTER_SUBTYPE_SET, ENTITY_TYPES.product);
@@ -82,6 +89,8 @@ export default {
       payload = payload.map(v => ({ id: v.id, name: v.name }));
       commit(COMMIT, payload);
     });
+
+    this.isReady = true;
   },
 };
 </script>

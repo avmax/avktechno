@@ -1,6 +1,6 @@
 <template>
 <div @keyup.esc="handleAbort">
-  <h3 class="pb-3">{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
+  <h3 class="mb-3">{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
   <v-form
     ref="form"
     v-model="isValid">
@@ -11,6 +11,7 @@
       label="Название"
       autofocus
       :rules="rules.name"
+      validate-on-blur
       required/>
 
       <v-text-field
@@ -81,7 +82,7 @@
             label="Заголовок списка"/>
             <v-btn
             @click="featuresRemove(index)"
-            fab small>
+            fab small color="red lighten-1">
               <v-icon>
                 remove
               </v-icon>
@@ -97,10 +98,11 @@
             multi-line
             :rows="1"
             :rules="rules.features"
+            validate-on-blur
             required/>
             <v-btn
             @click="featuresRemoveItem(index, i)"
-            fab small>
+            fab small color="red lighten-2">
               <v-icon>
                 remove
               </v-icon>
@@ -123,7 +125,7 @@
             label="Заголовок таблицы"/>
             <v-btn
             @click="charachteristicsRemove(index)"
-            fab small>
+            fab small color="red lighten-1">
               <v-icon>
                 remove
               </v-icon>
@@ -138,6 +140,7 @@
               @input="onFormControlChange"
               label="свойство"
               :rules="rules.charachteristics"
+              validate-on-blur
               required/>
             </v-flex>
             <v-flex xs5 class="ml-2">
@@ -146,19 +149,20 @@
               @input="onFormControlChange"
               label="значение"
               :rules="rules.charachteristics"
+              validate-on-blur
               required/>
             </v-flex>
             <v-flex xs1>
               <v-btn
               @click="charachteristicsRemoveItem(index, i)"
-              fab small>
+              fab small color="red lighten-2">
                 <v-icon>
                   remove
                 </v-icon>
               </v-btn>
             </v-flex>
           </v-layout>
-          <v-btn class="ma-0 mb-1" @click="charachteristicsAddItem(index, i)">добавить</v-btn>
+          <v-btn class="ma-0 mb-1" @click="charachteristicsAddItem(index)">добавить</v-btn>
         </v-form>
         <v-btn class="ma-0" @click="charachteristicsAdd">добавить характеристику</v-btn>
       </div>
@@ -172,7 +176,8 @@
       multiple
       max-height="400"
       @input="onFormControlChange"
-      persistent-hint/>
+      persistent-hint
+      color="white"/>
 
       <v-select
       label="Выберите бренд"
@@ -182,7 +187,8 @@
       item-value="id"
       max-height="400"
       @input="onFormControlChange"
-      persistent-hint/>
+      persistent-hint
+      color="white"/>
 
       <v-btn
       color="primary"
@@ -318,4 +324,3 @@ export default {
 }
 }
 </style>
-

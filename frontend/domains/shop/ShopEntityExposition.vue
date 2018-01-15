@@ -1,6 +1,6 @@
 <template>
 <v-layout class="shop-entity-exposition" column>
-  <v-flex v-if="isEditionAvailable" xs12>
+  <template v-if="isEditionAvailable">
     <div class="shop-entity-exposition__ghost my-3">
       <component :is="itemComponent" ghost/>
       <div class="shop-entity-exposition__ghost-controls">
@@ -12,14 +12,16 @@
         </v-btn>
       </div>
     </div>
-  </v-flex>
+    <v-divider class="mb-4 mt-5"/>
+  </template>
 
-  <v-flex v-for="c in model" :key="c.model.id" xs12 class="mb-4">
+  <template v-for="c in model">
     <shop-entity-collection
     class="shop-entity-exposition__collection"
     :title="c.model.title"
     :name="c.model.name"
-    :link="{ name: `${type}-id`, params: { id: c.model.id }}">
+    :link="{ name: `${type}-id`, params: { id: c.model.id }}"
+    :key="c.model.id">
       <div class="ml-2 d-inline-block" slot="header"
       v-if="isEditionEnabled">
         <v-btn @click="edit(type, c.model.id)" fab small>
@@ -63,8 +65,8 @@
         </div>
       </v-flex>
     </shop-entity-collection>
-    <v-divider/>
-  </v-flex>
+    <v-divider :key="c.model.id" class="mb-4 mt-5"/>
+  </template>
 </v-layout>
 </template>
 

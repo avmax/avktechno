@@ -31,10 +31,28 @@
     }
   }
 
+  &_uppercase {
+    text-transform: uppercase;
+  }
+
   &.nuxt-link-exact-active, &_active {
     font-weight: bold;
 
     &::after, &::before {
+      opacity: 0;
+    }
+
+    &:hover {
+      cursor: default;
+    }
+  }
+}
+
+.nuxt-link-exact-active {
+  .link {
+    font-weight: bold;
+
+    &::before, &::after {
       opacity: 0;
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="filter-panel">
-  <h2>Фильтр</h2>
+  <h2 class="mb-3">Фильтр</h2>
 
     <v-select
     v-if="type"
@@ -10,7 +10,8 @@
     item-value="value"
     item-disabled="disabled"
     v-model="type"
-    persistent-hint/>
+    persistent-hint
+    color="white"/>
 
     <v-select
     v-if="subtype"
@@ -20,10 +21,10 @@
     item-value="value"
     item-disabled="disabled"
     v-model="subtype"
-    persistent-hint/>
+    persistent-hint
+    color="white"/>
 
     <v-select
-    v-if="model.category.length"
     label="Выберите категории"
     :items="model.category"
     v-model="category"
@@ -31,10 +32,10 @@
     item-value="id"
     max-height="400"
     multiple
-    persistent-hint/>
+    persistent-hint
+    color="white"/>
 
     <v-select
-    v-if="model.brand.length"
     label="Выберите бренды"
     :items="model.brand"
     v-model="brand"
@@ -42,11 +43,13 @@
     item-value="id"
     max-height="400"
     multiple
-    persistent-hint/>
+    persistent-hint
+    color="white"/>
 
     <v-btn
     @click.native="close()"
     block
+    color="blue-grey lighten-1"
     class="mb-3">
       Закрыть
     </v-btn>
@@ -71,14 +74,23 @@ import { mapMutations } from 'vuex';
 
 export default {
   name: 'filter-panel',
+  data() {
+    return {
+      types: {
+        [ENTITY_TYPES.category]: 'Категория',
+        [ENTITY_TYPES.brand]: 'Бренд',
+        [ENTITY_TYPES.product]: 'Продукт',
+      },
+    };
+  },
   computed: {
     model() {
       return {
         types: Object.values(ENTITY_TYPES)
           .filter(v => v !== ENTITY_TYPES.product)
-          .map(v => ({ name: v, value: v, disabled: v === this.subtype })),
+          .map(v => ({ name: this.types[v], value: v, disabled: v === this.subtype })),
         subtypes: Object.values(ENTITY_TYPES)
-          .map(v => ({ name: v, value: v, disabled: v === this.type })),
+          .map(v => ({ name: this.types[v], value: v, disabled: v === this.type })),
         category: this.$store.state.filter.available.category,
         brand: this.$store.state.filter.available.brand,
       };

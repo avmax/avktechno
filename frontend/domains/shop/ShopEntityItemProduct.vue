@@ -6,7 +6,7 @@
     <v-card-text class="card__text subheading pt-0">Цена: {{price}} {{currency}}</v-card-text>
     <v-card-text class="card__text subheading card__info pt-0">{{info}}</v-card-text>
     <v-card-actions class="shop-entity-item-product__actions">
-      <v-layout column>
+      <v-layout wrap>
         <v-flex xs12 class="pa-0">
           <v-btn :to="link" nuxt class="shop-entity-item-product__action-item mb-2">
             Узнать подробнее
@@ -35,7 +35,16 @@
     <v-card-title class="card__title title pb-0">name</v-card-title>
     <v-card-text class="subheading pb-0">price</v-card-text>
     <v-card-text class="subheading">info</v-card-text>
-    <v-card-actions><v-btn>Читать подробно</v-btn></v-card-actions>
+    <v-card-actions>
+      <v-layout wrap>
+        <v-flex xs12 class="pa-0 pb-3">
+          <v-btn block>Читать подробно</v-btn>
+        </v-flex>
+        <v-flex xs12 class="pa-0 pb-3">
+          <v-btn block>Добавить в корзину</v-btn>
+        </v-flex>
+      </v-layout>
+    </v-card-actions>
   </template>
 </v-card>
 </template>

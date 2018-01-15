@@ -1,13 +1,11 @@
+/* eslint-disable */
 import axios from 'axios';
-// eslint-disable-next-line
-import APP_CONFIG from '~/config';
 
-function signIn(login, password) {
-  return axios.post(`${APP_CONFIG.baseURL}/sign-in`, {
-    login: login,
-    password: password,
-  });
+class Api {
+  signIn({ login, password }) {
+    return axios.post('/sign-in', { login, password });
+  }
 }
 
-// eslint-disable-next-line
-export { signIn };
+const ApiUser = new Api();
+export { ApiUser };

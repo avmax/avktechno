@@ -1,8 +1,10 @@
 <template>
   <v-app id="avmax" dark>
+
     <the-header/>
 
     <template v-if="!isSpinner">
+
       <v-navigation-drawer
       :value="isEditionPanelOpened"
       disable-resize-watcher
@@ -17,46 +19,33 @@
       </v-navigation-drawer>
 
       <v-content>
-        <v-container fluid fill-height>
-          <v-layout column style="width: 100%;">
-            <v-flex
-            v-if="notifications && notifications.length"
-            class="mb-3" xs12>
-              <v-alert
-              v-for="(notification, index) in notifications"
-              :type="notification.type"
-              :value="true"
-              dismissible
-              class="text-xs-center"
-              style="width: 100%; color: black;"
-              transition="slide-y-transition"
-              @input="notificationClose(index)"
-              :key="`index-${index}`">
-                {{notification.message}}
-              </v-alert>
-            </v-flex>
+        <the-notifications/>
+        <v-container fluid >
+          <v-layout column fill-width>
+            <v-flex>
               <nuxt/>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-content>
     </template>
 
     <template v-else>
-      <v-layout fill-height row align-center justify-center>
+      <v-layout  row align-center justify-center>
         <grid-loader :loading="true" color="teal"/>
       </v-layout>
     </template>
 
-    <v-footer app fixed>
-      <span>&copy; 2017</span>
-    </v-footer>
+    <the-footer/>
+
   </v-app>
 </template>
 
 <script>
 import TheHeader from '~/domains/common/TheHeader.vue';
+import TheFooter from '~/domains/common/TheFooter.vue';
+import TheNotifications from '~/domains/common/TheNotifications.vue';
 import {
-  NOTIFICATION_CLOSE,
   ENTITY_ALL_LOAD,
   SPINNER_HIDE,
 } from '~/domains/barrel.state';
@@ -71,6 +60,8 @@ export default {
   name: 'layout-advanced',
   components: {
     TheHeader,
+    TheFooter,
+    TheNotifications,
     EditionPanelCategory,
     EditionPanelBrand,
     EditionPanelProduct,
@@ -83,7 +74,6 @@ export default {
   },
   computed: {
     ...mapState({
-      notifications: ({ ui }) => ui.notification,
       isSpinner: ({ ui }) => ui.spinner,
       isEditionPanelOpened: ({ edition }) => edition.isEnabled,
       editionPanel({ edition }) {
@@ -105,9 +95,6 @@ export default {
         return component;
       },
     }),
-  },
-  methods: {
-    notificationClose(index) { this.$store.commit(NOTIFICATION_CLOSE, index); },
   },
   beforeMount() {
     this.$store.dispatch(ENTITY_ALL_LOAD());

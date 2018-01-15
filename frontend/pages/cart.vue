@@ -130,6 +130,10 @@ export default {
 
 <style lang="scss" scoped>
 #avmax {
+.page {
+  min-height: calc(100vh - 132px);
+}
+
 @media all and (min-width: 768px) {
 .page {
   &__form {

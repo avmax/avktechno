@@ -1,6 +1,6 @@
 <template>
 <div @keyup.esc="handleAbort">
-  <h3>{{isTypeCreate ? 'Создать бренд' : 'Редактировать бренд'}}</h3>
+  <h3 class="mb-3">{{isTypeCreate ? 'Создать бренд' : 'Редактировать бренд'}}</h3>
   <v-form
     ref="form"
     @keyup.enter.native="handleSubmit"
@@ -12,6 +12,7 @@
       label="Название"
       autofocus
       :rules="rules.name"
+      validate-on-blur
       required/>
 
       <v-text-field
@@ -38,7 +39,7 @@
         Сохранить изменения
       </v-btn>
       <v-btn
-      color="primary"
+      color="blue-grey lighten-1"
       @click="handleAbort()">
         Прекратить изменения
       </v-btn>

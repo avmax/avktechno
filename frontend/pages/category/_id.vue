@@ -10,7 +10,7 @@
     :data="collections"
     :type="type"
     :subtype="subtype"
-    id-editable/>
+    is-editable/>
   </v-layout>
 </template>
 
@@ -67,10 +67,8 @@ export default {
   },
   created() {
     const { commit, getters } = this.$store;
-    commit(FILTER_DROP);
     const items = [];
     const subitems = [];
-
     this.model.refs[this.type]
       .forEach((id) => {
         const { name, refs } = getters.entity(this.type, id);
@@ -80,10 +78,15 @@ export default {
           subitems.push({ id, name });
         });
       });
-    let COMMIT = FILTER_ENTITY_AVAILABLE_SET(this.type);
+
+    commit(FILTER_DROP);
+    let COMMIT;
+    COMMIT = FILTER_ENTITY_AVAILABLE_SET(this.type);
     commit(COMMIT, items);
     COMMIT = FILTER_ENTITY_AVAILABLE_SET(this.subtype);
     commit(COMMIT, subitems);
+    COMMIT = FILTER_ENTITY_AVAILABLE_SET(this.hiddenType);
+    commit(COMMIT, [{ id: this.model.id, name: this.model.name }]);
   },
 };
 </script>

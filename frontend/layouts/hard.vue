@@ -1,8 +1,10 @@
 <template>
   <v-app id="avmax" dark>
+
     <the-header>
-      <v-btn style="width: 40px; min-width: 40px;" @click.native="filterPanelToggle" flat class="mr-3">
-        <v-icon large color="grey lighten-1">sort</v-icon>
+      <v-btn @click.native="filterPanelToggle" flat class="mr-3">
+        <span class="hidden-sm-and-down" style="font-weight: normal;">Фильтр</span>
+        <v-icon class="hidden-md-and-up" large color="grey lighten-1">sort</v-icon>
       </v-btn>
     </the-header>
 
@@ -31,50 +33,36 @@
       mobile-break-point="1080"
       width="400"
       class="pa-3">
-        <filter-panel></filter-panel>
+        <filter-panel/>
       </v-navigation-drawer>
 
       <v-content>
-        <v-container fluid fill-height>
-          <v-layout column style="width: 100%;">
-            <v-flex
-            v-if="notifications && notifications.length"
-            class="mb-3" xs12>
-              <v-alert
-              v-for="(notification, index) in notifications"
-              :type="notification.type"
-              :value="true"
-              dismissible
-              class="text-xs-center"
-              style="width: 100%; color: black;"
-              transition="slide-y-transition"
-              @input="notificationClose(index)"
-              :key="`index-${index}`">
-                {{notification.message}}
-              </v-alert>
-            </v-flex>
+        <the-notifications/>
+        <v-container fluid >
+          <v-layout column fill-width>
+            <v-flex>
               <nuxt/>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-content>
     </template>
 
     <template v-else>
-      <v-layout fill-height row align-center justify-center>
+      <v-layout  row align-center justify-center>
         <grid-loader :loading="true" color="teal"/>
       </v-layout>
     </template>
 
-    <v-footer app fixed>
-      <span>&copy; 2017</span>
-    </v-footer>
+    <the-footer/>
   </v-app>
 </template>
 
 <script>
 import TheHeader from '~/domains/common/TheHeader.vue';
+import TheFooter from '~/domains/common/TheFooter.vue';
+import TheNotifications from '~/domains/common/TheNotifications.vue';
 import {
-  NOTIFICATION_CLOSE,
   ENTITY_ALL_LOAD,
   FILTER_VISIBILITY_TOGGLE,
   SPINNER_HIDE,
@@ -91,6 +79,8 @@ export default {
   name: 'layout-advanced',
   components: {
     TheHeader,
+    TheFooter,
+    TheNotifications,
     EditionPanelCategory,
     EditionPanelBrand,
     EditionPanelProduct,
@@ -104,7 +94,6 @@ export default {
   },
   computed: {
     ...mapState({
-      notifications: ({ ui }) => ui.notification,
       isSpinner: ({ ui }) => ui.spinner,
       isEditionPanelOpened: ({ edition }) => edition.isEnabled,
       isFilterPanelOpened: ({ filter }) => filter.isActive,
@@ -129,7 +118,6 @@ export default {
     }),
   },
   methods: {
-    notificationClose(index) { this.$store.commit(NOTIFICATION_CLOSE, index); },
     filterPanelToggle() { this.$store.commit(FILTER_VISIBILITY_TOGGLE); },
   },
   beforeMount() {
