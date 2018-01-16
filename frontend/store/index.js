@@ -9,9 +9,16 @@ import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
 
 
-const store = () => new Vuex.Store({
-  modules: { shop, edition, ui, user, cart, filter },
-  plugins: [createLogger()],
-});
+const store = () => {
+  const cfg = {
+    modules: { shop, edition, ui, user, cart, filter },
+    plugins: [],
+  };
 
+  if (!process.env.isProd) {
+    cfg.plugins.push(createLogger());
+  }
+
+  return new Vuex.Store(cfg);
+};
 export default () => store();

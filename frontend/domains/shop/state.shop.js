@@ -90,13 +90,15 @@ const actions = (entityTypes) => {
   };
 
   const a = {
-    // nuxtServerInit({ dispatch }) {
-    //   return Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_ALL_LOAD(v))));
-    // },
     [ENTITY_ALL_LOAD()]({ dispatch }) {
       return Object.values(entityTypes).forEach(v => dispatch(ENTITY_ALL_LOAD(v)));
     },
   };
+
+  if (process.env.isProd) {
+    // eslint-disable-next-line
+    a.nuxtServerInit = ({ dispatch }) => Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_ALL_LOAD(v))));
+  }
 
   Object.keys(entityTypes).forEach((key) => {
     const val = entityTypes[key];

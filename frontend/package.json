@@ -5,13 +5,14 @@
   "author": "avmax <avmax.web@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "NODE_ENV='development' nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "prod": "nuxt build && nuxt generate"
+    "prod:start": "NODE_ENV='production' nuxt build && nuxt start",
+    "prod:generate": "NODE_ENV='production' nuxt build && nuxt generate"
   },
   "dependencies": {
     "axios": "^0.17.1",
