@@ -33,13 +33,30 @@
       </div>
       <div class="contacts__section">
         <p>Адрес офиса в Москве:</p>
-        <p class="pl-4">
-          <a href="https://yandex.ru/maps/-/CVhGBInc" class="green--text lighten-1">
-            <strong>АВК-ТЕХНО</strong> на Яндекс.Картах
-          </a>
-          <br>
+        <p class="pl-4 mb-4">
           г. Москва, Дмитровское шоссе, ул. Дубнинская 81. Склад "Евра 4"
         </p>
+
+        <gmap-map
+        class="page__map mb-5"
+        :center="maps.moscow.center"
+        :zoom="maps.moscow.zoom">
+          <gmap-marker
+          :position="maps.moscow.center"/>
+        </gmap-map>
+
+        <p>Адрес офиса в Санкт-Петербурге:</p>
+        <p class="pl-4 mb-4">
+          Ленинградская обл., Тельмановское с.п., автодорога "Подъезд к г.Колпино", дом 5. Склад "Евра 4"
+        </p>
+
+        <gmap-map
+        class="page__map"
+        :center="maps.peter.center"
+        :zoom="maps.peter.zoom">
+          <gmap-marker
+          :position="maps.peter.center"/>
+        </gmap-map>
       </div>
     </section>
   </v-layout>
@@ -49,6 +66,26 @@
 <script>
 export default {
   layout: 'easy',
+  data() {
+    return {
+      maps: {
+        moscow: {
+          center: {
+            lat: 55.891441,
+            lng: 37.555696,
+          },
+          zoom: 17,
+        },
+        peter: {
+          center: {
+            lat: 59.725295,
+            lng: 30.609047,
+          },
+          zoom: 17,
+        },
+      },
+    };
+  },
 };
 </script>
 
@@ -59,6 +96,11 @@ export default {
 
   p {
     text-align: left;
+  }
+
+  &__map {
+    height: 300px;
+    width: 100%;
   }
 }
 
