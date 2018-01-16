@@ -6,7 +6,10 @@ const config = {
     host: 'localhost',
   },
   server: {
-    port: process.env.SERVER_PORT || '4251',
+    port: process.env.SERVER_PORT || 4251,
+  },
+  client: {
+    port: process.env.CLIENT_PORT || 4252,
   },
 };
 

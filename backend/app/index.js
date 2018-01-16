@@ -1,15 +1,16 @@
 const db = require('./db');
-const { server: config } = require('../config');
+const config = require('../config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const server = express();
-const PORT = config.port;
+const SERVER_PORT = config.server.port;
+const CLIENT_PORT = config.client.port;
 
 
 server.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', `http://127.0.0.1:${CLIENT_PORT}`);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -29,11 +30,11 @@ server.use((err, req, res, next) => {
 const start = async () => {
   try {
     await db.init();
-    server.listen(PORT, () => {
-      console.log(`Сервер запущен на порту ${PORT}`);
+    server.listen(SERVER_PORT, () => {
+      console.log(`сервер запущен на порту ${SERVER_PORT}`, `клиент ожидается на порту ${CLIENT_PORT}`);
     });
   } catch(err) {
-    console.error('БД НАЕБНУЛАСЬ:', err);
+    console.error('сервер наебнулся:', err);
   }
 };
 
