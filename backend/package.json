@@ -5,7 +5,8 @@
   "author": "avmax <avmax.web@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV='dev' SERVER_PORT=4251 gulp dev"
+    "dev": "NODE_ENV='dev' SERVER_PORT=4251 gulp dev",
+    "prod": "NODE_ENV='dev' SERVER_PORT=4251 gulp prod"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
