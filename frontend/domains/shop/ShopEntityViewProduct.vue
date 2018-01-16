@@ -1,15 +1,19 @@
 <template>
 <div
-class="shop-entity-view-product py-2"
-:class="{ 'shop-entity-view-product_loading' : !isReady }">
+class="shop-entity-view-product py-2">
   <v-fade-transition>
-    <v-card v-if="isReady && model" class="shop-entity-view-product__card">
+    <v-card v-if="model" class="shop-entity-view-product__card">
       <v-card-media class="shop-entity-view-product__card-media" :src="model.imgUrl"/>
-      <v-card-title class="shop-entity-view-product__card-header display-1">
+      <v-card-title class="shop-entity-view-product__card-header display-1 pb-0" style="font-weight: bolder;">
         {{model.name}}
-        <v-spacer/>
+      </v-card-title>
+      <v-card-title class="display-1 pt-0">
+        {{model.title}}
+      </v-card-title>
+      <v-divider class="mb-4"/>
+      <v-card-text class="shop-entity-view-product__card-actions headline">
         <v-chip
-        class="shop-entity-view-product__card-price title"
+        class="shop-entity-view-product__card-price title ma-0 mb-3"
         label
         outline
         disabled
@@ -17,25 +21,24 @@ class="shop-entity-view-product py-2"
         v-if="model.price">
           Цена: {{model.price}} {{model.currency}}
         </v-chip>
-      </v-card-title>
-      <v-card-text class="shop-entity-view-product__card-title headline mb-1">
-        {{model.title}}
-        <v-spacer/>
         <v-btn
         class="d-inline-block shop-entity-view-product__card-action ma-0"
-        v-if="!isAddedToCart"
         color="teal"
         @click="addToCart">
           Добавить в корзину
+          <template v-if="count">
+            <span class="px-1" style="transform: translateY(-1px);"> | </span>{{count}}
+          </template>
         </v-btn>
         <v-btn
-        v-else
+        :disabled="!count"
         class="d-inline-block shop-entity-view-product__card-action ma-0"
         color="red lighten-1"
         @click="removeFromCart">
           Убрать из корзины
         </v-btn>
       </v-card-text>
+      <v-divider class="mb-4"/>
       <v-card-text v-if="model.description" class="shop-entity-view-product__card-description subheading" v-html="model.description"/>
       <v-divider class="my-4"/>
       <template
@@ -73,14 +76,6 @@ class="shop-entity-view-product py-2"
       </template>
     </v-card>
   </v-fade-transition>
-
-  <div
-  v-if="!isReady"
-  class="shop-entity-view-product__ghost">
-    <div class="shop-entity-view-product__ghost-spinner">
-      <grid-loader :loading="true"/>
-    </div>
-  </div>
 
   <div class="shop-entity-view-product__controls"
   v-if="isEditionEnabled">
@@ -123,19 +118,11 @@ export default {
   data() {
     return {
       type: ENTITY_TYPES.product,
-      isReady: false,
     };
   },
   computed: {
     model() { return this.$store.getters.entity(this.type, this.id); },
     isEmpty() { return isEmpty(this.$store.state.shop[this.type][this.id]); },
-  },
-  mounted() {
-    if (this.isEmpty) {
-      setTimeout(() => this.isReady = true, 1000);
-    } else {
-      this.isReady = true;
-    }
   },
 };
 </script>
@@ -181,7 +168,7 @@ export default {
     }
 
     &-action {
-      margin-bottom: 40px !important;
+      margin-bottom: 20px !important;
     }
   }
 
@@ -234,6 +221,10 @@ export default {
       font-size: 18px !important;
       line-height: 25px !important;
     }
+
+    &-actions {
+      padding-bottom: 0px !important;
+    }
   }
 }
 }
@@ -256,8 +247,19 @@ export default {
       margin-bottom: 20px !important;
     }
 
-    &-action {
+    &-actions {
+      padding-bottom: 16px !important;
+    }
+
+    &-price {
       margin-bottom: 0px !important;
+      margin-right: 16px !important;
+    }
+
+    &-action {
+      margin-right: 16px !important;
+      margin-bottom: 0px !important;
+      border-radius: 0;
     }
 
     &-feature {

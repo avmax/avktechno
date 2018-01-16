@@ -27,7 +27,11 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState({
-      itemsInCart: ({ cart }) => cart.items.length,
+      itemsInCart: ({ cart }) => {
+        let sum = 0;
+        Object.values(cart.items).map(item => sum += item);
+        return sum;
+      },
     }),
     isUserSignedIn: {
       get() { return this.$store.state.user.isSignedIn; },

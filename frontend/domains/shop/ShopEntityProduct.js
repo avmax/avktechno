@@ -2,7 +2,7 @@ import { CART_ITEM_ADD, CART_ITEM_REMOVE } from '~/domains/barrel.state';
 
 export default {
   computed: {
-    isAddedToCart() { return this.$store.state.cart.items.indexOf(this.id) !== -1; },
+    count() { return this.$store.state.cart.items[this.id]; },
   },
   methods: {
     addToCart() {

@@ -1,5 +1,5 @@
 <template>
-<div @keyup.esc="handleAbort">
+<div @keyup.esc="handleAbort" @keyup.ctrl.enter="handleSubmit">
   <h3 class="mb-3">{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
   <v-form
     ref="form"
@@ -56,7 +56,9 @@
           label="Цена"
           @input="onFormControlChange"
           type="number"
-          v-model="model.price"/>
+          v-model="model.price"
+          :rules="rules.price"
+          validate-on-blur/>
         </v-flex>
         <v-flex xs3>
           <v-select
@@ -66,6 +68,8 @@
           item-value="id"
           max-height="400"
           @input="onFormControlChange"
+          :rules="rules.price"
+          validate-on-blur
           persistent-hint/>
         </v-flex>
       </v-layout>
@@ -226,6 +230,7 @@ export default {
         name: [validatorRequired()],
         imgUrl: [validatorRequired()],
         features: [validatorRequired()],
+        price: [validatorRequired()],
         charachteristics: [validatorRequired()],
       },
     };

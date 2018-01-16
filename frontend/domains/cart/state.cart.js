@@ -1,23 +1,28 @@
+import Vue from 'vue';
+
 const CART_ITEM_ADD = 'Добавить товар в корзину';
 const CART_ITEM_REMOVE = 'Выкинуть товар из корзины';
 
 
 const state = () => ({
-  items: [],
+  items: {},
 });
 
 const mutations = {
   [CART_ITEM_ADD](state, id) {
     const { items } = state;
-    const index = items.indexOf(id);
-    if (index === -1) {
-      items.push(id);
+    if (!items[id]) {
+      Vue.set(items, id, 1);
+    } else {
+      items[id] += 1;
     }
   },
   [CART_ITEM_REMOVE](state, id) {
     const { items } = state;
-    const index = items.indexOf(id);
-    items.splice(index, 1);
+    items[id] -= 1;
+    if (items[id] === 0) {
+      Vue.delete(items[id]);
+    }
   },
 };
 

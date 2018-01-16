@@ -5,25 +5,28 @@
     <v-card-title class="card__text title pt-0">{{name}}</v-card-title>
     <v-card-text class="card__text subheading pt-0">Цена: {{price}} {{currency}}</v-card-text>
     <v-card-text class="card__text subheading card__info pt-0">{{info}}</v-card-text>
-    <v-card-actions class="shop-entity-item-product__actions">
-      <v-layout wrap>
-        <v-flex xs12 class="pa-0">
-          <v-btn :to="link" nuxt class="shop-entity-item-product__action-item mb-2">
+    <v-card-actions class="shop-entity-item-product__actions pa-3">
+      <v-layout wrap class="ma-0">
+        <v-flex xs12 class="pa-0 mb-2">
+          <v-btn :to="link" nuxt block class="shop-entity-item-product__action-item ml-0">
             Узнать подробнее
           </v-btn>
         </v-flex>
-        <v-flex xs12 class="pa-0 pb-3">
-          <v-btn class="shop-entity-item-product__action-item"
-          v-if="!isAddedToCart"
+        <v-flex xs12 class="pa-0" style="display: flex;">
+          <v-btn class="shop-entity-item-product__action-item pa-0 ma-0 mr-2"
+          style="flex-grow: 1;"
           color="teal"
           @click="addToCart">
-            Добавить в корзину
+            {{addToCartBtnText}}
+            <template v-if="count">
+              <span class="px-1" style="transform: translateY(-1px);"> | </span>{{count}}
+            </template>
           </v-btn>
-          <v-btn class="shop-entity-item-product__action-item"
-          v-else
+          <v-btn class="shop-entity-item-product__action-item pa-0 ma-0"
+          :disabled="!count"
           color="red lighten-1"
           @click="removeFromCart">
-            Убрать из корзины
+            Убрать
           </v-btn>
         </v-flex>
       </v-layout>
@@ -65,6 +68,13 @@ export default {
     currency: String,
     ghost: Boolean,
   },
+  computed: {
+    addToCartBtnText() {
+      return this.$route.path === '/cart'
+        ? 'Добавить'
+        : 'В корзину';
+    },
+  },
 };
 </script>
 
@@ -88,13 +98,9 @@ export default {
     text-overflow: ellipsis;
   }
 
-  &__actions {
-    overflow: hidden;
-  }
-
   &__action-item {
-    width: 100%;
     text-align: center;
+    border-radius: 0;
   }
 }
 }

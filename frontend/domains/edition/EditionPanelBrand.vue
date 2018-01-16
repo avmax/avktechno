@@ -1,5 +1,5 @@
 <template>
-<div @keyup.esc="handleAbort">
+<div @keyup.esc="handleAbort" @keyup.ctrl.enter="handleSubmit">
   <h3 class="mb-3">{{isTypeCreate ? 'Создать бренд' : 'Редактировать бренд'}}</h3>
   <v-form
     ref="form"

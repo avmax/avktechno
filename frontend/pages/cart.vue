@@ -14,10 +14,10 @@
         <v-text-field label="Ваше имя" v-model="form.value.name" :rules="form.rules.name" autofocus required/>
         <v-text-field label="Ваш телефон" mask="+7 (###) ###-##-##" v-model="form.value.phone" :rules="form.rules.phone" required/>
         <v-text-field label="Ваша почта" v-model="form.value.mail" :rules="form.rules.mail" required/>
-        <v-btn class="mt-3" :disabled="!form.isValid" @click="submit">Отправить</v-btn>
+        <v-btn class="ml-0 mt-3" :disabled="!form.isValid" @click="submit">Отправить</v-btn>
       </v-form>
 
-      <h2 class="text-xs-center mb-3">Выбранные товары</h2>
+      <h2 class="text-xs-center mb-3">Выбранные товары. Общая сумма: {{totalPrice}} рублей.</h2>
       <shop-entity-exposition
       :type="type"
       :subtype="subtype"
@@ -78,7 +78,7 @@ export default {
         const collection = {
           model: collectionModel,
           items: collectionModel.refs[this.subtype]
-            .filter(id => cart.items.indexOf(id) !== -1)
+            .filter(id => !!cart.items[id])
             .map((id) => {
               const item = cloneDeep(getters.entity(this.subtype, id));
               if (item.info) {
@@ -96,8 +96,19 @@ export default {
     items() {
       const { state, getters } = this.$store;
       const { cart } = state;
-      return cart.items
-        .map(id => getters.entity(ENTITY_TYPES.product, id));
+      return Object.keys(cart.items)
+        .filter(id => !!cart.items[id])
+        .map(id => ({
+          name: getters.entity(ENTITY_TYPES.product, id).name,
+          id: id,
+          count: cart.items[id],
+          price: getters.entity(ENTITY_TYPES.product, id).price,
+        }));
+    },
+    totalPrice() {
+      let sum = 0;
+      this.items.forEach(item => sum += item.price * item.count);
+      return sum;
     },
   },
   methods: {
@@ -106,14 +117,14 @@ export default {
       const { commit } = this.$store;
 
       if (form.validate()) {
-        const data = { val: this.form.value, items: this.items };
+        const data = { ...this.form.value, items: this.items };
         try {
           await ApiCart.askForCall(data);
           commit(NOTIFICATION_OPEN, {
             message: 'Спасибо! Вот-вот свяжемся с Вами!',
             type: NOTIFICATION_TYPES.success,
           });
-          commit(NOTIFICATION_LAST_CLOSE, 3000);
+          setTimeout(() => commit(NOTIFICATION_LAST_CLOSE), 3000);
           form.reset();
         } catch (err) {
           commit(NOTIFICATION_OPEN, {
@@ -130,10 +141,6 @@ export default {
 
 <style lang="scss" scoped>
 #avmax {
-.page {
-  min-height: calc(100vh - 132px);
-}
-
 @media all and (min-width: 768px) {
 .page {
   &__form {

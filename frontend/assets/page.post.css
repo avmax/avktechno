@@ -1,0 +1,5 @@
+#avmax {
+.page {
+  min-height: calc(100vh - 132px);
+}
+}

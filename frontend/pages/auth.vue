@@ -101,10 +101,6 @@ export default {
 
 <style lang="scss" scoped>
 #avmax {
-.page {
-  min-height: calc(100vh - 132px);
-}
-
 .page_auth {
   display: flex;
   justify-content: center;
