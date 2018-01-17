@@ -1,78 +1,77 @@
 <template>
 <v-layout class="shop-entity-exposition" column>
-  <template v-if="model && model.length">
-    <template v-if="isEditionAvailable">
-      <div class="shop-entity-exposition__ghost my-3">
-        <component :is="itemComponent" ghost/>
-        <div class="shop-entity-exposition__ghost-controls">
-          <v-btn
-          v-if="isEditionEnabled"
-          @click="add(type)"
-          fab large>
-            <v-icon>add</v-icon>
-          </v-btn>
-        </div>
-      </div>
-      <v-divider class="mb-4 mt-5"/>
-    </template>
 
-    <template v-for="c in model">
-      <shop-entity-collection
-      class="shop-entity-exposition__collection"
-      :title="c.model.title"
-      :name="c.model.name"
-      :link="{ name: `${type}-id`, params: { id: c.model.id }}"
-      :key="c.model.id">
-        <div class="ml-2 d-inline-block" slot="header"
-        v-if="isEditionEnabled">
-          <v-btn @click="edit(type, c.model.id)" fab small>
-            <v-icon color="white">edit</v-icon>
-          </v-btn>
-          <v-btn @click="remove(type, c.model.id)" fab small>
-            <v-icon color="white">clear</v-icon>
-          </v-btn>
-        </div>
-        <v-flex v-if="isEditionAvailable" xs12 sm6 md4 lg3>
-          <div class="shop-entity-exposition__ghost shop-entity-exposition__ghost_type_item">
-            <component :is="itemComponent" ghost/>
-            <div class="shop-entity-exposition__ghost-controls">
-              <v-btn
-              v-if="isEditionEnabled"
-              @click="add(subtype, type, c.model.id)"
-              fab large>
-                <v-icon>add</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </v-flex>
-        <v-flex v-for="s in c.items" :key="s.id" xs12 sm6 md4 lg3>
-          <div class="shop-entity-exposition__item">
-            <component
-            :is="itemComponent"
-            v-bind="s"
-            :link="{ name: `${subtype}-id`, params: { id: s.id }}"/>
-            <div v-if="isEditionEnabled" class="shop-entity-exposition__item-controls">
-              <v-btn
-              @click="edit(subtype, s.id)"
-              fab small>
-                <v-icon color="white">edit</v-icon>
-              </v-btn>
-              <v-btn
-              @click="remove(subtype, s.id)"
-              fab small>
-                <v-icon color="white">clear</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </v-flex>
-      </shop-entity-collection>
-      <v-divider :key="c.model.id" class="mb-4 mt-5"/>
-    </template>
+  <v-layout v-if="(!model || !model.length) && !isEditionAvailable" justify-center align-center>
+    <div class="display-1 text-xs-center my-4">Страница пуста</div>
+  </v-layout>
+  <div v-if="(!model || !model.length) && isEditionAvailable" class="display-1 text-xs-center my-4">Страница пуста</div>
+
+  <template v-if="isEditionAvailable">
+    <div class="shop-entity-exposition__ghost my-3">
+      <component :is="itemComponent" ghost/>
+      <div class="shop-entity-exposition__ghost-controls">
+        <v-btn
+        v-if="isEditionEnabled"
+        @click="add(type)"
+        fab large>
+          <v-icon>add</v-icon>
+        </v-btn>
+      </div>
+    </div>
+    <v-divider class="mb-4 mt-5"/>
   </template>
-  <template v-else>
-    <v-layout align-center justify-center>
-      <span  class="display-1">Страница пуста</span>
-    </v-layout>
+
+  <template v-for="c in model">
+    <shop-entity-collection
+    class="shop-entity-exposition__collection"
+    :title="c.model.title"
+    :name="c.model.name"
+    :link="{ name: `${type}-id`, params: { id: c.model.id }}"
+    :key="c.model.id">
+      <div class="ml-2 d-inline-block" slot="header"
+      v-if="isEditionEnabled">
+        <v-btn @click="edit(type, c.model.id)" fab small>
+          <v-icon color="white">edit</v-icon>
+        </v-btn>
+        <v-btn @click="remove(type, c.model.id)" fab small>
+          <v-icon color="white">clear</v-icon>
+        </v-btn>
+      </div>
+      <v-flex v-if="isEditionAvailable" xs12 sm6 md4 lg3>
+        <div class="shop-entity-exposition__ghost shop-entity-exposition__ghost_type_item">
+          <component :is="itemComponent" ghost/>
+          <div class="shop-entity-exposition__ghost-controls">
+            <v-btn
+            v-if="isEditionEnabled"
+            @click="add(subtype, type, c.model.id)"
+            fab large>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </v-flex>
+      <v-flex v-for="s in c.items" :key="s.id" xs12 sm6 md4 lg3>
+        <div class="shop-entity-exposition__item">
+          <component
+          :is="itemComponent"
+          v-bind="s"
+          :link="{ name: `${subtype}-id`, params: { id: s.id }}"/>
+          <div v-if="isEditionEnabled" class="shop-entity-exposition__item-controls">
+            <v-btn
+            @click="edit(subtype, s.id)"
+            fab small>
+              <v-icon color="white">edit</v-icon>
+            </v-btn>
+            <v-btn
+            @click="remove(subtype, s.id)"
+            fab small>
+              <v-icon color="white">clear</v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </v-flex>
+    </shop-entity-collection>
+    <v-divider :key="c.model.id" class="mb-4 mt-5"/>
   </template>
 </v-layout>
 </template>

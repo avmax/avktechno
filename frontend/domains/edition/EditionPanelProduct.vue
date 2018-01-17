@@ -208,7 +208,7 @@
       </v-btn>
     </v-layout>
   </v-form>
-  <h4 v-if="message">{{message}}</h4>
+  <h4 v-if="message" class="red--text text--lighten-1 mt-2 text-xs-center">{{message}}</h4>
 </div>
 </template>
 
@@ -253,6 +253,7 @@ export default {
     refs.category = refs.category || [];
     this.model.refs = refs;
     this.model.footer = this.model.footer || {};
+    this.model.currency = this.model.currency || '$';
   },
   methods: {
     featuresRemove(index) {

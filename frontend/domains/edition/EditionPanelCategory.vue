@@ -15,12 +15,12 @@
       validate-on-blur
       required/>
 
-      <v-text-field
+      <!-- <v-text-field
       v-model="model.title"
       @input="onFormControlChange"
       label="Заголовок"
       multi-line
-      :rows="1"/>
+      :rows="1"/> -->
 
       <v-btn
       color="primary"
@@ -36,7 +36,7 @@
       </v-btn>
     </v-layout>
   </v-form>
-  <h4 v-if="message">{{message}}</h4>
+  <h4 v-if="message" class="red--text text--lighten-1 mt-2 text-xs-center">{{message}}</h4>
 </div>
 </template>
 

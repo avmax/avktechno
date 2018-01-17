@@ -144,10 +144,12 @@ const actions = (entitiyTypes) => {
         }
       } else {
         try {
-          await ApiShop[key].put(entity);
+          const { data } = await ApiShop[key].put(entity);
 
           const { refs: refsNew } = entity;
           const { refs: refsOld } = state.backup;
+
+          commit(ENTITY_EDIT(val), data);
 
           if (!refsEqualIs(refsOld, refsNew)) {
             Object.keys(refsNew).forEach((k) => {

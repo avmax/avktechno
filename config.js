@@ -20,7 +20,7 @@ const config = () => {
   }
 
   cfg.server.URL = cfg.baseURL + ':' + cfg.server.port;
-  cfg.client.URL = cfg.baseURL + ':' + cfg.client.port;
+  cfg.client.URL = cfg.baseURL + (+cfg.client.port === 80 ? '' : ':' + cfg.client.port);
 
   return cfg;
 };

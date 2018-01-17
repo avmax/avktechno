@@ -67,8 +67,11 @@ exports.put = async (req, res, next) => {
     await p.update(body);
     await p.setCategories(refs.category);
     await p.setBrand(refs.brand[0]);
+    const model = p.get({ plain: true });
+    model.info = await model.info;
+    model.refs = await model.refs;
 
-    res.status(200).send();
+    res.status(200).send(model);
   }
   catch(err)
   {

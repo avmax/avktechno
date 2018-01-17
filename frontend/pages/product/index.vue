@@ -38,6 +38,7 @@ export default {
   },
   computed: {
     collections() {
+      console.log('get collections');
       const { state, getters } = this.$store;
       const { filter } = state;
 
@@ -57,10 +58,18 @@ export default {
                 }
                 return item;
               })
-              .filter(item => intersection(
-                item.refs[this.hiddenType],
-                filter.chosen[this.hiddenType]).length !== 0,
-              )
+              .filter((item) => {
+                let flag;
+                if (item.refs[this.hiddenType].length) {
+                  flag = intersection(
+                    item.refs[this.hiddenType],
+                    filter.chosen[this.hiddenType],
+                  ).length !== 0;
+                } else {
+                  flag = true;
+                }
+                return flag;
+              })
               .reverse(),
           };
 
