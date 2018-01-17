@@ -32,7 +32,7 @@ const start = async () => {
     await db.init();
     server.listen(SERVER_PORT, () => {
       console.log(`сервер запущен на порту ${SERVER_PORT}`);
-      console.log(`клинт ожидается по урлу ${CLIENT_URL}`);
+      console.log(`клиент ожидается по урлу ${CLIENT_URL}`);
     });
   } catch(err) {
     console.error('сервер наебнулся:', err);
