@@ -5,8 +5,8 @@
   "author": "avmax <avmax.web@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV='development' SERVER_PORT=4251 CLIENT_PORT=4252 gulp dev",
-    "prod": "cross-env NODE_ENV='production' SERVER_PORT=4251 CLIENT_PORT=4252 gulp prod"
+    "dev": "cross-env NODE_ENV='development' gulp dev",
+    "prod": "cross-env NODE_ENV='production' BASE_URL='http://90.156.142.46' CLIENT_PORT=80 gulp prod"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

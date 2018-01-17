@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 axios.interceptors.request.use((config) => {
-  config.url = process.env.baseURL + config.url;
+  config.url = process.env.server.URL + config.url;
   return config;
 });
 

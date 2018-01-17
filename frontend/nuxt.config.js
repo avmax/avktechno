@@ -2,8 +2,8 @@ const path = require('path');
 const APP_CONFIG = require('./config');
 
 module.exports = {
-  // env
   env: APP_CONFIG,
+  // env
   // Headers of the page
   head: {
     title: 'Avktechno',
