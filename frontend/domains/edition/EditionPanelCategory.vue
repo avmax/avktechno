@@ -15,16 +15,10 @@
       validate-on-blur
       required/>
 
-      <!-- <v-text-field
-      v-model="model.title"
-      @input="onFormControlChange"
-      label="Заголовок"
-      multi-line
-      :rows="1"/> -->
+      <v-divider class="mb-4 mt-3"/>
 
       <v-btn
       color="primary"
-      class="mt-3"
       @click="handleSubmit()"
       :disabled="!isValid">
         Сохранить изменения
@@ -39,7 +33,6 @@
   <h4 v-if="message" class="red--text text--lighten-1 mt-2 text-xs-center">{{message}}</h4>
 </div>
 </template>
-
 
 
 <script>

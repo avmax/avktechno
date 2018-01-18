@@ -137,7 +137,7 @@ const actions = (entitiyTypes) => {
             });
           }
 
-          commit(FILTER_ENTITY_AVAILABLE_ADD(val), { id: data.id, name: data.name });
+          commit(FILTER_ENTITY_AVAILABLE_ADD(val), data.id);
         } catch (err) {
           console.log(err);
           return Promise.reject(err);

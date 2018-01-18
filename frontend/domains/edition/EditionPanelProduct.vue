@@ -14,6 +14,59 @@
       validate-on-blur
       required/>
 
+      <v-select
+      label="Выберите категории"
+      :items="categories"
+      v-model="model.refs.category"
+      item-text="name"
+      item-value="id"
+      multiple
+      max-height="400"
+      @input="onFormControlChange"
+      persistent-hint
+      color="white"/>
+
+      <v-select
+      label="Выберите бренд"
+      :items="brands"
+      v-model="model.refs.brand"
+      item-text="name"
+      item-value="id"
+      max-height="400"
+      @input="onFormControlChange"
+      persistent-hint
+      color="white"/>
+
+      <v-layout
+      row wrap
+      justify-space-between>
+        <v-flex xs8>
+          <v-text-field
+          label="Цена"
+          @input="onFormControlChange"
+          type="number"
+          v-model="model.price"
+          :rules="rules.price"
+          required
+          validate-on-blur/>
+        </v-flex>
+        <v-flex xs3>
+          <v-select
+          label="Выберите Валюту"
+          :items="['₽', '$', '€']"
+          v-model="model.currency"
+          item-value="id"
+          max-height="400"
+          @input="onFormControlChange"
+          :rules="rules.price"
+          validate-on-blur
+          required
+          persistent-hint/>
+        </v-flex>
+      </v-layout>
+
+      <v-divider class="my-3"/>
+
       <v-text-field
       v-model="model.title"
       @input="onFormControlChange"
@@ -47,34 +100,9 @@
       multi-line
       :rows="1"/>
 
-      <v-layout
-      row wrap
-      justify-space-between
-      class="mb-5">
-        <v-flex xs8>
-          <v-text-field
-          label="Цена"
-          @input="onFormControlChange"
-          type="number"
-          v-model="model.price"
-          :rules="rules.price"
-          validate-on-blur/>
-        </v-flex>
-        <v-flex xs3>
-          <v-select
-          label="Выберите Валюту"
-          :items="['₽', '$', '€']"
-          v-model="model.currency"
-          item-value="id"
-          max-height="400"
-          @input="onFormControlChange"
-          :rules="rules.price"
-          validate-on-blur
-          persistent-hint/>
-        </v-flex>
-      </v-layout>
+      <v-divider class="my-3"/>
 
-      <div class="features mb-5">
+      <div class="features my-3">
         <v-form
         class="features__item mb-3"
         v-for="(f, index) in model.features"
@@ -117,7 +145,9 @@
         <v-btn class="ma-0" @click="featuresAdd">добавить список</v-btn>
       </div>
 
-      <div class="charachteristics pt-2 mb-5">
+      <v-divider class="my-3"/>
+
+      <div class="charachteristics my-3">
         <v-form
         class="charachteristics__item mb-3"
         v-for="(c, index) in model.charachteristics"
@@ -171,28 +201,7 @@
         <v-btn class="ma-0" @click="charachteristicsAdd">добавить характеристику</v-btn>
       </div>
 
-      <v-select
-      label="Выберите категории"
-      :items="categories"
-      v-model="model.refs.category"
-      item-text="name"
-      item-value="id"
-      multiple
-      max-height="400"
-      @input="onFormControlChange"
-      persistent-hint
-      color="white"/>
-
-      <v-select
-      label="Выберите бренд"
-      :items="brands"
-      v-model="model.refs.brand"
-      item-text="name"
-      item-value="id"
-      max-height="400"
-      @input="onFormControlChange"
-      persistent-hint
-      color="white"/>
+      <v-divider class="my-3"/>
 
       <v-btn
       color="primary"
