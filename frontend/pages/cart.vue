@@ -17,7 +17,7 @@
         <v-btn class="ml-0 mt-3" :disabled="!form.isValid" @click="submit">Отправить</v-btn>
       </v-form>
 
-      <h2 class="text-xs-center mb-3">Выбранные товары. Общая сумма: {{totalPrice}} рублей.</h2>
+      <h2 class="text-xs-center mb-4">Выбранные товары. Общая сумма: {{totalPrice}} рублей.</h2>
       <shop-entity-exposition
       :type="type"
       :subtype="subtype"
