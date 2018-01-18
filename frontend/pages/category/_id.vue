@@ -71,12 +71,9 @@ export default {
     const subitems = [];
     this.model.refs[this.type]
       .forEach((id) => {
-        const { name, refs } = getters.entity(this.type, id);
-        items.push({ id, name });
-        refs[this.subtype].forEach((id) => {
-          const { name } = getters.entity(this.subtype, id);
-          subitems.push({ id, name });
-        });
+        const { refs } = getters.entity(this.type, id);
+        items.push(id);
+        refs[this.subtype].forEach(id => subitems.push(id));
       });
 
     commit(FILTER_DROP);
