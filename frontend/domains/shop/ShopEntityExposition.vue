@@ -18,10 +18,10 @@
         </v-btn>
       </div>
     </div>
-    <v-divider class="mb-4 mt-5"/>
+    <v-divider v-if="model && model.length" class="mb-4 mt-5"/>
   </template>
 
-  <template v-for="c in model">
+  <template v-for="(c, index) in model">
     <shop-entity-collection
     class="shop-entity-exposition__collection"
     :title="c.model.title"
@@ -71,7 +71,7 @@
         </div>
       </v-flex>
     </shop-entity-collection>
-    <v-divider :key="c.model.id" class="mb-4 mt-5"/>
+    <v-divider :key="c.model.id" v-if="index > 0" class="mb-4 mt-5"/>
   </template>
 </v-layout>
 </template>

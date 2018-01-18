@@ -3,8 +3,8 @@ const USER_SIGN_OUT = 'user: выход из учетки';
 
 
 const state = () => ({
-  isSignedIn: true,
-  isAdmin: true,
+  isSignedIn: false,
+  isAdmin: false,
 });
 
 const mutations = {

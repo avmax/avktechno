@@ -24,6 +24,8 @@
     persistent-hint
     color="white"/>
 
+    <v-divider class="mt-3 mb-4"/>
+
     <v-select
     label="Выберите категории"
     :items="model.category"
@@ -45,6 +47,35 @@
     multiple
     persistent-hint
     color="white"/>
+
+    <v-divider class="mt-3 mb-4"/>
+
+    <h3>Цена:</h3>
+
+    <v-layout>
+      <v-flex xs6 class="mr-4">
+        <v-text-field
+        v-model="priceFrom"
+        label="От"
+        type="number"/>
+      </v-flex>
+      <v-flex xs6>
+        <v-text-field
+        v-model="priceTo"
+        label="До"
+        type="number"/>
+      </v-flex>
+    </v-layout>
+
+    <v-divider class="mt-3 mb-4"/>
+
+    <h3>Поиск</h3>
+
+    <v-text-field
+    v-model="name"
+    label="Введите название продукта"/>
+
+    <v-divider class="mt-3 mb-5"/>
 
     <v-btn
     @click.native="close()"
@@ -81,18 +112,25 @@ export default {
         [ENTITY_TYPES.brand]: 'Бренд',
         [ENTITY_TYPES.product]: 'Продукт',
       },
+      priceTo: null,
+      priceFrom: null,
+      name: null,
     };
   },
   computed: {
     model() {
+      const { getters, state } = this.$store;
+      const { filter } = state;
+
       return {
         types: Object.values(ENTITY_TYPES)
           .filter(v => v !== ENTITY_TYPES.product)
           .map(v => ({ name: this.types[v], value: v, disabled: v === this.subtype })),
         subtypes: Object.values(ENTITY_TYPES)
           .map(v => ({ name: this.types[v], value: v, disabled: v === this.type })),
-        category: this.$store.state.filter.available.category,
-        brand: this.$store.state.filter.available.brand,
+        category: filter.available.category.map(id => getters.entity(ENTITY_TYPES.category, id)),
+        brand: filter.available.brand.map(id => getters.entity(ENTITY_TYPES.brand, id)),
+        product: filter.available.product.map(id => getters.entity(ENTITY_TYPES.product, id)),
       };
     },
     type: {
@@ -128,11 +166,37 @@ export default {
       },
     },
   },
+  watch: {
+    priceFrom(v) {
+      if (v) {
+        const products = this.model.product.filter(p => p.price >= +v).map(p => p.id);
+        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.product), products);
+      }
+    },
+    priceTo(v) {
+      if (v) {
+        const products = this.model.product.filter(p => p.price <= +v).map(p => p.id);
+        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.product), products);
+      }
+    },
+    name(v) {
+      if (v) {
+        const products = this.model.product.filter(p => p.name.indexOf(v) !== -1).map(p => p.id);
+        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.product), products);
+      }
+    },
+  },
   methods: {
     ...mapMutations({
       close: FILTER_VISIBILITY_TOGGLE,
-      reset: FILTER_RESET,
     }),
+    reset() {
+      const { commit } = this.$store;
+      this.priceTo = null;
+      this.priceFrom = null;
+      this.name = null;
+      commit(FILTER_RESET);
+    },
   },
 };
 </script>

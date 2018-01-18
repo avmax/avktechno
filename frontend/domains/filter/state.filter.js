@@ -37,21 +37,21 @@ const mutations = (entityTypes) => {
   const filterEntityAvailableSet = function(type) {
     return (state, payload) => {
       state.available[type] = payload;
-      state.chosen[type] = payload.map(p => p.id);
+      state.chosen[type] = payload;
     };
   };
 
   const filterEntityAvailableAdd = function(type) {
     return (state, payload) => {
       state.available[type].push(payload);
-      state.chosen[type].push(payload.id);
+      state.chosen[type].push(payload);
     };
   };
 
   const filterEntityAvailableRemove = function(type) {
     return (state, payload) => {
       let index = -1;
-      state.available[type].forEach((e, i) => e.id === payload ? index = i : null);
+      state.available[type].forEach((e, i) => e === payload ? index = i : null);
       if (index !== -1) {
         state.available[type].splice(index, 1);
       }
@@ -81,7 +81,7 @@ const mutations = (entityTypes) => {
     },
     [FILTER_RESET](state) {
       Object.values(entityTypes).forEach((v) => {
-        state.chosen[v] = state.available[v].map(e => e.id);
+        state.chosen[v] = state.available[v];
       });
     },
     [FILTER_DROP](state) {

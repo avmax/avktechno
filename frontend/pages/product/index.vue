@@ -38,7 +38,6 @@ export default {
   },
   computed: {
     collections() {
-      console.log('get collections');
       const { state, getters } = this.$store;
       const { filter } = state;
 
@@ -94,8 +93,7 @@ export default {
     commit(FILTER_SUBTYPE_SET, ENTITY_TYPES.product);
     Object.values(ENTITY_TYPES).forEach((type) => {
       const COMMIT = FILTER_ENTITY_AVAILABLE_SET(type);
-      let payload = getters.entities(type).map(id => getters.entity(type, id));
-      payload = payload.map(v => ({ id: v.id, name: v.name }));
+      const payload = getters.entities(type);
       commit(COMMIT, payload);
     });
 
