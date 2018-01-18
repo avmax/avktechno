@@ -98,7 +98,7 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch(ENTITY_ALL_LOAD());
-    setTimeout(() => this.$store.commit(SPINNER_HIDE), 1000);
+    setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
   },
 };
 </script>

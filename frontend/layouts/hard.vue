@@ -3,8 +3,7 @@
 
     <the-header>
       <v-btn @click.native="filterPanelToggle" flat class="mr-3">
-        <span class="hidden-sm-and-down" style="font-weight: normal;">Фильтр</span>
-        <v-icon class="hidden-md-and-up" large color="grey lighten-1">sort</v-icon>
+        <span style="font-weight: normal;">Фильтр</span>
       </v-btn>
     </the-header>
 
@@ -14,6 +13,7 @@
       disable-resize-watcher
       disable-route-watcher
       mobile-break-point="1080"
+      hide-overlay
       width="400"
       class="pa-3"
       clipped
@@ -30,10 +30,11 @@
       app
       disable-resize-watcher
       disable-route-watcher
+      hide-overlay
       mobile-break-point="1080"
       width="400"
       class="pa-3">
-        <filter-panel/>
+        <filter-panel v-if="isFilterPanelOpened"/>
       </v-navigation-drawer>
 
       <v-content>
@@ -122,7 +123,7 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch(ENTITY_ALL_LOAD());
-    setTimeout(() => this.$store.commit(SPINNER_HIDE), 1000);
+    setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
   },
 };
 </script>
