@@ -5,13 +5,7 @@
 
     <v-content>
       <the-notifications/>
-      <v-container fluid>
-        <v-layout column>
-          <v-flex>
-            <nuxt/>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <nuxt/>
     </v-content>
 
     <the-footer/>

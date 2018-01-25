@@ -1,5 +1,6 @@
 <template>
-  <v-layout class="page" column>
+<v-container fill-height class="page">
+  <v-layout column style="min-height: calc(100vh - 200px);">
     <div class="page__header">
       <h1 class="text-xs-left text-md-center">Корзина</h1>
     </div>
@@ -24,6 +25,7 @@
       :data="collections"/>
     </template>
   </v-layout>
+</v-container>
 </template>
 
 <script>
