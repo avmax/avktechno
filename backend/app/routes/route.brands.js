@@ -1,23 +1,36 @@
 const db = require('../db');
 const BrandError = require('../errors').BrandError;
 const { uniq, flatten } = require('lodash/fp');
+const { imgURL } = require('../utils/img');
+
+const modelFromReq = (req) => {
+  const { body, file } = req;
+  const model = body;
+
+  if (file && file.filename) {
+    model.imgUrl = imgURL(file.filename);
+  }
+
+  return model;
+};
 
 
 exports.get = async (req, res, next) => {
-  const body = req.body || {};
-
   try
   {
-    let data = await db.m.b.findAll();
-    data = await Promise.all(data.map(async (item) => {
-      const model = item.get({ plain: true });
-      const products = await item.getProducts();
+    let model;
+    let data;
+
+    model = await db.m.b.findAll();
+    data = await Promise.all(model.map(async (itemModel) => {
+      const itemData = itemModel.get({ plain: true });
+      const products = await itemModel.getProducts();
       const categories = await Promise.all(products.map(p => p.getCategories()));
-      model.refs = {
+      itemData.refs = {
         product: products.map(p => p.get({ plain: true }).id),
         category: uniq(flatten(categories).map(c => c.get({ plain: true }).id)),
       };
-      return model;
+      return itemData;
     }));
 
     res.status(200).send(data);
@@ -31,15 +44,17 @@ exports.get = async (req, res, next) => {
 
 
 exports.post = async (req, res, next) => {
-  const body = req.body || {};
-
   try
   {
-    const b = await db.m.b.create(body);
-    const model = b.get({ plain: true });
-    model.refs = { product: [], category: [] };
+    let model;
+    let data;
 
-    res.status(200).send(model);
+    data = modelFromReq(req);
+    model = await db.m.b.create(data);
+    data = model.get({ plain: true });
+    data.refs = { product: [], category: [] };
+
+    res.status(200).send(data);
   }
   catch(err)
   {
@@ -58,14 +73,17 @@ exports.post = async (req, res, next) => {
 
 
 exports.put = async (req, res, next) => {
-  const body = req.body || { };
-
   try
   {
-    const b = await db.m.b.findById(body.id);
-    await b.update(body);
+    let model;
+    let data;
 
-    res.status(200).send();
+    data = modelFromReq(req);
+    model = await db.m.b.findById(data.id);
+    await model.update(data);
+    data = model.get({ plain: true });
+
+    res.status(200).send(data);
   }
   catch(err)
   {
@@ -84,12 +102,14 @@ exports.put = async (req, res, next) => {
 
 
 exports.delete = async (req, res, next) => {
-  const body = req.body || { };
-  const { id } = body;
-
   try {
-    const b = await db.m.b.findById(id);
-    b.destroy();
+    let model;
+    let data;
+
+    data = modelFromReq(req);
+    model = await db.m.b.findById(data.id);
+    model.destroy();
+
     res.status(200).send();
   } catch(err) {
     let message;

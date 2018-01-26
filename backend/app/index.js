@@ -18,14 +18,17 @@ server.use((req, res, next) => {
 });
 
 server.use(bodyParser.json());
+server.use(express.static('static'));
 
 server.use(require('./router').public);
 server.use('/admin', require('./router').admin);
+
 server.use((err, req, res, next) => {
   // console.error('Catch error:', err.cause || err);
   console.error('Catch error:', err);
   res.status(err.status || 404).send(err);
 });
+
 
 const start = async () => {
   try {

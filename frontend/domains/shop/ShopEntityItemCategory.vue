@@ -1,8 +1,6 @@
 <template>
 <v-card class="shop-entity-item-category card">
-  <v-card-media class="card__media" :src="imgUrl"></v-card-media>
   <v-card-title class="card__title title">{{name}}</v-card-title>
-  <v-card-text v-if="title">{{title}}</v-card-text>
   <v-card-actions>
     <v-spacer/>
     <router-link v-if="link" :to="link" class="link card__go">
@@ -19,9 +17,7 @@ export default {
   name: 'shop-entity-item-category',
   props: {
     link: Object,
-    imgUrl: String,
     name: String,
-    title: String,
   },
 };
 </script>

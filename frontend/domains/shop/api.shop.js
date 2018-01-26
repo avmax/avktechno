@@ -27,7 +27,15 @@ class Categories {
 
 class Brands {
   get() { return axios.get('/brands'); }
-  post(brand) { return axios.post('/admin/brands', brand); }
+  post(brand) {
+    console.log('brand', brand);
+    return axios({
+      method: 'post',
+      url: '/admin/brands',
+      data: brand,
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  }
   put(brand) { return axios.put('/admin/brands', brand); }
   delete(brandID) { return axios.delete('/admin/brands', { data: { id: brandID } }); }
 }

@@ -4,7 +4,8 @@
   <v-form
     ref="form"
     @keyup.enter.native="handleSubmit"
-    v-model="isValid">
+    v-model="isValid"
+    lazy-validation>
     <v-layout column>
       <v-text-field
       v-model="model.name"
@@ -15,12 +16,7 @@
       validate-on-blur
       required/>
 
-      <v-text-field
-      v-model="model.imgUrl"
-      @input="onFormControlChange"
-      label="Url картинки"
-      multi-line
-      :rows="1"/>
+      <input-file label="Картинка" v-model="model.image"/>
 
       <v-divider class="mb-4 mt-3"/>
 
@@ -42,15 +38,16 @@
 </template>
 
 
-
 <script>
-import EditionPanel from './EditionPanel';
+import InputFile from '~/domains/common/InputFile.vue';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
+import EditionPanel from './EditionPanel';
 
 export default {
   name: 'shop-edition-panel-category',
   mixins: [EditionPanel],
+  components: { InputFile },
   data() {
     return {
       rules: {

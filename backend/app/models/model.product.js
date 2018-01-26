@@ -1,4 +1,5 @@
 const ProductError = require('../errors').ProductError;
+const { isArray } = require('lodash/fp');
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
@@ -74,12 +75,16 @@ module.exports = (sequelize, DataTypes) => {
           return data;
         },
         set(v) {
-          const data = v.map(item => {
-            item.items = item.items.join('___feature-item___');
-            item = item.title + '___feature-title___' + item.title + item.items;
-            return item;
-          }).join('___feature___');
-          this.setDataValue('features', data);
+          if (isArray(v)) {
+            const data = v.map(item => {
+              item.items = item.items.join('___feature-item___');
+              item = item.title + '___feature-title___' + item.title + item.items;
+              return item;
+            }).join('___feature___');
+            this.setDataValue('features', data);
+          } else {
+            this.setDataValue(null);
+          }
         },
       },
       charachteristics: {
@@ -103,13 +108,17 @@ module.exports = (sequelize, DataTypes) => {
           return data;
         },
         set(v) {
-          const data = v.map(item => {
-            if (!item.title) return;
-            item.items = item.items.map(kv => kv.key + '___charachteristics-kv___' + kv.val);
-            item = item.title + '___charachteristics-title___' + item.items.join('___charachteristics-item___');
-            return item;
-          }).join('___charachteristics___');
-          this.setDataValue('charachteristics', data);
+          if (isArray(v)) {
+            const data = v.map(item => {
+              if (!item.title) return;
+              item.items = item.items.map(kv => kv.key + '___charachteristics-kv___' + kv.val);
+              item = item.title + '___charachteristics-title___' + item.items.join('___charachteristics-item___');
+              return item;
+            }).join('___charachteristics___');
+            this.setDataValue('charachteristics', data);
+          } else {
+            this.setDataValue(null);
+          }
         },
       },
     },

@@ -4,7 +4,8 @@
   <v-form
     ref="form"
     @keyup.enter.native="handleSubmit"
-    v-model="isValid">
+    v-model="isValid"
+    lazy-validation>
     <v-layout column>
       <v-text-field
       v-model="model.name"

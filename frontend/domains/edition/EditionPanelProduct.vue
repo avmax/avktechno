@@ -3,7 +3,8 @@
   <h3 class="mb-3">{{isTypeCreate ? 'Создать продукт' : 'Редактировать продукт'}}</h3>
   <v-form
     ref="form"
-    v-model="isValid">
+    v-model="isValid"
+    lazy-validation>
     <v-layout column>
       <v-text-field
       v-model="model.name"
@@ -81,12 +82,7 @@
       multi-line
       :rows="1"/>
 
-      <v-text-field
-      v-model="model.imgUrl"
-      @input="onFormControlChange"
-      label="Url картинки"
-      multi-line
-      :rows="1"/>
+      <input-file label="Картинка" v-model="model.image"/>
 
       <v-text-field
       v-model="model.footer.title"
@@ -133,14 +129,14 @@
             validate-on-blur
             required/>
             <v-btn
-            @click="featuresRemoveItem(index, i)"
+            @click="featuresItemRemove(index, i)"
             fab small color="red lighten-2">
               <v-icon>
                 remove
               </v-icon>
             </v-btn>
           </div>
-          <v-btn class="ma-0" @click="featuresAddItem(index)">добавить</v-btn>
+          <v-btn class="ma-0" @click="featuresItemAdd(index)">добавить</v-btn>
         </v-form>
         <v-btn class="ma-0" @click="featuresAdd">добавить список</v-btn>
       </div>
@@ -226,6 +222,7 @@
 <script>
 import Vue from 'vue';
 import { cloneDeep } from 'lodash/fp';
+import InputFile from '~/domains/common/InputFile.vue';
 import EditionPanel from './EditionPanel';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
@@ -233,6 +230,7 @@ import { validatorRequired } from '~/utils/validators.js';
 export default {
   name: 'edition-panel-product',
   mixins: [EditionPanel],
+  components: { InputFile },
   data() {
     return {
       rules: {
@@ -254,15 +252,14 @@ export default {
       return Object.values(categories).map(({ id, name }) => ({ id, name }));
     },
   },
-  created() {
-    this.model = this.value ? cloneDeep(this.value) : {};
-    let { refs } = this.model;
-    refs = refs || {};
+  beforeMount() {
+    const model = this.model;
+    const refs = model.refs || {};
     refs.brand = refs.brand ? refs.brand[0] : null;
     refs.category = refs.category || [];
-    this.model.refs = refs;
-    this.model.footer = this.model.footer || {};
-    this.model.currency = this.model.currency || '$';
+    model.refs = refs;
+    model.footer = model.footer || {};
+    model.currency = model.currency || '$';
   },
   methods: {
     featuresRemove(index) {
@@ -273,11 +270,11 @@ export default {
       if (!this.model.features) { Vue.set(this.model, 'features', []); }
       this.model.features.push({ title: '', items: [''] });
     },
-    featuresRemoveItem(index, i) {
+    featuresItemRemove(index, i) {
       this.model.features[index].items.splice(i, 1);
       this.onFormControlChange();
     },
-    featuresAddItem(index) {
+    featuresItemAdd(index) {
       this.model.features[index].items.push('');
     },
     charachteristicsRemove(index) {
@@ -299,15 +296,13 @@ export default {
       this.model.charachteristics[index].items.push({ key: '', val: '' });
     },
     getProperModel() {
-      const refs = cloneDeep(this.model.refs);
-      let m = {};
+      const model = cloneDeep(this.model);
+      const refs = model.refs;
       Object.keys(refs)
         .filter(key => !Array.isArray(refs[key]))
         .forEach(key => refs[key] = refs[key] ? [refs[key]] : []);
 
-      m = cloneDeep(this.model);
-      m.refs = refs;
-      return m;
+      return model;
     },
   },
 };

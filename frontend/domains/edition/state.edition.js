@@ -14,7 +14,7 @@ import {
   ApiShop,
 } from '~/domains/barrel.api';
 
-import { difference, cloneDeep } from 'lodash/fp';
+import { difference, cloneDeep, isEmpty } from 'lodash/fp';
 import { refsEqualIs } from './utils.edition';
 
 
@@ -68,7 +68,7 @@ const actions = (entitiyTypes) => {
         editionType: EDITION_TYPES.create,
       };
 
-      if (payload) {
+      if (!isEmpty(payload)) {
         const refs = { };
         const key = Object.keys(payload)[0];
         refs[key] = [payload[key]];
@@ -146,7 +146,7 @@ const actions = (entitiyTypes) => {
         try {
           const { data } = await ApiShop[key].put(entity);
 
-          const { refs: refsNew } = entity;
+          const { refs: refsNew } = data;
           const { refs: refsOld } = state.backup;
 
           commit(ENTITY_EDIT(val), data);
