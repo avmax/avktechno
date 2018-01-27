@@ -20,15 +20,15 @@
         label="Введите название продукта"
       />
 
-      <h3>Поиск по номеру</h3>
+      <h3>Поиск по VIN номеру</h3>
       <v-text-field
-        v-model="name"
-        label="Введите название продукта"
+        v-model="vin"
+        label="Введите VIN продукта"
       />
 
       <v-divider class="mt-3 mb-4"/>
 
-      <v-select
+      <!-- <v-select
       v-if="type"
       label="Выберите тип"
       :items="model.types"
@@ -36,8 +36,7 @@
       item-value="value"
       item-disabled="disabled"
       v-model="type"
-      persistent-hint
-      color="white"/>
+      persistent-hint/>
 
       <v-select
       v-if="subtype"
@@ -47,10 +46,9 @@
       item-value="value"
       item-disabled="disabled"
       v-model="subtype"
-      persistent-hint
-      color="white"/>
+      persistent-hint/>
 
-      <v-divider class="mt-3 mb-4"/>
+      <v-divider class="mt-3 mb-4"/> -->
 
       <v-select
       label="Выберите категории"
@@ -60,8 +58,7 @@
       item-value="id"
       max-height="400"
       multiple
-      persistent-hint
-      color="white"/>
+      persistent-hint/>
 
       <v-select
       label="Выберите бренды"
@@ -71,8 +68,7 @@
       item-value="id"
       max-height="400"
       multiple
-      persistent-hint
-      color="white"/>
+      persistent-hint/>
 
       <v-divider class="mt-3 mb-4"/>
 
@@ -114,13 +110,12 @@
 <script>
 import { ENTITY_TYPES } from '~/domains/barrel.types';
 import {
-  FILTER_TYPE_SET,
-  FILTER_SUBTYPE_SET,
-  FILTER_ENTITY_CHOSEN_SET,
-  FILTER_RESET,
   FILTER_VISIBILITY_TOGGLE,
+  FILTER_HIDDEN_SET,
+  FILTER_DROP,
 } from '~/domains/barrel.state';
 import { mapState, mapMutations } from 'vuex';
+import { difference } from 'lodash/fp';
 
 export default {
   name: 'filter-panel',
@@ -134,15 +129,16 @@ export default {
       priceTo: null,
       priceFrom: null,
       name: null,
+      vin: null,
     };
   },
   computed: {
     ...mapState({
-      isFilterPanelOpened: ({ filter }) => filter.isActive,
+      isFilterPanelOpened: ({ filter }) => filter.isOpened,
     }),
     model() {
       const { getters, state } = this.$store;
-      const { filter } = state;
+      const { shop } = state;
 
       return {
         types: Object.values(ENTITY_TYPES)
@@ -150,74 +146,92 @@ export default {
           .map(v => ({ name: this.types[v], value: v, disabled: v === this.subtype })),
         subtypes: Object.values(ENTITY_TYPES)
           .map(v => ({ name: this.types[v], value: v, disabled: v === this.type })),
-        category: filter.available.category.map(id => getters.entity(ENTITY_TYPES.category, id)),
-        brand: filter.available.brand.map(id => getters.entity(ENTITY_TYPES.brand, id)),
-        product: filter.available.product.map(id => getters.entity(ENTITY_TYPES.product, id)),
+        category: getters.entities(ENTITY_TYPES.category),
+        brand: getters.entities(ENTITY_TYPES.brand),
+        product: getters.entities(ENTITY_TYPES.product),
       };
     },
-    type: {
-      get() {
-        return this.$store.state.filter.type;
-      },
-      set(v) {
-        this.$store.commit(FILTER_TYPE_SET, v);
-      },
-    },
-    subtype: {
-      get() {
-        return this.$store.state.filter.subtype;
-      },
-      set(v) {
-        this.$store.commit(FILTER_SUBTYPE_SET, v);
-      },
-    },
+    // type: {
+    //   get() {
+    //     return this.$store.state.filter.type;
+    //   },
+    //   set(v) {
+    //     this.$store.commit(FILTER_TYPE_SET, v);
+    //   },
+    // },
+    // subtype: {
+    //   get() {
+    //     return this.$store.state.filter.subtype;
+    //   },
+    //   set(v) {
+    //     this.$store.commit(FILTER_SUBTYPE_SET, v);
+    //   },
+    // },
     category: {
       get() {
-        return this.$store.state.filter.chosen.category;
+        const { filter } = this.$store.state;
+        const all = this.model.category;
+        const hidden = filter.hidden.category;
+        return all.filter(c => hidden.indexOf(c.id) === -1);
       },
-      set(v) {
-        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.category), v);
-      },
+      set(v) { this.filterByIDs(v, 'category'); },
     },
     brand: {
       get() {
-        return this.$store.state.filter.chosen.brand;
+        const { filter } = this.$store.state;
+        const all = this.model.brand;
+        const hidden = filter.hidden.brand;
+        return all.filter(b => hidden.indexOf(b.id) === -1);
       },
-      set(v) {
-        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.brand), v);
-      },
+      set(v) { this.filterByIDs(v, 'brand'); },
     },
   },
   watch: {
     priceFrom(v) {
       if (v) {
-        const products = this.model.product.filter(p => p.price >= +v).map(p => p.id);
-        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.product), products);
+        const products = this.model.product.filter(p => p.price < +v).map(p => p.id);
+        this.$store.commit(FILTER_HIDDEN_SET(ENTITY_TYPES.product), products);
       }
     },
     priceTo(v) {
       if (v) {
-        const products = this.model.product.filter(p => p.price <= +v).map(p => p.id);
-        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.product), products);
+        const products = this.model.product.filter(p => p.price > +v).map(p => p.id);
+        this.$store.commit(FILTER_HIDDEN_SET(ENTITY_TYPES.product), products);
       }
     },
-    name(v) {
-      if (v) {
-        const products = this.model.product.filter(p => p.name.indexOf(v) !== -1).map(p => p.id);
-        this.$store.commit(FILTER_ENTITY_CHOSEN_SET(ENTITY_TYPES.product), products);
-      }
-    },
+    name(v) { this.filterByString(v, 'name'); },
+    vin(v) { this.filterByString(v, 'vin'); },
   },
   methods: {
     ...mapMutations({
       close: FILTER_VISIBILITY_TOGGLE,
     }),
+    filterByString(str, key) {
+      const arr = this.model.product;
+      const { commit } = this.$store;
+      let payload;
+
+      if (str) {
+        payload = arr.filter(a => a[key].toLowerCase().indexOf(str.toLowerCase()) === -1);
+        payload = payload.map(r => r.id);
+      } else {
+        payload = [];
+      }
+
+      commit(FILTER_HIDDEN_SET(ENTITY_TYPES.product), payload);
+    },
+    filterByIDs(v, key) {
+      const all = Object.values(this.model[key]).map(o => o.id);
+      const payload = difference(all, v);
+      this.$store.commit(FILTER_HIDDEN_SET(ENTITY_TYPES[key]), payload);
+    },
     reset() {
       const { commit } = this.$store;
+      commit(FILTER_DROP);
       this.priceTo = null;
       this.priceFrom = null;
       this.name = null;
-      commit(FILTER_RESET);
+      this.vin = null;
     },
   },
 };

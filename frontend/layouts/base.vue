@@ -5,9 +5,9 @@
       <slot name="header" slot="header"/>
     </the-header>
 
-    <slot name="panels"/>
-
     <template v-if="!isSpinner">
+      <slot name="panels"/>
+
       <v-content>
         <the-notifications/>
         <v-container fluid >
@@ -59,9 +59,10 @@ export default {
       isSpinner: ({ ui }) => ui.spinner,
     }),
   },
-  beforeMount() {
-    this.$store.dispatch(ENTITY_ALL_LOAD());
-    setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+  async beforeMount() {
+    await this.$store.dispatch(ENTITY_ALL_LOAD());
+    this.$store.commit(SPINNER_HIDE);
+    // setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
   },
 };
 </script>

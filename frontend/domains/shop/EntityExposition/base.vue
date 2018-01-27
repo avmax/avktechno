@@ -25,7 +25,7 @@
             style="margin-bottom: -10px;"
           />
           <edition-ghost @add="add(subtype, type, c.id)"/>
-          <v-flex v-for="s in c.refs[subtype]" :key="s.id" xs12 sm6 lg4>
+          <v-flex v-for="s in c.refs[subtype]" :key="s.id" xs12 sm6 lg4 v-if="getItem(s)">
             <edition>
               <component
                 :is="itemComponent"
@@ -80,6 +80,10 @@ export default {
       type: String,
       required: true,
     },
+    filter: {
+      type: Function,
+      default: item => item,
+    },
   },
   computed: {
     itemComponent() {
@@ -101,12 +105,30 @@ export default {
       return cmp;
     },
     collections() {
-      return this.$store.getters.entities(this.type);
+      const { state, getters } = this.$store;
+      const { filter } = state;
+      const entities = getters.entities(this.type);
+      const hidden = filter.hidden[this.type];
+
+      return entities.filter(e => hidden.indexOf(e.id) === -1);
     },
   },
   methods: {
     getItem(id) {
-      return this.$store.getters.entity(this.subtype, id);
+      const { state, getters } = this.$store;
+      const { filter } = state;
+      const entity = getters.entity(this.subtype, id);
+      const hidden = filter.hidden[this.subtype];
+
+      let item;
+
+      if (hidden.indexOf(id) === -1) {
+        item = entity;
+      } else {
+        item = null;
+      }
+
+      return item;
     },
   },
 };

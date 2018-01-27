@@ -12,13 +12,14 @@ import { assign, isEmpty } from 'lodash/fp';
 
 const ENTITY_ALL_LOAD = type => `shop: загрузить сущности типа <${type}>`;
 const ENTITY_ADD = type => `shop: добавить сущность типа <${type}>`;
-const ENTITY_EDIT = type => `shop: изменить сущность типа <${type}>`;
+const ENTITY_MULTIPLE_ADD = type => `shop: добавить несколько сущностей типа <${type}>`;
+const ENTITY_EDIT = type => `shop: заменить сущность типа <${type}>`;
 const ENTITY_REMOVE = type => `shop: удалить сущность типа <${type}>`;
 
 
 const state = entityTypes => () => {
   const s = { };
-  Object.values(entityTypes).forEach(val => s[val] = {});
+  Object.values(entityTypes).forEach(type => s[type] = {});
   return s;
 };
 
@@ -35,6 +36,14 @@ const mutations = (entitiyTypes) => {
   const entityAdd = function(type) {
     return (state, payload) => {
       Vue.set(state[type], payload.id, payload);
+    };
+  };
+
+  const entityMultipleAdd = function(type) {
+    return (state, payload) => {
+      payload.forEach((item) => {
+        Vue.set(state[type], item.id, item);
+      });
     };
   };
 
@@ -63,23 +72,24 @@ const mutations = (entitiyTypes) => {
 
   const m = { };
 
-  Object.values(entitiyTypes).forEach((val) => {
-    m[ENTITY_ADD(val)] = entityAdd(val);
-    m[ENTITY_EDIT(val)] = entityEdit(val);
-    m[ENTITY_REMOVE(val)] = entityRemove(val);
+  Object.values(entitiyTypes).forEach((type) => {
+    m[ENTITY_ADD(type)] = entityAdd(type);
+    m[ENTITY_MULTIPLE_ADD(type)] = entityMultipleAdd(type);
+    m[ENTITY_EDIT(type)] = entityEdit(type);
+    m[ENTITY_REMOVE(type)] = entityRemove(type);
   });
 
   return m;
 };
 
 const actions = (entityTypes) => {
-  const entityLoadAll = function(key, val) {
+  const entityLoadAll = function(key, type) {
     return async ({ state, commit }) => {
-      if (!isEmpty(state[val])) { return state[val]; }
+      if (!isEmpty(state[type])) { return state[type]; }
       try {
         const { data } = await ApiShop[key].get();
         if (data) {
-          data.forEach(dataItem => commit(ENTITY_ADD(val), dataItem));
+          commit(ENTITY_MULTIPLE_ADD(type), data);
         }
         return Promise.resolve(data);
       } catch (err) {
@@ -91,7 +101,7 @@ const actions = (entityTypes) => {
 
   const a = {
     [ENTITY_ALL_LOAD()]({ dispatch }) {
-      return Object.values(entityTypes).forEach(v => dispatch(ENTITY_ALL_LOAD(v)));
+      return Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_ALL_LOAD(v))));
     },
   };
 
@@ -101,8 +111,8 @@ const actions = (entityTypes) => {
   }
 
   Object.keys(entityTypes).forEach((key) => {
-    const val = entityTypes[key];
-    a[ENTITY_ALL_LOAD(val)] = entityLoadAll(key, val);
+    const type = entityTypes[key];
+    a[ENTITY_ALL_LOAD(type)] = entityLoadAll(key, type);
   });
 
   return a;

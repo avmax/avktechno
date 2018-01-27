@@ -2,9 +2,6 @@ import {
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
-
-  FILTER_ENTITY_AVAILABLE_ADD,
-  FILTER_ENTITY_AVAILABLE_REMOVE,
 } from '~/domains/barrel.state';
 import {
   EDITION_TYPES,
@@ -100,7 +97,6 @@ const actions = (entitiyTypes) => {
       try {
         await ApiShop[key].delete(id);
         commit(ENTITY_REMOVE(val), id);
-        commit(FILTER_ENTITY_AVAILABLE_REMOVE(val), id);
       } catch (err) {
         console.log(err);
         return Promise.reject(err);
@@ -136,8 +132,6 @@ const actions = (entitiyTypes) => {
               });
             });
           }
-
-          commit(FILTER_ENTITY_AVAILABLE_ADD(val), data.id);
         } catch (err) {
           console.log(err);
           return Promise.reject(err);
