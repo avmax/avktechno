@@ -3,7 +3,7 @@ import {
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
-} from '~/domains/shop/state.shop';
+} from '~/domains/shop/state';
 
 import {
   EDITION_ADD,
@@ -11,7 +11,7 @@ import {
   EDITION_EDIT,
   EDITION_SAVE,
   EDITION_STOP,
-} from '~/domains/edition/state.edition';
+} from '~/domains/edition/state';
 
 import {
   USER_SIGN_IN,
@@ -42,7 +42,7 @@ import {
   FILTER_ENTITY_CHOSEN_SET,
   FILTER_RESET,
   FILTER_DROP,
-} from '~/domains/filter/state.filter';
+} from '~/domains/filter/state';
 
 
 export {

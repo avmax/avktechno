@@ -110,7 +110,7 @@
             label="Заголовок списка"/>
             <v-btn
             @click="featuresRemove(index)"
-            fab small color="red lighten-1">
+            fab small color="error">
               <v-icon>
                 remove
               </v-icon>
@@ -130,7 +130,7 @@
             required/>
             <v-btn
             @click="featuresItemRemove(index, i)"
-            fab small color="red lighten-2">
+            fab small color="red lighten-4">
               <v-icon>
                 remove
               </v-icon>
@@ -138,7 +138,7 @@
           </div>
           <v-btn class="ma-0" @click="featuresItemAdd(index)">добавить</v-btn>
         </v-form>
-        <v-btn class="ma-0" @click="featuresAdd">добавить список</v-btn>
+        <v-btn color="secondary" class="ma-0" @click="featuresAdd">добавить список</v-btn>
       </div>
 
       <v-divider class="my-3"/>
@@ -155,7 +155,7 @@
             label="Заголовок таблицы"/>
             <v-btn
             @click="charachteristicsRemove(index)"
-            fab small color="red lighten-1">
+            fab small color="error">
               <v-icon>
                 remove
               </v-icon>
@@ -185,7 +185,7 @@
             <v-flex xs1>
               <v-btn
               @click="charachteristicsRemoveItem(index, i)"
-              fab small color="red lighten-2">
+              fab small color="red lighten-4">
                 <v-icon>
                   remove
                 </v-icon>
@@ -194,20 +194,20 @@
           </v-layout>
           <v-btn class="ma-0 mb-1" @click="charachteristicsAddItem(index)">добавить</v-btn>
         </v-form>
-        <v-btn class="ma-0" @click="charachteristicsAdd">добавить характеристику</v-btn>
+        <v-btn color="secondary" class="ma-0" @click="charachteristicsAdd">добавить характеристику</v-btn>
       </div>
 
       <v-divider class="my-3"/>
 
       <v-btn
-      color="primary"
+      color="success"
       class="mt-3"
       @click="handleSubmit()"
       :disabled="!isValid">
         Сохранить изменения
       </v-btn>
       <v-btn
-      color="blue-grey lighten-1"
+      color="secondary"
       @click="handleAbort()">
         Прекратить изменения
       </v-btn>
@@ -223,13 +223,13 @@
 import Vue from 'vue';
 import { cloneDeep } from 'lodash/fp';
 import InputFile from '~/domains/common/InputFile.vue';
-import EditionPanel from './EditionPanel';
+import Panel from './base';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
 
 export default {
   name: 'edition-panel-product',
-  mixins: [EditionPanel],
+  mixins: [Panel],
   components: { InputFile },
   data() {
     return {

@@ -1,5 +1,6 @@
 <template>
-<v-card class="shop-entity-item-category card">
+<v-card class="shop-entity-item-brand card">
+  <v-card-media class="card__media" :src="imgUrl"></v-card-media>
   <v-card-title class="card__title title">{{name}}</v-card-title>
   <v-card-actions>
     <v-spacer/>
@@ -7,16 +8,17 @@
       <v-btn>
         Читать подробно
       </v-btn>
-    </router-link>
+  </router-link>
   </v-card-actions>
 </v-card>
 </template>
 
 <script>
 export default {
-  name: 'shop-entity-item-category',
+  name: 'entity-item-brand',
   props: {
     link: Object,
+    imgUrl: String,
     name: String,
   },
 };
@@ -24,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 #avmax {
-.shop-entity-item-category {
+.shop-entity-item-brand {
   position: relative;
   width: 100%;
   height: 100%;

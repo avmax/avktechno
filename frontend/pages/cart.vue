@@ -19,17 +19,18 @@
       </v-form>
 
       <h2 class="text-xs-center mb-4">Выбранные товары. Общая сумма: {{totalPrice}} рублей.</h2>
-      <shop-entity-exposition
-      :type="type"
-      :subtype="subtype"
-      :data="collections"/>
+      <entity-exposition
+        :type="type"
+        :subtype="subtype"
+        :data="collections"
+      />
     </template>
   </v-layout>
 </v-container>
 </template>
 
 <script>
-import ShopEntityExposition from '~/domains/shop/ShopEntityExposition.vue';
+import EntityExposition from '~/domains/shop/EntityExposition/base.vue';
 import { ApiCart } from '~/domains/barrel.api';
 import { ENTITY_TYPES, NOTIFICATION_TYPES } from '~/domains/barrel.types';
 import {
@@ -39,9 +40,7 @@ import {
 import { cloneDeep } from 'lodash/fp';
 
 export default {
-  components: {
-    ShopEntityExposition,
-  },
+  components: { EntityExposition },
   layout: 'easy',
   data() {
     return {

@@ -1,19 +1,19 @@
 <template>
-<v-toolbar app fixed clipped-left>
-  <v-toolbar-title class="hidden-sm-and-down">АВК ТЕХНО</v-toolbar-title>
-  <router-link class="link mr-3 ml-3" to="/">Главная</router-link>
-  <router-link class="link mr-3" to="/product">Продукты</router-link>
+<v-toolbar app fixed clipped-left color="primary" dark>
+  <v-toolbar-title class="hidden-sm-and-down mr-2">АВК ТЕХНО</v-toolbar-title>
+  <router-link class="link mr-3 white--text ml-3" to="/">Главная</router-link>
+  <router-link class="link mr-3 white--text" to="/about">О нас</router-link>
   <v-spacer></v-spacer>
 
   <slot/>
 
-  <router-link to="/cart" nuxt flat class="mr-4">
-    <v-badge right :value="itemsInCart">
-      <span class="hidden-sm-and-down link link_uppercase">Корзина</span>
+  <v-btn to="/cart" nuxt flat class="mx-0">
+    <v-badge right color="success" :value="itemsInCart">
+      <span class="hidden-sm-and-down white--text">Корзина</span>
       <v-icon class="hidden-md-and-up" large color="grey lighten-1">shopping_cart</v-icon>
       <span slot="badge">{{itemsInCart}}</span>
     </v-badge>
-  </router-link>
+  </v-btn>
 </v-toolbar>
 </template>
 

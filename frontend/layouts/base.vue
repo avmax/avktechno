@@ -1,0 +1,77 @@
+<template>
+  <v-app id="avmax">
+
+    <the-header>
+      <slot name="header" slot="header"/>
+    </the-header>
+
+    <slot name="panels"/>
+
+    <template v-if="!isSpinner">
+      <v-content>
+        <the-notifications/>
+        <v-container fluid >
+          <v-layout column fill-width>
+            <v-flex>
+              <nuxt/>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </template>
+
+    <template v-else>
+      <v-layout  row align-center justify-center>
+        <grid-loader :loading="true" color="#003559"/>
+      </v-layout>
+    </template>
+
+    <the-footer/>
+  </v-app>
+</template>
+
+<script>
+import TheHeader from '~/domains/common/TheHeader.vue';
+import TheFooter from '~/domains/common/TheFooter.vue';
+import TheNotifications from '~/domains/common/TheNotifications.vue';
+import {
+  ENTITY_ALL_LOAD,
+  SPINNER_HIDE,
+} from '~/domains/barrel.state';
+import GridLoader from 'vue-spinner/src/GridLoader.vue';
+import { mapState } from 'vuex';
+
+export default {
+  name: 'layout-base',
+  components: {
+    TheHeader,
+    TheFooter,
+    TheNotifications,
+    GridLoader,
+  },
+  data() {
+    return {
+      test: false,
+    };
+  },
+  computed: {
+    ...mapState({
+      isSpinner: ({ ui }) => ui.spinner,
+    }),
+  },
+  beforeMount() {
+    this.$store.dispatch(ENTITY_ALL_LOAD());
+    setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+  },
+};
+</script>
+
+<style lang="scss">
+#avmax {
+.page {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
 <div @keyup.esc="handleAbort" @keyup.ctrl.enter="handleSubmit">
-  <h3 class="mb-3">{{isTypeCreate ? 'Создать бренд' : 'Редактировать бренд'}}</h3>
+  <h3 class="mb-3">{{isTypeCreate ? 'Создать категорию' : 'Редактировать категорию'}}</h3>
   <v-form
     ref="form"
     @keyup.enter.native="handleSubmit"
@@ -15,8 +15,6 @@
       :rules="rules.name"
       validate-on-blur
       required/>
-
-      <input-file label="Картинка" v-model="model.image"/>
 
       <v-divider class="mb-4 mt-3"/>
 
@@ -39,15 +37,13 @@
 
 
 <script>
-import InputFile from '~/domains/common/InputFile.vue';
+import Panel from './base';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
-import EditionPanel from './EditionPanel';
 
 export default {
-  name: 'shop-edition-panel-category',
-  mixins: [EditionPanel],
-  components: { InputFile },
+  name: 'edition-panel-category',
+  mixins: [Panel],
   data() {
     return {
       rules: {

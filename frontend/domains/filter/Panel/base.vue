@@ -1,95 +1,114 @@
 <template>
-  <div class="filter-panel">
-  <h2 class="mb-3">Фильтр</h2>
+  <v-navigation-drawer
+    :permanent="$vuetify.breakpoint.smAndUp"
+    :value="isFilterPanelOpened"
+    fixed
+    left
+    clipped
+    app
+    hide-overlay
+    mobile-break-point="1080"
+    width="400"
+    class="pa-3"
+  >
+    <div class="filter-panel">
+    <h2 class="mb-3">Фильтр</h2>
 
-    <v-select
-    v-if="type"
-    label="Выберите тип"
-    :items="model.types"
-    item-text="name"
-    item-value="value"
-    item-disabled="disabled"
-    v-model="type"
-    persistent-hint
-    color="white"/>
+      <h3>Поиск по названию</h3>
+      <v-text-field
+        v-model="name"
+        label="Введите название продукта"
+      />
 
-    <v-select
-    v-if="subtype"
-    label="Выберите подтип"
-    :items="model.subtypes"
-    item-text="name"
-    item-value="value"
-    item-disabled="disabled"
-    v-model="subtype"
-    persistent-hint
-    color="white"/>
+      <h3>Поиск по номеру</h3>
+      <v-text-field
+        v-model="name"
+        label="Введите название продукта"
+      />
 
-    <v-divider class="mt-3 mb-4"/>
+      <v-divider class="mt-3 mb-4"/>
 
-    <v-select
-    label="Выберите категории"
-    :items="model.category"
-    v-model="category"
-    item-text="name"
-    item-value="id"
-    max-height="400"
-    multiple
-    persistent-hint
-    color="white"/>
+      <v-select
+      v-if="type"
+      label="Выберите тип"
+      :items="model.types"
+      item-text="name"
+      item-value="value"
+      item-disabled="disabled"
+      v-model="type"
+      persistent-hint
+      color="white"/>
 
-    <v-select
-    label="Выберите бренды"
-    :items="model.brand"
-    v-model="brand"
-    item-text="name"
-    item-value="id"
-    max-height="400"
-    multiple
-    persistent-hint
-    color="white"/>
+      <v-select
+      v-if="subtype"
+      label="Выберите подтип"
+      :items="model.subtypes"
+      item-text="name"
+      item-value="value"
+      item-disabled="disabled"
+      v-model="subtype"
+      persistent-hint
+      color="white"/>
 
-    <v-divider class="mt-3 mb-4"/>
+      <v-divider class="mt-3 mb-4"/>
 
-    <h3>Цена:</h3>
+      <v-select
+      label="Выберите категории"
+      :items="model.category"
+      v-model="category"
+      item-text="name"
+      item-value="id"
+      max-height="400"
+      multiple
+      persistent-hint
+      color="white"/>
 
-    <v-layout>
-      <v-flex xs6 class="mr-4">
-        <v-text-field
-        v-model="priceFrom"
-        label="От"
-        type="number"/>
-      </v-flex>
-      <v-flex xs6>
-        <v-text-field
-        v-model="priceTo"
-        label="До"
-        type="number"/>
-      </v-flex>
-    </v-layout>
+      <v-select
+      label="Выберите бренды"
+      :items="model.brand"
+      v-model="brand"
+      item-text="name"
+      item-value="id"
+      max-height="400"
+      multiple
+      persistent-hint
+      color="white"/>
 
-    <v-divider class="mt-3 mb-4"/>
+      <v-divider class="mt-3 mb-4"/>
 
-    <h3>Поиск</h3>
+      <h3>Цена:</h3>
 
-    <v-text-field
-    v-model="name"
-    label="Введите название продукта"/>
+      <v-layout>
+        <v-flex xs6 class="mr-4">
+          <v-text-field
+          v-model="priceFrom"
+          label="От"
+          type="number"/>
+        </v-flex>
+        <v-flex xs6>
+          <v-text-field
+          v-model="priceTo"
+          label="До"
+          type="number"/>
+        </v-flex>
+      </v-layout>
 
-    <v-divider class="mt-3 mb-5"/>
+      <v-divider class="mt-3 mb-5"/>
 
-    <v-btn
-    @click.native="close()"
-    block
-    color="blue-grey lighten-1"
-    class="mb-3">
-      Закрыть
-    </v-btn>
-    <v-btn @click.native="reset()"
-    block
-    color="red lighten-1">
-      Сбросить
-    </v-btn>
-  </div>
+      <v-btn
+      @click.native="close()"
+      block
+      secondary
+      class="hidden-sm-and-up mb-3">
+        Закрыть
+      </v-btn>
+      <v-btn @click.native="reset()"
+      block
+      color="red lighten-1">
+        Сбросить
+      </v-btn>
+    </div>
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -101,7 +120,7 @@ import {
   FILTER_RESET,
   FILTER_VISIBILITY_TOGGLE,
 } from '~/domains/barrel.state';
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'filter-panel',
@@ -118,6 +137,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isFilterPanelOpened: ({ filter }) => filter.isActive,
+    }),
     model() {
       const { getters, state } = this.$store;
       const { filter } = state;

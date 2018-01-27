@@ -25,7 +25,7 @@ const state = entityTypes => () => {
 const getters = () => {
   const g = {
     entity: state => (type, id) => state[type][id],
-    entities: state => type => Object.keys(state[type]).map(id => +id),
+    entities: state => type => Object.values(state[type]),
   };
 
   return g;

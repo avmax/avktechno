@@ -1,29 +1,31 @@
 <template>
 <div
-class="shop-entity-view-product py-2">
+class="entity-view-product py-2">
   <v-fade-transition>
-    <v-card v-if="model" class="shop-entity-view-product__card">
-      <v-card-media class="shop-entity-view-product__card-media" :src="model.imgUrl"/>
-      <v-card-title class="shop-entity-view-product__card-header display-1 pb-0" style="font-weight: bolder;">
+    <v-card v-if="model" class="entity-view-product__card">
+      <v-card-media class="entity-view-product__card-media" :src="model.imgUrl"/>
+      <v-card-title class="entity-view-product__card-header display-1 pb-0" style="font-weight: bolder;">
         {{model.name}}
       </v-card-title>
       <v-card-title class="display-1 pt-0">
         {{model.title}}
       </v-card-title>
+
       <v-divider class="mb-4"/>
-      <v-card-text class="shop-entity-view-product__card-actions headline">
+      <v-card-text class="entity-view-product__card-actions headline">
         <v-chip
-        class="shop-entity-view-product__card-price title ma-0 mb-3"
+        class="entity-view-product__card-price title ma-0 mb-3"
         label
         outline
         disabled
-        color="white"
+        color="primary"
         v-if="model.price">
           Цена: {{model.price}} {{model.currency}}
         </v-chip>
         <v-btn
-        class="d-inline-block shop-entity-view-product__card-action ma-0"
-        color="teal"
+        class="d-inline-block entity-view-product__card-action ma-0"
+        color="success"
+        dark
         @click="addToCart">
           Добавить в корзину
           <template v-if="count">
@@ -32,64 +34,63 @@ class="shop-entity-view-product py-2">
         </v-btn>
         <v-btn
         :disabled="!count"
-        class="d-inline-block shop-entity-view-product__card-action ma-0"
+        class="d-inline-block entity-view-product__card-action ma-0"
         color="red lighten-1"
         @click="removeFromCart">
           Убрать из корзины
         </v-btn>
       </v-card-text>
-      <v-divider class="mb-4"/>
-      <v-card-text v-if="model.description" class="shop-entity-view-product__card-description subheading" v-html="model.description"/>
-      <v-divider class="my-4"/>
+      <v-divider class="mb-4 mt-4"/>
+
+      <template v-if="model.info">
+        <v-card-text v-if="model.info.brand" class="entity-view-product__card-info-item subheading" v-html="model.info.brand"/>
+        <v-card-text v-if="model.info.category" class="entity-view-product__card-info-item subheading" v-html="model.info.category"/>
+        <v-divider class="my-4"/>
+      </template>
+
+      <template v-if="model.description">
+        <v-card-text class="entity-view-product__card-description subheading" v-html="model.description"/>
+        <v-divider class="my-4"/>
+      </template>
+
       <template
       v-for="(feature, index) in model.features">
         <v-card-text
-        class="shop-entity-view-product__card-feature"
+        class="entity-view-product__card-feature"
         :key="`feature-${index}`">
           <div class="title mt-0 mb-2" v-if="feature.title">{{feature.title}}</div>
           <v-card-text
-          class="shop-entity-view-product__card-feature-item py-1 pb-"
+          class="entity-view-product__card-feature-item py-1 pb-"
           v-for="(f, i) in feature.items"
           :key="`feature-${index}-${i}`">
-            <div class="shop-entity-view-product__card-feature-icon"></div>
+            <div class="entity-view-product__card-feature-icon"></div>
             <div class="subheading">{{f}}</div>
           </v-card-text>
         </v-card-text>
         <v-divider class="my-4" :key="`feature-${index}`"/>
       </template>
+
       <template v-for="(c, i) in model.charachteristics">
         <v-card-text
-        class="shop-entity-view-product__card-charachteristics"
+        class="entity-view-product__card-charachteristics"
         :key="`characteristics-${i}`">
           <div class="title mt-0 mb-2">{{c.title}}</div>
-          <div class="shop-entity-view-product__card-charachteristics-item mt-1"
+          <div class="entity-view-product__card-charachteristics-item mt-1"
           v-for="(item, index) in c.items" :key="`characteristics-${i}-${index}`">
-            <span class="shop-entity-view-product__card-charachteristics-item-key subheading">{{item.key}}:</span>
-            <span class="shop-entity-view-product__card-charachteristics-item-val body-2 pl-2">{{item.val}}</span>
+            <span class="entity-view-product__card-charachteristics-item-key subheading">{{item.key}}:</span>
+            <span class="entity-view-product__card-charachteristics-item-val body-2 pl-2">{{item.val}}</span>
           </div>
         </v-card-text>
         <v-divider class="my-4" :key="`characteristics-${i}`"/>
       </template>
+
       <template v-if="model.footer">
         <v-card-text class="title pb-0">{{model.footer.title}}</v-card-text>
         <v-card-text v-html="model.footer.text"/>
       </template>
+
     </v-card>
   </v-fade-transition>
-
-  <div class="shop-entity-view-product__controls"
-  v-if="isEditionEnabled">
-    <v-btn
-    @click="edit(type, id)"
-    fab small>
-      <v-icon color="white">edit</v-icon>
-    </v-btn>
-    <v-btn
-    @click="remove(type, id)"
-    fab small>
-      <v-icon color="white">clear</v-icon>
-    </v-btn>
-  </div>
 </div>
 </template>
 
@@ -98,16 +99,15 @@ import { ENTITY_TYPES } from '~/domains/barrel.types';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import { isEmpty } from 'lodash/fp';
-import Editable from './Editable';
-import ShopEntityProduct from './ShopEntityProduct';
+import EntityProduct from '../mixins/product';
 
 export default {
-  name: 'shop-entity-view-product',
+  name: 'entity-view-product',
   components: {
     CardBase,
     GridLoader,
   },
-  mixins: [Editable, ShopEntityProduct],
+  mixins: [EntityProduct],
   props: {
     id: {
       type: [String, Number],
@@ -129,7 +129,7 @@ export default {
 
 <style lang="scss" scoped>
 #avmax {
-.shop-entity-view-product {
+.entity-view-product {
   position: relative;
   width: 100%;
   height: 100%;
@@ -171,40 +171,12 @@ export default {
       margin-bottom: 20px !important;
     }
   }
-
-  &__controls {
-    position: absolute;
-    width: 100%;
-    top: 10px;
-    padding-right: 5px;
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  &__ghost {
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    &-spinner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
 }
 
 
 
 @media all and (max-width: 768px) {
-.shop-entity-view-product {
+.entity-view-product {
   &__card {
     &-header {
       display: flex;
@@ -231,7 +203,7 @@ export default {
 
 
 @media all and (min-width: 768px) {
-.shop-entity-view-product {
+.entity-view-product {
   max-width: 720px;
   margin: 0 auto;
 

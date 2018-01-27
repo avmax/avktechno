@@ -6,18 +6,18 @@
     <div class="page__header">
       <h1 class="text-xs-left text-md-center">Страница бренда {{model.name}}</h1>
     </div>
-    <shop-entity-exposition
-    :data="collections"
-    :type="type"
-    :subtype="subtype"
-    is-editable/>
+    <entity-exposition
+      :data="collections"
+      :type="type"
+      :subtype="subtype"
+    />
   </v-layout>
 </template>
 
 
 
 <script>
-import ShopEntityExposition from '~/domains/shop/ShopEntityExposition.vue';
+import EntityExposition from '~/domains/shop/EntityExposition/base.vue';
 import { ENTITY_TYPES } from '~/domains/barrel.types';
 import {
   FILTER_ENTITY_AVAILABLE_SET,
@@ -28,9 +28,7 @@ import { cloneDeep } from 'lodash/fp';
 export default {
   name: 'page-brand',
   layout: 'hard',
-  components: {
-    ShopEntityExposition,
-  },
+  components: { EntityExposition },
   data() {
     return {
       type: ENTITY_TYPES.category,

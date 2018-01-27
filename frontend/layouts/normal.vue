@@ -1,114 +1,18 @@
 <template>
-  <v-app id="avmax" dark>
-
-    <the-header/>
-
-    <template v-if="!isSpinner">
-
-      <v-navigation-drawer
-      :value="isEditionPanelOpened"
-      disable-resize-watcher
-      disable-route-watcher
-      mobile-break-point="1080"
-      width="400"
-      class="pa-3"
-      clipped
-      fixed
-      app>
-        <component :is="editionPanel"/>
-      </v-navigation-drawer>
-
-      <v-content>
-        <the-notifications/>
-        <v-container fluid >
-          <v-layout column fill-width>
-            <v-flex>
-              <nuxt/>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-content>
-    </template>
-
-    <template v-else>
-      <v-layout  row align-center justify-center>
-        <grid-loader :loading="true" color="teal"/>
-      </v-layout>
-    </template>
-
-    <the-footer/>
-
-  </v-app>
+  <layout-base>
+    <edition-panel slot="panels"/>
+  </layout-base>
 </template>
 
 <script>
-import TheHeader from '~/domains/common/TheHeader.vue';
-import TheFooter from '~/domains/common/TheFooter.vue';
-import TheNotifications from '~/domains/common/TheNotifications.vue';
-import {
-  ENTITY_ALL_LOAD,
-  SPINNER_HIDE,
-} from '~/domains/barrel.state';
-import { ENTITY_TYPES } from '~/domains/barrel.types';
-import EditionPanelCategory from '~/domains/edition/EditionPanelCategory.vue';
-import EditionPanelBrand from '~/domains/edition/EditionPanelBrand.vue';
-import EditionPanelProduct from '~/domains/edition/EditionPanelProduct.vue';
-import GridLoader from 'vue-spinner/src/GridLoader.vue';
-import { mapState } from 'vuex';
+import LayoutBase from '~/layouts/base';
+import EditionPanel from '~/domains/edition/Panel/base.vue';
 
 export default {
   name: 'layout-advanced',
   components: {
-    TheHeader,
-    TheFooter,
-    TheNotifications,
-    EditionPanelCategory,
-    EditionPanelBrand,
-    EditionPanelProduct,
-    GridLoader,
-  },
-  data() {
-    return {
-      test: false,
-    };
-  },
-  computed: {
-    ...mapState({
-      isSpinner: ({ ui }) => ui.spinner,
-      isEditionPanelOpened: ({ edition }) => edition.isEnabled,
-      editionPanel({ edition }) {
-        let component;
-        switch (edition.entityType) {
-          case (ENTITY_TYPES.brand):
-            component = EditionPanelBrand;
-            break;
-          case (ENTITY_TYPES.category):
-            component = EditionPanelCategory;
-            break;
-          case (ENTITY_TYPES.product):
-            component = EditionPanelProduct;
-            break;
-          default:
-            component = null;
-        }
-
-        return component;
-      },
-    }),
-  },
-  beforeMount() {
-    this.$store.dispatch(ENTITY_ALL_LOAD());
-    setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+    LayoutBase,
+    EditionPanel,
   },
 };
 </script>
-
-<style lang="scss">
-#avmax {
-.page {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-}
-}
-</style>

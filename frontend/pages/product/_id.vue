@@ -1,14 +1,14 @@
 <template>
-  <shop-entitity-view-product :id="id" is-editable/>
+  <view-product :id="id"/>
 </template>
 
 <script>
-import ShopEntitityViewProduct from '~/domains/shop/ShopEntityViewProduct.vue';
+import ViewProduct from '~/domains/shop/EntityView/product.vue';
 
 export default {
   layout: 'normal',
   components: {
-    ShopEntitityViewProduct,
+    ViewProduct,
   },
   computed: {
     id() { return this.$route.params.id; },

@@ -15,7 +15,7 @@ import {
 } from '~/domains/barrel.api';
 
 import { difference, cloneDeep, isEmpty } from 'lodash/fp';
-import { refsEqualIs } from './utils.edition';
+import { refsEqualIs } from './utils';
 
 
 const EDITION_START = 'edition: начать редактирование магазина';

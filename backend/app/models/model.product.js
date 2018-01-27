@@ -32,10 +32,14 @@ module.exports = (sequelize, DataTypes) => {
           let data = this.getDataValue('footer') || '';
           data = data.toString('utf-8');
           data = data.split('___footer-title___');
-          data = {
-            title: data[0] || '',
-            text: data[1] || '',
-          };
+          if (data[0] || data[1]) {
+            data = {
+              title: data[0],
+              text: data[1],
+            };
+          } else {
+            data = null;
+          }
 
           return data;
         },

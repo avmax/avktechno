@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 'off',
+    'import/extensions': 'off',
     'no-param-reassign': 'off',
     'consistent-return': 'off',
     'no-confusing-arrow': 'off',

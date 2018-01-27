@@ -12,12 +12,12 @@
     </v-btn>
     <v-layout column>
       <span
-        class="file-input__label white--text"
+        class="file-input__label"
       >
         {{ label }}
       </span>
       <span
-        class="file-input__placeholder white--text"
+        class="file-input__placeholder primary--text"
         :class="{ 'file-input__placeholder_selected_none': files && files.length === 0 }">
         {{ placeholder }}
       </span>
@@ -122,7 +122,6 @@ export default {
   }
 
   &__placeholder {
-    color: blue;
     overflow: hidden;
     font-size: 16px;
     text-overflow: ellipsis;

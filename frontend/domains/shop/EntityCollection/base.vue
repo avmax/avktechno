@@ -1,8 +1,8 @@
 <template>
 <div class="shop-entity-collection py-3">
 
-  <v-layout class="mb-3 shop-entity-collection__header" align-center justify-start wrap>
-    <router-link class="link display-1" :to="link">{{name}}</router-link>
+  <v-layout class="mb-4 shop-entity-collection__header" align-center justify-start wrap>
+    <router-link class="link display-1 primary--text" :to="link">{{name}}</router-link>
     <slot name="header"/>
     <!-- <h3 class="shop-entity-collection__header-title heading" v-if="title">{{title}}</h3> -->
   </v-layout>
@@ -11,7 +11,7 @@
     <v-layout row justify-start wrap>
       <slot/>
       <v-flex v-if="!$slots.default" xs12>
-        <h2 class="subheading text-xs-left py-5"> Увы, коллекция пуста</h2>
+        <h2 class="subheading text-xs-left py-5">Увы, коллекция пуста</h2>
       </v-flex>
     </v-layout>
   </v-container>
@@ -24,6 +24,7 @@
 export default {
   name: 'shop-entity-collection',
   props: {
+    id: Number,
     name: String,
     title: String,
     link: Object,
