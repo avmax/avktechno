@@ -3,8 +3,28 @@
   <v-card-media class="entity-item-product__media mb-3" :src="model.imgUrl"/>
   <v-card-title class="entity-item-product__text title pt-0">{{model.name}}</v-card-title>
   <v-card-text class="entity-item-product__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
-  <v-card-text class="entity-item-product__text subheading entity-item-product__info pt-0">Категория: {{category.name}}</v-card-text>
-  <v-card-text class="entity-item-product__text subheading entity-item-product__info pt-0">Бренд: {{brand.name}}</v-card-text>
+  <v-card-text
+    class="entity-item-product__text subheading entity-item-product__info pt-0"
+  >
+    Категория:
+    <template v-if="category">
+      {{category.name}}
+    </template>
+    <template v-else>
+      отсутствует
+    </template>
+  </v-card-text>
+  <v-card-text
+    class="entity-item-product__text subheading entity-item-product__info pt-0"
+  >
+      Бренд:
+      <template v-if="brand">
+        {{brand.name}}
+      </template>
+      <template v-else>
+        отсутствует
+      </template>
+  </v-card-text>
   <v-card-actions class="entity-item-product__actions pa-3">
     <v-layout wrap class="ma-0">
       <v-flex xs12 class="pa-0 mb-2">

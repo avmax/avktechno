@@ -114,7 +114,7 @@ export default {
       let item;
       const flag =
         chosen.indexOf(id) !== -1
-        && chosenBrands.indexOf(product.refs.brand[0]) !== -1;
+        && (chosenBrands.indexOf(product.refs.brand[0]) !== -1 || !product.refs.brand[0]);
 
       if (flag) {
         item = product;
