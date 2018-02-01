@@ -14,7 +14,7 @@ import {
   apiShop,
 } from '~/barrel/api';
 
-import { difference, cloneDeep, isEmpty } from 'lodash/fp';
+import { difference, cloneDeep } from 'lodash/fp';
 import { toFormData } from './utils';
 
 
@@ -38,16 +38,7 @@ const state = () => () => ({
 const mutations = (entitiyTypes) => {
   const startCreation = function(type) {
     return (state, payload) => {
-      let entity;
-
-      if (!isEmpty(payload)) {
-        const refs = { };
-        const refKey = Object.keys(payload)[0];
-        refs[refKey] = [payload[refKey]];
-        entity = { refs };
-      } else {
-        entity = { };
-      }
+      const entity = payload || {};
 
       state.isActive = true;
       state.editionType = EDITION_TYPES.create;

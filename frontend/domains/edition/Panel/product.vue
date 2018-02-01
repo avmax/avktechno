@@ -269,18 +269,12 @@ export default {
     model.currency = model.currency || '$';
     if (!model.footer) {
       Vue.set(model, 'footer', {});
-    } else {
-      model.footer = model.footer;
     }
     if (!model.charachteristics) {
       Vue.set(model, 'charachteristics', []);
-    } else {
-      model.charachteristics = model.charachteristics;
     }
     if (!model.features) {
       Vue.set(model, 'features', []);
-    } else {
-      model.footer = model.features;
     }
   },
   methods: {

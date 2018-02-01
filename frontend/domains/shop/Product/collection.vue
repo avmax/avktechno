@@ -1,5 +1,5 @@
 <template>
-<div class="shop-entity-collection py-3">
+<div class="shop-entity-collection py-3" v-if="$slots.default">
 
   <v-layout class="mb-4 shop-entity-collection__header" align-center justify-start wrap>
     <span class="link display-1 primary--text">{{name}}</span>
@@ -16,6 +16,7 @@
     </v-layout>
   </v-container>
 
+  <slot name="footer"/>
 </div>
 </template>
 

@@ -62,6 +62,8 @@ class DB {
             ALTER DATABASE ${NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
           `)
 
+          await this.m.c.belongsTo(this.m.c);
+          await this.m.c.hasMany(this.m.c);
           await this.m.c.hasMany(this.m.p);
           await this.m.p.belongsTo(this.m.c);
           await this.m.p.belongsTo(this.m.b);

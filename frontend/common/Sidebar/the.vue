@@ -4,7 +4,8 @@
     fixed
     v-model="isOpened"
     app
-    :disable-resize-watcher="$vuetify.breakpoint.smAndUp"
+    disable-resize-watcher
+    :disable-route-watcher="$vuetify.breakpoint.smAndUp"
     hide-overlay
   >
     <v-list dense>

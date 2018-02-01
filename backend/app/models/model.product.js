@@ -1,5 +1,5 @@
 const ProductError = require('../errors').ProductError;
-const { isArray } = require('lodash/fp');
+const { isArray, cloneDeep } = require('lodash/fp');
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
@@ -135,7 +135,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Product.prototype.retrieve = function() {
-    const plain = this.get({ plain: true });
+    const plain = cloneDeep(this.get({ plain: true }));
 
     delete plain.brandId;
     delete plain.categoryId;

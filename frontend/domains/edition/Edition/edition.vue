@@ -20,9 +20,8 @@ export default {
   name: 'edition',
   mixins: [EditionBase],
   methods: {
-    add(type, refType, refId) {
-      const payload = refType ? { [refType]: refId } : null;
-      this.$store.commit(EDITION_START_CREATION(type), payload);
+    add(type, data) {
+      this.$store.commit(EDITION_START_CREATION(type), data);
     },
     edit(type, entity) {
       this.$store.commit(EDITION_START_EDITION(type), entity);

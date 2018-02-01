@@ -1,4 +1,4 @@
-const { uniq } = require('lodash/fp');
+const { uniq, cloneDeep } = require('lodash/fp');
 
 module.exports = (sequelize, DataTypes) => {
   const Brand = sequelize.define(
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Brand.prototype.retrieve = function() {
-    const plain = this.get({ plain: true });
+    const plain = cloneDeep(this.get({ plain: true }));
 
     delete plain.createdAt;
     delete plain.updatedAt;

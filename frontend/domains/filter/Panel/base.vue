@@ -15,7 +15,7 @@
 
       <h3>Поиск по названию</h3>
       <v-text-field
-        :value="name"
+        v-model="name"
         @input="filterByString($event, 'name')"
         label="Введите название продукта"
         clearable
@@ -23,7 +23,7 @@
 
       <h3>Поиск по VIN номеру</h3>
       <v-text-field
-        :value="identificator"
+        v-model="identificator"
         @input="filterByString($event, 'identificator')"
         label="Введите VIN продукта"
         clearable
@@ -32,9 +32,21 @@
       <v-divider class="mt-3 mb-4"/>
 
       <v-select
-        label="Выберите категории"
+        label="Выберите категорию"
         :items="model.category"
         v-model="category"
+        item-text="name"
+        item-value="id"
+        max-height="400"
+        clearable
+        persistent-hint
+      />
+
+      <v-select
+        label="Выберите подкатегории"
+        :items="model.subcategory"
+        v-model="subcategory"
+        :disabled="!category"
         item-text="name"
         item-value="id"
         max-height="400"
@@ -49,7 +61,7 @@
         label="Выберите бренды"
         :items="model.brand"
         v-model="brand"
-        :disabled="!model.brand.length"
+        :disabled="!model.brand.length || !model.subcategory.length || !category"
         item-text="name"
         item-value="id"
         max-height="400"
@@ -104,9 +116,10 @@ import {
   FILTER_VISIBILITY_SET,
   FILTER_CHOSEN_SET,
   FILTER_DROP,
+  FILTER_HIDDEN_SET,
 } from '~/barrel/state';
 import { mapState, mapMutations } from 'vuex';
-import { uniq, flatten } from 'lodash/fp';
+import { uniq, flatten, isEmpty } from 'lodash/fp';
 
 const PRICE_MAXIMUM = 10000000;
 
@@ -125,31 +138,64 @@ export default {
       isFilterPanelOpened: ({ filter }) => filter.isOpened,
     }),
     model() {
-      const { state, getters } = this.$store;
-      const { filter } = state;
-      const category = getters.categories;
-      const brand = getters.brands.filter((b) => {
-        const { id } = b;
-        return filter.chosen.brand.indexOf(id) !== -1;
-      });
-      // const brand = getters.brands;
+      const { getters } = this.$store;
+      const category = getters.categories
+        .filter(c => +c.depth === 1);
+      const subcategory = this.category
+        ? this.category.refs.category.map(id => getters.category(id))
+        : [];
+      const brand = getters.brands;
       const product = getters.products;
-      return { category, product, brand };
+      return { category, subcategory, product, brand };
     },
     category: {
       get() {
         const { state, getters } = this.$store;
         const { filter } = state;
-        const chosen = filter.chosen.category.map(id => getters.category(id));
+        const chosen = filter.chosen.category
+          .map(id => getters.category(id))
+          .filter(c => c && +c.depth === 1);
+        return chosen[0];
+      },
+      set(v) {
+        const { commit, getters } = this.$store;
+        const categories = [v].map(id => getters.category(id));
+        const getRefs = type => uniq(
+          flatten(
+            categories
+              .filter(c => c && !isEmpty(c.refs))
+              .map(c => c.refs[type]),
+          ),
+        );
+        commit(FILTER_CHOSEN_SET('category'), [v]);
+        commit(FILTER_CHOSEN_SET('brand'), getRefs('brand'));
+        commit(FILTER_CHOSEN_SET('product'), getRefs('product'));
+      },
+    },
+    subcategory: {
+      get() {
+        const { state, getters } = this.$store;
+        const { filter } = state;
+        const chosen = filter.chosen.category
+          .map(id => getters.category(id))
+          .filter(c => +c.depth === 2);
         return chosen;
       },
       set(v) {
         const { commit, getters } = this.$store;
-        commit(FILTER_CHOSEN_SET('category'), v);
-        const categories = v.map(id => getters.category(id));
-        const getRefs = type => uniq(flatten(categories.map(c => c.refs[type])));
-        commit(FILTER_CHOSEN_SET('brand'), getRefs('brand'));
-        commit(FILTER_CHOSEN_SET('product'), getRefs('product'));
+        const categories = v.map(id => getters.category(id)).concat(this.category);
+        const getRefs = type => uniq(
+          flatten(
+            categories
+              .filter(c => c && !isEmpty(c.refs))
+              .map(c => c.refs[type]),
+          ),
+        );
+        const brands = getRefs('brand');
+        const products = getRefs('product');
+        commit(FILTER_CHOSEN_SET('category'), categories.map(c => c.id));
+        commit(FILTER_CHOSEN_SET('brand'), brands);
+        commit(FILTER_CHOSEN_SET('product'), products);
       },
     },
     brand: {
@@ -173,7 +219,9 @@ export default {
       let products = this.model.product;
 
       if (str) {
-        products = products.filter(p => p[key].toLowerCase().indexOf(str.toLowerCase()) !== -1);
+        products = products.filter(
+          p => p[key].toLowerCase().indexOf(str.toLowerCase()) === -1,
+        );
       } else {
         products = [];
       }
@@ -195,23 +243,16 @@ export default {
     },
     filterProducts(products) {
       const { commit } = this.$store;
-      let payload;
 
-      const normalize = type => uniq(flatten(products.map(p => p.refs[type])));
-
-      this.resetLocal();
-      payload = normalize('category');
-      commit(FILTER_CHOSEN_SET('category'), payload);
-      payload = normalize('brand');
-      commit(FILTER_CHOSEN_SET('brand'), payload);
-      payload = products.map(r => r.id);
-      commit(FILTER_CHOSEN_SET('product'), payload);
+      commit(FILTER_HIDDEN_SET('product'), products.map(p => p.id));
     },
     resetLocal() {
       this.priceFrom = null;
       this.priceTo = PRICE_MAXIMUM;
       this.name = null;
       this.identificator = null;
+      this.filterByString();
+      this.filterByPrice();
     },
     reset() {
       const { commit } = this.$store;

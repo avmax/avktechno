@@ -1,6 +1,11 @@
 <template>
 <div @keyup.esc="handleAbort" @keyup.ctrl.enter="handleSubmit">
-  <h3 class="mb-3">{{isTypeCreate ? 'Создать категорию' : 'Редактировать категорию'}}</h3>
+  <template v-if="model.depth === 1">
+    <h3 class="mb-3">{{isTypeCreate ? 'Создать категорию' : 'Редактировать категорию'}}</h3>
+  </template>
+  <template v-else>
+    <h3 class="mb-3">{{isTypeCreate ? 'Создать подкатегорию' : 'Редактировать подкатегорию'}}</h3>
+  </template>
   <v-form
     ref="form"
     @keyup.enter.native="handleSubmit"
@@ -15,6 +20,33 @@
       :rules="rules.name"
       validate-on-blur
       required/>
+
+      <!-- <v-divider class="mb-4 mt-3"/>
+
+      <v-layout
+        v-for="(s, index) in model.refs.category"
+        :key="`s-${index}`"
+        row
+      >
+        <v-flex xs11>
+          <v-text-field
+            v-model="model.refs.category[index]"
+            @input="onFormControlChange"
+            label="Имя подкатегори"
+            :rules="rules.subcategory"
+            validate-on-blur
+            required
+          />
+        </v-flex>
+        <v-flex xs1></v-flex>
+      </v-layout>
+      <v-btn
+        @click="subcategoryAdd"
+        color="secondary"
+        class="ma-0"
+      >
+        добавить подкатегорию
+      </v-btn> -->
 
       <v-divider class="mb-4 mt-3"/>
 
@@ -37,6 +69,7 @@
 
 
 <script>
+import Vue from 'vue';
 import Panel from './base';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
@@ -48,8 +81,31 @@ export default {
     return {
       rules: {
         name: [validatorRequired()],
+        // subcategory: [validatorRequired()],
       },
     };
   },
+  created() {
+    const { model } = this;
+    if (!model.refs) {
+      Vue.set(model, 'refs', { });
+    }
+  },
+  // created() {
+  //   const model = this.model;
+  //   if (!model.refs) {
+  //     Vue.set(model, 'refs', { category: [] });
+  //   }
+  // },
+  // methods: {
+  //   subcategoryRemove(index) {
+  //     const model = this.model;
+  //     model.refs.category.slice(index, 1);
+  //   },
+  //   subcategoryAdd() {
+  //     const model = this.model;
+  //     model.refs.category.push(null);
+  //   },
+  // },
 };
 </script>

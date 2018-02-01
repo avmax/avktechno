@@ -5,6 +5,7 @@ import {
 const FILTER_VISIBILITY_TOGGLE = 'фильтр: toggle отображение';
 const FILTER_VISIBILITY_SET = 'фильтр: задать отображение';
 const FILTER_DROP = 'фильтр: сбросить полностью';
+const FILTER_HIDDEN_SET = entityType => `фильтр: спрятать итемы типа <${entityType}>`;
 const FILTER_CHOSEN_SET = entityType => `фильтр: показать итемы типа <${entityType}>`;
 const FILTER_CHOSEN_REMOVE = entityType => `фильтр: убрать итем типа <${entityType}>`;
 const FILTER_CHOSEN_ADD = entityType => `фильтр: добавить итем типа <${entityType}>`;
@@ -14,10 +15,12 @@ const state = (entityTypes) => {
   const s = {
     isOpened: false,
     chosen: { },
+    hidden: { },
   };
 
   Object.values(entityTypes).forEach((type) => {
     s.chosen[type] = [];
+    s.hidden[type] = [];
   });
 
   return s;
@@ -27,6 +30,12 @@ const mutations = (entityTypes) => {
   const chosenSet = function(type) {
     return (state, payload) => {
       state.chosen[type] = payload;
+    };
+  };
+
+  const hiddenSet = function(type) {
+    return (state, payload) => {
+      state.hidden[type] = payload;
     };
   };
 
@@ -65,6 +74,7 @@ const mutations = (entityTypes) => {
   };
 
   Object.values(entityTypes).forEach((type) => {
+    m[FILTER_HIDDEN_SET(type)] = hiddenSet(type);
     m[FILTER_CHOSEN_SET(type)] = chosenSet(type);
     m[FILTER_CHOSEN_REMOVE(type)] = chosenRemove(type);
     m[FILTER_CHOSEN_ADD(type)] = chosenAdd(type);
@@ -92,6 +102,7 @@ export {
   FILTER_VISIBILITY_TOGGLE,
   FILTER_DROP,
   FILTER_CHOSEN_SET,
+  FILTER_HIDDEN_SET,
   FILTER_CHOSEN_REMOVE,
   FILTER_CHOSEN_ADD,
 };

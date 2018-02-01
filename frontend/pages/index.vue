@@ -23,7 +23,7 @@
               <v-flex xs12 sm6>
                 <edition-ghost
                   btn-text="Добавить категорию"
-                  @add="add('category')"
+                  @add="add('category', { depth: 1 })"
                   fluid
                 />
               </v-flex>
@@ -37,54 +37,99 @@
             </v-layout>
           </v-container>
 
-          <template v-for="c in categories">
-            <product-collection
-              :title="c.title"
-              :name="c.name"
-              :key="c.id"
-            >
-              <edition-controls
-                slot="header"
-                is-edit
-                is-remove
-                @edit="edit('category', c)"
-                @remove="remove('category', c.id)"
-                style="margin-bottom: -10px;"
+          <product-collection
+            v-for="c in categories"
+            v-if="+c.depth === 1"
+            :title="c.title"
+            :name="c.name"
+            :key="c.id"
+          >
+            <edition-controls
+              slot="header"
+              is-edit
+              is-remove
+              @edit="edit('category', c)"
+              @remove="remove('category', c.id)"
+              style="margin-bottom: -10px;"
+            />
+            <v-flex xs12 v-if="isEditionAvailable && !c.refs.product.length">
+              <edition-ghost
+                btn-text="Добавить подкатегорию"
+                @add="add('category', { refs: { 'category': [c.id] }, depth: 2 })"
               />
-              <v-flex xs12 v-if="isEditionAvailable">
-                <edition-ghost
-                  btn-text="Добавить подкатегорию"
-                  @add="add('category', 'category', c.id)"
+            </v-flex>
+            <v-flex xs12 sm6 lg4 v-if="isEditionAvailable && !c.refs.category.length">
+              <edition-ghost
+                btn-text="Добавить продукт"
+                @add="add('product', { refs: { category: [c.id] }})"
+              />
+            </v-flex>
+            <v-flex
+              v-for="p in c.refs.product"
+              v-if="getProduct(p)"
+              xs12 sm6 lg4
+              :key="p.id"
+            >
+              <edition>
+                <product-item
+                  :data="getProduct(p)"
                 />
-              </v-flex>
-              <v-flex xs12 sm6 lg4 v-if="isEditionAvailable">
-                <edition-ghost
-                  btn-text="Добавить продукт"
-                  @add="add('product', 'category', c.id)"
+                <edition-controls
+                  slot="controls"
+                  is-edit
+                  is-remove
+                  @edit="edit('product', getProduct(p))"
+                  @remove="remove('product', p)"
                 />
-              </v-flex>
-              <v-flex
-                v-for="p in c.refs.product"
-                v-if="getProduct(p)"
-                xs12 sm6 lg4
-                :key="p.id"
+              </edition>
+            </v-flex>
+            <v-flex xs12 v-if="getCategories(c.refs.category).length">
+              <product-collection
+                class="pl-5"
+                v-for="sc in getCategories(c.refs.category)"
+                v-if="sc"
+                :title="sc.title"
+                :name="sc.name"
+                :key="sc.id"
               >
-                <edition>
-                  <product-item
-                    :data="getProduct(p)"
+                <edition-controls
+                  slot="header"
+                  is-edit
+                  is-remove
+                  @edit="edit('category', sc)"
+                  @remove="remove('category', sc.id)"
+                  style="margin-bottom: -10px;"
+                />
+                <v-flex xs12 sm6 lg4 v-if="isEditionAvailable">
+                  <edition-ghost
+                    btn-text="Добавить продукт"
+                    @add="add('product', { refs: { category: [sc.id] }})"
                   />
-                  <edition-controls
-                    slot="controls"
-                    is-edit
-                    is-remove
-                    @edit="edit('product', getProduct(p))"
-                    @remove="remove('product', p)"
-                  />
-                </edition>
-              </v-flex>
-            </product-collection>
-            <v-divider :key="c.id" class="mb-4 mt-5"/>
-          </template>
+                </v-flex>
+                <v-flex
+                  v-for="sp in sc.refs.product"
+                  v-if="getProduct(sp)"
+                  xs12 sm6 lg4
+                  :key="sp.id"
+                >
+                  <edition>
+                    <product-item
+                      :data="getProduct(sp)"
+                    />
+                    <edition-controls
+                      slot="controls"
+                      is-edit
+                      is-remove
+                      @edit="edit('product', getProduct(sp))"
+                      @remove="remove('product', sp)"
+                    />
+                  </edition>
+                </v-flex>
+                <v-divider slot="footer" class="mb-4 mt-5"/>
+              </product-collection>
+            </v-flex>
+            <v-divider slot="footer" class="mb-4 mt-5"/>
+          </product-collection>
         </template>
       </edition>
     </v-layout>
@@ -116,22 +161,50 @@ export default {
       const categories = getters.categories;
       const chosen = filter.chosen.category;
 
-      const items = categories.filter(e => chosen.indexOf(e.id) !== -1);
+      const flag = !filter.hidden.product.length;
+
+      let items = categories;
+
+      if (flag) {
+        items = items.filter(e => chosen.indexOf(e.id) !== -1);
+      }
+
       return items;
     },
   },
   methods: {
+    getCategories(ids) {
+      const { state, getters } = this.$store;
+      const { filter } = state;
+
+      const flag = !filter.hidden.product.length;
+
+      let items = ids;
+
+      if (flag) {
+        items = items.filter(id => filter.chosen.category.indexOf(id) !== -1);
+      }
+
+      items = items.map(id => getters.category(id));
+      return items;
+    },
     getProduct(id) {
       const { state, getters } = this.$store;
       const { filter } = state;
       const product = getters.product(id);
       const chosen = filter.chosen.product;
+      const hidden = filter.hidden.product;
       const chosenBrands = filter.chosen.brand;
 
       let item;
-      const flag =
+
+      let flag =
         chosen.indexOf(id) !== -1
         && (chosenBrands.indexOf(product.refs.brand[0]) !== -1 || !product.refs.brand[0]);
+
+      if (hidden.length) {
+        flag = hidden.indexOf(id) === -1;
+      }
 
       if (flag) {
         item = product;

@@ -1,4 +1,4 @@
-const { uniq } = require('lodash/fp');
+const { uniq, cloneDeep } = require('lodash/fp');
 
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
@@ -23,22 +23,36 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Category.prototype.retrieve = function() {
-    const plain = this.get({ plain: true });
+    const plain = cloneDeep(this.get({ plain: true }));
 
     delete plain.createdAt;
     delete plain.updatedAt;
+    delete plain.categoryId;
 
     return plain;
   };
 
+  Category.prototype.setRefs = async function(refs) {
+    const { category } = refs;
+    if (category) {
+      await this.setCategory(category);
+    }
+  };
+
+
   Category.prototype.getRefs = async function() {
     const products = await this.getProducts();
     const brands = await Promise.all(products.map(p => p.getBrand()));
+    const categories = await this.getCategories();
+    const parent = this.get('categoryId');
+
     const refs = {
       product: products.map(p => p.get({ plain: true }).id),
       brand: uniq(brands.filter(b => !!b).map(b => b.get({ plain: true }).id)),
+      category: parent
+        ? [parent]
+        : categories.map(c => c.get({ plain: true }).id),
     };
-
     return refs;
   };
 

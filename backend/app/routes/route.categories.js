@@ -6,6 +6,12 @@ const modelFromReq = (req) => {
   const { body } = req;
   const model = body;
 
+  const parse = val => val ? JSON.parse(val) : val;
+  model.refs = parse(model.refs);
+  if (model.refs) {
+    Object.keys(model.refs).forEach(key => model.refs[key] = model.refs[key][0] || null);
+  }
+
   return model;
 };
 
@@ -39,6 +45,7 @@ exports.post = async (req, res, next) => {
     let data;
     data = modelFromReq(req);
     model = await db.m.c.create(data);
+    await model.setRefs(data.refs);
     data = model.retrieve();
     data.refs = await model.getRefs();
 
@@ -68,6 +75,7 @@ exports.put = async (req, res, next) => {
     data = modelFromReq(req);
     model = await db.m.c.findById(data.id);
     await model.update(data);
+    await model.setRefs(data.refs);
     data = model.retrieve();
     data.refs = await model.getRefs();
 
