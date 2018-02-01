@@ -76,20 +76,30 @@
 
       <h3>Цена:</h3>
 
-      <v-layout>
-        <v-flex xs6 class="mr-4">
+      <v-layout justify-space-between>
+        <v-flex xs4>
           <v-text-field
           @input="filterByPrice($event)"
           v-model="priceFrom"
           label="От"
           type="number"/>
         </v-flex>
-        <v-flex xs6>
+        <v-flex xs4>
           <v-text-field
           @input="filterByPrice($event)"
           v-model="priceTo"
           label="До"
           type="number"/>
+        </v-flex>
+        <v-flex xs3>
+          <v-select
+            @input="filterByPrice($event)"
+            label="Валютa"
+            :items="['RUB', 'USD', 'EUR']"
+            v-model="currency"
+            max-height="400"
+            persistent-hint
+          />
         </v-flex>
       </v-layout>
 
@@ -129,6 +139,7 @@ export default {
     return {
       priceFrom: null,
       priceTo: PRICE_MAXIMUM,
+      currency: 'RUB',
       name: null,
       identificator: null,
     };
@@ -232,9 +243,12 @@ export default {
       const to = this.priceTo;
       const from = this.priceFrom;
       let products = this.model.product;
+      const currency = this.currency;
+
+      console.log(currency, from, to, this.model.product.length);
 
       if (v) {
-        products = products.filter(p => p.price >= +from && p.price <= +to);
+        products = products.filter(p => p.prices[currency] < +from || p.prices[currency] > +to);
       } else {
         products = [];
       }
@@ -251,6 +265,7 @@ export default {
       this.priceTo = PRICE_MAXIMUM;
       this.name = null;
       this.identificator = null;
+      this.currency = 'RUB';
       this.filterByString();
       this.filterByPrice();
     },

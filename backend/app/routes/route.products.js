@@ -34,7 +34,7 @@ exports.get = async (req, res, next) => {
 
     model = await db.m.p.findAll();
     data = await Promise.all(model.map(async (itemModel) => {
-      const itemData = itemModel.retrieve();
+      const itemData = await itemModel.retrieve();
       itemData.refs = await itemModel.getRefs();
       return itemData;
     }));
@@ -57,7 +57,7 @@ exports.post = async (req, res, next) => {
 
     model = await db.m.p.create(data);
     await model.setRefs(data.refs);
-    data = model.get({ plain: true });
+    data = await model.retrieve();
     data.refs = await model.getRefs();
 
     res.status(200).send(data);
@@ -88,7 +88,7 @@ exports.put = async (req, res, next) => {
     model = await db.m.p.findById(data.id);
     await model.update(data);
     await model.setRefs(data.refs);
-    data = model.get({ plain: true });
+    data = await model.retrieve();
     data.refs = await model.getRefs();
 
     res.status(200).send(data);

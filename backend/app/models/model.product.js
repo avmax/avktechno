@@ -1,5 +1,6 @@
 const ProductError = require('../errors').ProductError;
 const { isArray, cloneDeep } = require('lodash/fp');
+const money = require('../utils/money');
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
@@ -134,8 +135,21 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Product.prototype.retrieve = function() {
+  Product.prototype.retrieve = async function() {
+    const fx = (await money.getInstance());
     const plain = cloneDeep(this.get({ plain: true }));
+
+    const currency = plain.currency;
+    const price = plain.price;
+    const convertPrice = cur => Math.round(fx.convert(price, { from: currency, to: cur }))
+
+    const prices = {
+      USD: convertPrice('USD'),
+      RUB: convertPrice('RUB'),
+      EUR: convertPrice('EUR'),
+    };
+
+    plain.prices = prices;
 
     delete plain.brandId;
     delete plain.categoryId;

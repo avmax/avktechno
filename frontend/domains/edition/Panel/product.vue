@@ -61,7 +61,7 @@
         <v-flex xs3>
           <v-select
           label="Выберите Валюту"
-          :items="['₽', '$', '€']"
+          :items="['RUB', 'USD', 'EUR']"
           v-model="model.currency"
           item-value="id"
           max-height="400"
@@ -266,7 +266,7 @@ export default {
     refs.brand = refs.brand ? refs.brand[0] : null;
     refs.category = refs.category ? refs.category[0] : null;
     model.refs = refs;
-    model.currency = model.currency || '$';
+    model.currency = model.currency || 'RUB';
     if (!model.footer) {
       Vue.set(model, 'footer', {});
     }

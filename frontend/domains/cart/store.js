@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { CURRENCY_TYPES } from '~/barrel/types';
 
 const CART_ITEM_ADD = 'Добавить товар в корзину';
 const CART_ITEM_REMOVE = 'Выкинуть товар из корзины';
@@ -7,6 +8,26 @@ const CART_ITEM_REMOVE = 'Выкинуть товар из корзины';
 const state = () => ({
   items: {},
 });
+
+const getters = {
+  totalPrice: (state, getters) => {
+    const { items } = state;
+    const prices = { };
+    Object.values(CURRENCY_TYPES).forEach((type) => {
+      let total = 0;
+
+      Object.keys(items).forEach((key) => {
+        const val = items[key];
+        const price = getters.product(key).prices[type];
+        total += val * price;
+      });
+
+      prices[type] = total;
+    });
+
+    return prices;
+  },
+};
 
 const mutations = {
   [CART_ITEM_ADD](state, id) {
@@ -28,6 +49,7 @@ const mutations = {
 
 const module = {
   state,
+  getters,
   mutations,
 };
 

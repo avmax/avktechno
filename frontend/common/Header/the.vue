@@ -5,16 +5,22 @@
   <router-link class="link mr-3 white--text ml-3 hidden-sm-and-down" to="/">Товары</router-link>
   <router-link class="link mr-3 white--text hidden-sm-and-down" to="/contact">Контакты</router-link>
   <router-link class="link mr-3 white--text hidden-sm-and-down" to="/about">О нас</router-link>
-  <v-spacer></v-spacer>
+
+  <v-spacer class="hidden-sm-and-down"/>
 
   <slot/>
 
-  <v-btn to="/cart" nuxt flat class="mx-0">
-    <v-badge right color="success" :value="itemsInCart">
-      <span class="hidden-sm-and-down white--text">Корзина</span>
-      <v-icon class="hidden-md-and-up" large color="grey lighten-1">shopping_cart</v-icon>
-      <span slot="badge">{{itemsInCart}}</span>
-    </v-badge>
+  <v-spacer class="hidden-sm-and-up"/>
+
+  <v-btn
+    to="/cart"
+    nuxt
+    flat
+    class="ml-0 mr-2"
+  >
+    <span class="hidden-sm-and-down white--text">Корзина</span>
+    <v-icon class="hidden-md-and-up" large color="grey lighten-1">shopping_cart</v-icon>
+    <span :class="{ 'pr-1': $vuetify.breakpoint.smAndDown, 'px-2' : $vuetify.breakpoint.smAndUp }">|</span><span>{{totalPrice.RUB}} RUB</span>
   </v-btn>
 </v-toolbar>
 </template>
@@ -25,17 +31,13 @@ import {
   USER_SIGN_OUT,
   SIDEBAR_TOGGLE,
 } from '~/barrel/state';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   computed: {
-    ...mapState({
-      itemsInCart: ({ cart }) => {
-        let sum = 0;
-        Object.values(cart.items).map(item => sum += item);
-        return sum;
-      },
-    }),
+    ...mapGetters([
+      'totalPrice',
+    ]),
     isUserSignedIn: {
       get() { return this.$store.state.user.isSignedIn; },
       // eslint-disable-next-line
@@ -50,3 +52,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#avmax {
+.badge__badge {
+  width: auto;
+  padding: 15px 10px;
+  top: -20px;
+  right: -45px;
+  background-color: transparent !important;
+  border-bottom: 2px solid red !important;
+}
+}
+</style>

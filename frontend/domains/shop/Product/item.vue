@@ -45,7 +45,7 @@
         >
           {{addToCartBtnText}}
           <template v-if="count">
-            <span class="px-1" style="transform: translateY(-1px);"> | </span>{{count}}
+            <span class="px-1" style="transform: translateY(-1px);"> | </span>{{count}} шт.
           </template>
         </v-btn>
         <v-btn class="entity-item-product__action-item pa-0 ma-0"

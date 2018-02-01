@@ -14,9 +14,9 @@
         ref="form"
         v-model="form.isValid"
         lazy-validation
-        class="page__form my-5"
+        class="page__form mt-3 mb-5"
       >
-        <div class="subheader pa-0">Пожалуйста, заполните и отправьте данную форму, и мы свяжемся с Вами в течение 5 минут!</div>
+        <div class="subheader pa-0">Пожалуйста, заполните и отправьте данную форму. <br> Мы свяжемся с Вами в течение 5 минут!</div>
         <v-text-field
           label="Ваше имя"
           v-model="form.value.name"
@@ -50,7 +50,10 @@
         </v-btn>
       </v-form>
 
-      <h2 class="text-xs-center mb-4">Выбранные товары. Общая сумма: {{totalPrice}} ₽</h2>
+      <h2 class="text-xs-center mb-4">
+        Выбранные товары. Общая сумма составляет:
+        <br>RUB: {{ totalPrice.RUB }} | USD: {{ totalPrice.USD }} | EUR: {{ totalPrice.EUR }}
+      </h2>
 
       <!-- items -->
       <product-collection>
@@ -78,6 +81,7 @@ import {
 } from '~/barrel/state';
 import ProductCollection from '~/domains/shop/Product/collection.vue';
 import ProductItem from '~/domains/shop/Product/item.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -110,17 +114,15 @@ export default {
     };
   },
   computed: {
+    ...mapGetters([
+      'totalPrice',
+    ]),
     products() {
       const { state, getters } = this.$store;
       const { cart } = state;
       const IDs = Object.keys(cart.items);
       const products = IDs.map(id => ({ ...getters.product(id), count: cart.items[id] }));
       return products;
-    },
-    totalPrice() {
-      let sum = 0;
-      this.products.forEach(p => sum += p.price * p.count);
-      return sum;
     },
   },
   methods: {
