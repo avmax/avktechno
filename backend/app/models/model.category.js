@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      depth: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
     },
   );
 
@@ -27,11 +32,9 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Category.prototype.getRefs = async function() {
-    const subcategories = await this.getSubcategories();
     const products = await this.getProducts();
     const brands = await Promise.all(products.map(p => p.getBrand()));
     const refs = {
-      subcategory: subcategories.map(s => s.get({ plain: true }).id),
       product: products.map(p => p.get({ plain: true }).id),
       brand: uniq(brands.filter(b => !!b).map(b => b.get({ plain: true }).id)),
     };

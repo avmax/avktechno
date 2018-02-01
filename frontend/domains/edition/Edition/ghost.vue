@@ -1,5 +1,5 @@
 <template>
-  <v-flex v-if="isEditionAvailable" class="edition__ghost " xs12 sm6 :lg4="!fluid">
+  <div class="edition__ghost ">
     <div class="edition__ghost-inner">
       <v-btn
         @click="add()"
@@ -8,7 +8,7 @@
         {{ btnText }}
       </v-btn>
     </div>
-  </v-flex>
+  </div>
 </template>
 
 <script>
@@ -31,6 +31,7 @@ export default {
 #avmax {
 .edition__ghost {
   min-height: 200px;
+  height: 100%;
 
   &-inner {
     height: 100%;

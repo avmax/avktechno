@@ -6,6 +6,7 @@ const FILTER_VISIBILITY_TOGGLE = 'фильтр: toggle отображение';
 const FILTER_VISIBILITY_SET = 'фильтр: задать отображение';
 const FILTER_DROP = 'фильтр: сбросить полностью';
 const FILTER_CHOSEN_SET = entityType => `фильтр: показать итемы типа <${entityType}>`;
+const FILTER_CHOSEN_REMOVE = entityType => `фильтр: убрать итем типа <${entityType}>`;
 const FILTER_CHOSEN_ADD = entityType => `фильтр: добавить итем типа <${entityType}>`;
 
 
@@ -36,6 +37,15 @@ const mutations = (entityTypes) => {
     };
   };
 
+  const chosenRemove = function(type) {
+    return (state, payload) => {
+      const item = payload;
+      const index = state.chosen[type].indexOf(item);
+      if (index !== -1) {
+        state.chosen[type].slice(index, 1);
+      }
+    };
+  };
 
   const m = {
     [FILTER_VISIBILITY_TOGGLE](state) {
@@ -56,6 +66,7 @@ const mutations = (entityTypes) => {
 
   Object.values(entityTypes).forEach((type) => {
     m[FILTER_CHOSEN_SET(type)] = chosenSet(type);
+    m[FILTER_CHOSEN_REMOVE(type)] = chosenRemove(type);
     m[FILTER_CHOSEN_ADD(type)] = chosenAdd(type);
   });
 
@@ -81,5 +92,6 @@ export {
   FILTER_VISIBILITY_TOGGLE,
   FILTER_DROP,
   FILTER_CHOSEN_SET,
+  FILTER_CHOSEN_REMOVE,
   FILTER_CHOSEN_ADD,
 };

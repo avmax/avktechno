@@ -17,19 +17,23 @@
         </div>
       </v-layout>
       <edition>
-        <template scope="{ add, edit, remove }">
-          <v-container class="my-5 pa-0" fluid grid-list-xl>
+        <template scope="{ add, edit, remove, isEditionAvailable }">
+          <v-container v-if="isEditionAvailable" class="my-5 pa-0" fluid grid-list-xl>
             <v-layout row wrap>
-              <edition-ghost
-                btn-text="Добавить категорию"
-                @add="add('category')"
-                fluid
-              />
-              <edition-ghost
-                btn-text="Добавить бренд"
-                @add="add('brand')"
-                fluid
-              />
+              <v-flex xs12 sm6>
+                <edition-ghost
+                  btn-text="Добавить категорию"
+                  @add="add('category')"
+                  fluid
+                />
+              </v-flex>
+              <v-flex>
+                <edition-ghost
+                  btn-text="Добавить бренд"
+                  @add="add('brand')"
+                  fluid
+                />
+              </v-flex>
             </v-layout>
           </v-container>
 
@@ -47,11 +51,24 @@
                 @remove="remove('category', c.id)"
                 style="margin-bottom: -10px;"
               />
-              <edition-ghost
-                btn-text="Добавить продукт"
-                @add="add('product', 'category', c.id)"
-              />
-              <v-flex v-for="p in c.refs.product" :key="p.id" xs12 sm6 lg4 v-if="getProduct(p)">
+              <v-flex xs12 v-if="isEditionAvailable">
+                <edition-ghost
+                  btn-text="Добавить подкатегорию"
+                  @add="add('category', 'category', c.id)"
+                />
+              </v-flex>
+              <v-flex xs12 sm6 lg4 v-if="isEditionAvailable">
+                <edition-ghost
+                  btn-text="Добавить продукт"
+                  @add="add('product', 'category', c.id)"
+                />
+              </v-flex>
+              <v-flex
+                v-for="p in c.refs.product"
+                v-if="getProduct(p)"
+                xs12 sm6 lg4
+                :key="p.id"
+              >
                 <edition>
                   <product-item
                     :data="getProduct(p)"
