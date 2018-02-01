@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import TheHeader from '~/domains/common/TheHeader.vue';
-import TheFooter from '~/domains/common/TheFooter.vue';
-import TheSidebar from '~/domains/common/TheSidebar/base.vue';
-import TheNotifications from '~/domains/common/TheNotifications.vue';
+import TheHeader from '~/common/Header/the.vue';
+import TheFooter from '~/common/Footer/the.vue';
+import TheSidebar from '~/common/Sidebar/the.vue';
+import TheNotifications from '~/common/Notification/container.vue';
 import {
   ENTITY_ALL_LOAD,
   SPINNER_HIDE,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { mapState } from 'vuex';
 

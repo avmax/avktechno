@@ -2,7 +2,7 @@
 import axios from 'axios';
 import {
   ENTITY_TYPES,
-} from '~/domains/barrel.types';
+} from '~/barrel/types';
 
 axios.interceptors.request.use((config) => {
   config.url = process.env.server.URL + config.url;

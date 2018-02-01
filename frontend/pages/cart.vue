@@ -70,12 +70,12 @@
 </template>
 
 <script>
-import { ApiCart } from '~/domains/barrel.api';
-import { NOTIFICATION_TYPES } from '~/domains/barrel.types';
+import { ApiCart } from '~/barrel/api';
+import { NOTIFICATION_TYPES } from '~/barrel/types';
 import {
   NOTIFICATION_OPEN,
   NOTIFICATION_LAST_CLOSE,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 import ProductCollection from '~/domains/shop/Product/collection.vue';
 import ProductItem from '~/domains/shop/Product/item.vue';
 

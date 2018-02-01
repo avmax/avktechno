@@ -1,9 +1,9 @@
-import { module as shop } from '~/domains/shop/state';
-import { module as edition } from '~/domains/edition/state';
-import { module as filter } from '~/domains/filter/state';
+import { module as shop } from '~/domains/shop/store';
+import { module as edition } from '~/domains/edition/store';
+import { module as filter } from '~/domains/filter/store';
 import { module as user } from '~/domains/user/store';
-import { module as ui } from '~/domains/common/state.ui';
-import { module as cart } from '~/domains/cart/state.cart';
+import { module as ui } from '~/common/store.ui';
+import { module as cart } from '~/domains/cart/store';
 
 import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';

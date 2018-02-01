@@ -22,7 +22,7 @@
 import LayoutBase from '~/layouts/base';
 import {
   FILTER_VISIBILITY_TOGGLE,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 import EditionPanel from '~/domains/edition/Panel/base.vue';
 import FilterPanel from '~/domains/filter/Panel/base.vue';
 

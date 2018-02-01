@@ -2,11 +2,11 @@ import {
   ENTITY_EDIT,
   EDITION_SAVE,
   EDITION_STOP,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 
 import {
   EDITION_TYPES,
-} from '~/domains/barrel.types';
+} from '~/barrel/types';
 import { cloneDeep } from 'lodash/fp';
 import { mapState } from 'vuex';
 

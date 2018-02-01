@@ -19,7 +19,7 @@
 <script>
 import {
   NOTIFICATION_CLOSE,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 import { mapState } from 'vuex';
 
 export default {

@@ -229,7 +229,7 @@
 <script>
 import Vue from 'vue';
 import { cloneDeep } from 'lodash/fp';
-import InputFile from '~/domains/common/InputFile.vue';
+import InputFile from '~/common/Input/file.vue';
 import Panel from './base';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';

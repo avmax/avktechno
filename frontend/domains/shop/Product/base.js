@@ -1,4 +1,4 @@
-import { CART_ITEM_ADD, CART_ITEM_REMOVE } from '~/domains/barrel.state';
+import { CART_ITEM_ADD, CART_ITEM_REMOVE } from '~/barrel/state';
 
 export default {
   computed: {

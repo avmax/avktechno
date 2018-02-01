@@ -100,12 +100,11 @@
 </template>
 
 <script>
-import { ENTITY_TYPES } from '~/domains/barrel.types';
 import {
   FILTER_VISIBILITY_SET,
   FILTER_CHOSEN_SET,
   FILTER_DROP,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 import { mapState, mapMutations } from 'vuex';
 import { uniq, flatten } from 'lodash/fp';
 
@@ -115,11 +114,6 @@ export default {
   name: 'filter-panel',
   data() {
     return {
-      types: {
-        [ENTITY_TYPES.category]: 'Категория',
-        [ENTITY_TYPES.brand]: 'Бренд',
-        [ENTITY_TYPES.product]: 'Продукт',
-      },
       priceFrom: null,
       priceTo: PRICE_MAXIMUM,
       name: null,

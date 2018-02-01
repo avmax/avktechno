@@ -50,12 +50,12 @@
 <script>
 import {
   NOTIFICATION_TYPES,
-} from '~/domains/barrel.types';
+} from '~/barrel/types';
 import {
   USER_SIGN_IN,
   NOTIFICATION_OPEN,
-} from '~/domains/barrel.state';
-import { apiUser } from '~/domains/barrel.api';
+} from '~/barrel/state';
+import { apiUser } from '~/barrel/api';
 
 export default {
   name: 'page-auth',

@@ -1,11 +1,12 @@
 import {
   ENTITY_TYPES,
-} from '~/domains/barrel.types';
+} from '~/barrel/types';
 
 const FILTER_VISIBILITY_TOGGLE = 'фильтр: toggle отображение';
 const FILTER_VISIBILITY_SET = 'фильтр: задать отображение';
 const FILTER_DROP = 'фильтр: сбросить полностью';
 const FILTER_CHOSEN_SET = entityType => `фильтр: показать итемы типа <${entityType}>`;
+const FILTER_CHOSEN_ADD = entityType => `фильтр: добавить итем типа <${entityType}>`;
 
 
 const state = (entityTypes) => {
@@ -25,6 +26,13 @@ const mutations = (entityTypes) => {
   const chosenSet = function(type) {
     return (state, payload) => {
       state.chosen[type] = payload;
+    };
+  };
+
+  const chosenAdd = function(type) {
+    return (state, payload) => {
+      const item = payload;
+      state.chosen[type].push(item);
     };
   };
 
@@ -48,6 +56,7 @@ const mutations = (entityTypes) => {
 
   Object.values(entityTypes).forEach((type) => {
     m[FILTER_CHOSEN_SET(type)] = chosenSet(type);
+    m[FILTER_CHOSEN_ADD(type)] = chosenAdd(type);
   });
 
   return m;
@@ -72,4 +81,5 @@ export {
   FILTER_VISIBILITY_TOGGLE,
   FILTER_DROP,
   FILTER_CHOSEN_SET,
+  FILTER_CHOSEN_ADD,
 };

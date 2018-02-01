@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { SIDEBAR_SET } from '~/domains/barrel.state';
+import { SIDEBAR_SET } from '~/barrel/state';
 
 export default {
   computed: {

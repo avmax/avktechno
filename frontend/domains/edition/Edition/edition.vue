@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { EDITION_START_CREATION, EDITION_START_EDITION, EDITION_REMOVE } from '~/domains/barrel.state';
+import { EDITION_START_CREATION, EDITION_START_EDITION, EDITION_REMOVE } from '~/barrel/state';
 import EditionBase from './base';
 
 export default {

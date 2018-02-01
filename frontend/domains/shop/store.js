@@ -1,10 +1,10 @@
 import {
   ENTITY_TYPES,
-} from '~/domains/barrel.types';
+} from '~/barrel/types';
 
 import {
   apiShop,
-} from '~/domains/barrel.api';
+} from '~/barrel/api';
 
 import Vue from 'vue';
 import { assign, isEmpty } from 'lodash/fp';

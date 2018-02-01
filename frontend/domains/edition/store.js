@@ -2,14 +2,14 @@ import {
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
-} from '~/domains/barrel.state';
+} from '~/barrel/state';
 import {
   EDITION_TYPES,
   ENTITY_TYPES,
-} from '~/domains/barrel.types';
+} from '~/barrel/types';
 import {
   apiShop,
-} from '~/domains/barrel.api';
+} from '~/barrel/api';
 
 import { difference, cloneDeep, isEmpty } from 'lodash/fp';
 import { toFormData } from './utils';

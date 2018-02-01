@@ -3,7 +3,7 @@ import {
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
-} from '~/domains/shop/state';
+} from '~/domains/shop/store';
 
 import {
   EDITION_START_CREATION,
@@ -11,14 +11,15 @@ import {
   EDITION_REMOVE,
   EDITION_SAVE,
   EDITION_STOP,
-} from '~/domains/edition/state';
+} from '~/domains/edition/store';
 
 import {
   FILTER_VISIBILITY_TOGGLE,
   FILTER_CHOSEN_SET,
+  FILTER_CHOSEN_ADD,
   FILTER_VISIBILITY_SET,
   FILTER_DROP,
-} from '~/domains/filter/state';
+} from '~/domains/filter/store';
 
 import {
   USER_SIGN_IN,
@@ -35,12 +36,12 @@ import {
 
   SIDEBAR_TOGGLE,
   SIDEBAR_SET,
-} from '~/domains/common/state.ui';
+} from '~/common/store.ui';
 
 import {
   CART_ITEM_ADD,
   CART_ITEM_REMOVE,
-} from '~/domains/cart/state.cart';
+} from '~/domains/cart/store';
 
 export {
   ENTITY_ALL_LOAD,
@@ -57,6 +58,7 @@ export {
   FILTER_VISIBILITY_TOGGLE,
   FILTER_VISIBILITY_SET,
   FILTER_CHOSEN_SET,
+  FILTER_CHOSEN_ADD,
   FILTER_DROP,
 
   USER_SIGN_IN,

@@ -38,7 +38,7 @@
 
 
 <script>
-import InputFile from '~/domains/common/InputFile.vue';
+import InputFile from '~/common/Input/file.vue';
 // eslint-disable-next-line
 import { validatorRequired } from '~/utils/validators.js';
 import Panel from './base';

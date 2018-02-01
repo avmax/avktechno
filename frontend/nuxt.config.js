@@ -42,6 +42,8 @@ module.exports = {
     extend(config, ctx) {
       config.resolve.alias['~domains'] = path.join('.', 'domains');
       config.resolve.alias['~utils'] = path.join('.', 'utils');
+      config.resolve.alias['~barrel'] = path.join('.', 'barrel');
+      config.resolve.alias['~common'] = path.join('.', 'common');
       if (ctx.dev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ENTITY_TYPES } from '~/domains/barrel.types';
+import { ENTITY_TYPES } from '~/barrel/types';
 import EditionPanelCategory from '~/domains/edition/Panel/category.vue';
 import EditionPanelBrand from '~/domains/edition/Panel/brand.vue';
 import EditionPanelProduct from '~/domains/edition/Panel/product.vue';
