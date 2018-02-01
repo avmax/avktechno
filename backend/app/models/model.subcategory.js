@@ -1,8 +1,8 @@
 const { uniq } = require('lodash/fp');
 
 module.exports = (sequelize, DataTypes) => {
-  const Brand = sequelize.define(
-    'brand',
+  const Subcategory = sequelize.define(
+    'subcategory',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -14,14 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      imgUrl: {
-        type: DataTypes.STRING(1234) ,
-        defaultValue: 'http://lorempixel.com/400/200/sports/1/',
-      },
     },
   );
 
-  Brand.prototype.retrieve = function() {
+  Subcategory.prototype.retrieve = function() {
     const plain = this.get({ plain: true });
 
     delete plain.createdAt;
@@ -30,16 +26,16 @@ module.exports = (sequelize, DataTypes) => {
     return plain;
   };
 
-  Brand.prototype.getRefs = async function() {
+  Subcategory.prototype.getRefs = async function() {
       const products = await this.getProducts();
-      const categories = await Promise.all(products.map(p => p.getCategory()));
+      const brands = await Promise.all(products.map(p => p.getBrand()));
       const refs = {
         product: products.map(p => p.get({ plain: true }).id),
-        category: uniq(categories.filter(c => !!c).map(c => c.get({ plain: true }).id)),
+        brand: uniq(brands.filter(b => !!b).map(b => b.get({ plain: true }).id)),
       };
 
       return refs;
   };
 
-  return Brand;
+  return Subcategory;
 };

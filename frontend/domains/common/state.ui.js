@@ -3,10 +3,13 @@ const NOTIFICATION_CLOSE = 'ui: закрыть нотификейшн';
 const NOTIFICATION_LAST_CLOSE = 'ui: закрыть последний нотификейшн';
 const SPINNER_SHOW = 'ui: показать спиннер';
 const SPINNER_HIDE = 'ui: спрятать спиннер';
+const SIDEBAR_TOGGLE = 'ui: toggle sidebar';
+const SIDEBAR_SET = 'ui: set sidebar';
 
 const state = () => ({
   notification: [],
   spinner: true,
+  isSidebar: false,
 });
 
 const mutations = {
@@ -26,6 +29,12 @@ const mutations = {
   [SPINNER_HIDE](state) {
     state.spinner = false;
   },
+  [SIDEBAR_TOGGLE](state) {
+    state.isSidebar = !state.isSidebar;
+  },
+  [SIDEBAR_SET](state, payload) {
+    state.isSidebar = payload;
+  },
 };
 
 const module = { state, mutations };
@@ -39,4 +48,7 @@ export {
 
   SPINNER_SHOW,
   SPINNER_HIDE,
+
+  SIDEBAR_TOGGLE,
+  SIDEBAR_SET,
 };

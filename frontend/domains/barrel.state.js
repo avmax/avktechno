@@ -6,23 +6,24 @@ import {
 } from '~/domains/shop/state';
 
 import {
-  EDITION_ADD,
+  EDITION_START_CREATION,
+  EDITION_START_EDITION,
   EDITION_REMOVE,
-  EDITION_EDIT,
   EDITION_SAVE,
   EDITION_STOP,
 } from '~/domains/edition/state';
 
 import {
   FILTER_VISIBILITY_TOGGLE,
-  FILTER_HIDDEN_SET,
+  FILTER_CHOSEN_SET,
+  FILTER_VISIBILITY_SET,
   FILTER_DROP,
 } from '~/domains/filter/state';
 
 import {
   USER_SIGN_IN,
   USER_SIGN_OUT,
-} from '~/domains/user/state.user';
+} from '~/domains/user/store';
 
 import {
   NOTIFICATION_OPEN,
@@ -31,6 +32,9 @@ import {
 
   SPINNER_SHOW,
   SPINNER_HIDE,
+
+  SIDEBAR_TOGGLE,
+  SIDEBAR_SET,
 } from '~/domains/common/state.ui';
 
 import {
@@ -44,14 +48,15 @@ export {
   ENTITY_EDIT,
   ENTITY_REMOVE,
 
-  EDITION_ADD,
+  EDITION_START_CREATION,
+  EDITION_START_EDITION,
   EDITION_REMOVE,
-  EDITION_EDIT,
   EDITION_SAVE,
   EDITION_STOP,
 
   FILTER_VISIBILITY_TOGGLE,
-  FILTER_HIDDEN_SET,
+  FILTER_VISIBILITY_SET,
+  FILTER_CHOSEN_SET,
   FILTER_DROP,
 
   USER_SIGN_IN,
@@ -63,6 +68,9 @@ export {
 
   SPINNER_SHOW,
   SPINNER_HIDE,
+
+  SIDEBAR_TOGGLE,
+  SIDEBAR_SET,
 
   CART_ITEM_ADD,
   CART_ITEM_REMOVE,

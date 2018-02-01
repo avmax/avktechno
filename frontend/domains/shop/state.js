@@ -3,7 +3,7 @@ import {
 } from '~/domains/barrel.types';
 
 import {
-  ApiShop,
+  apiShop,
 } from '~/domains/barrel.api';
 
 import Vue from 'vue';
@@ -27,6 +27,12 @@ const getters = () => {
   const g = {
     entity: state => (type, id) => state[type][id],
     entities: state => type => Object.values(state[type]),
+    product: state => id => state[ENTITY_TYPES.product][id],
+    products: state => Object.values(state[ENTITY_TYPES.product]),
+    category: state => id => state[ENTITY_TYPES.category][id],
+    categories: state => Object.values(state[ENTITY_TYPES.category]),
+    brand: state => id => state[ENTITY_TYPES.brand][id],
+    brands: state => Object.values(state[ENTITY_TYPES.brand]),
   };
 
   return g;
@@ -83,11 +89,11 @@ const mutations = (entitiyTypes) => {
 };
 
 const actions = (entityTypes) => {
-  const entityLoadAll = function(key, type) {
+  const entityLoadAll = function(type) {
     return async ({ state, commit }) => {
       if (!isEmpty(state[type])) { return state[type]; }
       try {
-        const { data } = await ApiShop[key].get();
+        const { data } = await apiShop[type].get();
         if (data) {
           commit(ENTITY_MULTIPLE_ADD(type), data);
         }
@@ -110,9 +116,8 @@ const actions = (entityTypes) => {
     a.nuxtServerInit = ({ dispatch }) => Promise.all(Object.values(entityTypes).map(v => dispatch(ENTITY_ALL_LOAD(v))));
   }
 
-  Object.keys(entityTypes).forEach((key) => {
-    const type = entityTypes[key];
-    a[ENTITY_ALL_LOAD(type)] = entityLoadAll(key, type);
+  Object.values(entityTypes).forEach((type) => {
+    a[ENTITY_ALL_LOAD(type)] = entityLoadAll(type);
   });
 
   return a;

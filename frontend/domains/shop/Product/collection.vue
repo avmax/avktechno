@@ -2,7 +2,7 @@
 <div class="shop-entity-collection py-3">
 
   <v-layout class="mb-4 shop-entity-collection__header" align-center justify-start wrap>
-    <router-link class="link display-1 primary--text" :to="link">{{name}}</router-link>
+    <span class="link display-1 primary--text">{{name}}</span>
     <slot name="header"/>
     <!-- <h3 class="shop-entity-collection__header-title heading" v-if="title">{{title}}</h3> -->
   </v-layout>
@@ -27,7 +27,6 @@ export default {
     id: Number,
     name: String,
     title: String,
-    link: Object,
   },
 };
 </script>

@@ -1,8 +1,10 @@
 <template>
 <v-toolbar app fixed clipped-left color="primary" dark>
+  <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-sm-and-up"/>
   <v-toolbar-title class="hidden-sm-and-down mr-2">АВК ТЕХНО</v-toolbar-title>
-  <router-link class="link mr-3 white--text ml-3" to="/">Главная</router-link>
-  <router-link class="link mr-3 white--text" to="/about">О нас</router-link>
+  <router-link class="link mr-3 white--text ml-3 hidden-sm-and-down" to="/">Товары</router-link>
+  <router-link class="link mr-3 white--text hidden-sm-and-down" to="/contact">Контакты</router-link>
+  <router-link class="link mr-3 white--text hidden-sm-and-down" to="/about">О нас</router-link>
   <v-spacer></v-spacer>
 
   <slot/>
@@ -21,6 +23,7 @@
 import {
   USER_SIGN_IN,
   USER_SIGN_OUT,
+  SIDEBAR_TOGGLE,
 } from '~/domains/barrel.state';
 import { mapState } from 'vuex';
 
@@ -37,6 +40,12 @@ export default {
       get() { return this.$store.state.user.isSignedIn; },
       // eslint-disable-next-line
       set(v) { v ? this.$store.commit(USER_SIGN_IN, true) : this.$store.commit(USER_SIGN_OUT); },
+    },
+  },
+  methods: {
+    toggleSidebar() {
+      const { commit } = this.$store;
+      commit(SIDEBAR_TOGGLE);
     },
   },
 };

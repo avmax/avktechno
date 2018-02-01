@@ -42,9 +42,19 @@ class="entity-view-product py-2">
       </v-card-text>
       <v-divider class="mb-4 mt-4"/>
 
-      <template v-if="model.info">
-        <v-card-text v-if="model.info.brand" class="entity-view-product__card-info-item subheading" v-html="model.info.brand"/>
-        <v-card-text v-if="model.info.category" class="entity-view-product__card-info-item subheading" v-html="model.info.category"/>
+      <template v-if="brand || category">
+        <v-card-text
+          v-if="category.name"
+          class="entity-view-product__card-info-item subheading"
+        >
+          Категория: {{category.name}}
+        </v-card-text>
+        <v-card-text
+          v-if="brand.name"
+          class="entity-view-product__card-info-item subheading"
+        >
+          Бренд: {{brand.name}}
+        </v-card-text>
         <v-divider class="my-4"/>
       </template>
 
@@ -95,11 +105,10 @@ class="entity-view-product py-2">
 </template>
 
 <script>
-import { ENTITY_TYPES } from '~/domains/barrel.types';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/domains/common/CardBase.vue';
 import { isEmpty } from 'lodash/fp';
-import EntityProduct from '../mixins/product';
+import Base from './base';
 
 export default {
   name: 'entity-view-product',
@@ -107,7 +116,7 @@ export default {
     CardBase,
     GridLoader,
   },
-  mixins: [EntityProduct],
+  mixins: [Base],
   props: {
     id: {
       type: [String, Number],
@@ -115,14 +124,8 @@ export default {
       default: null,
     },
   },
-  data() {
-    return {
-      type: ENTITY_TYPES.product,
-    };
-  },
   computed: {
-    model() { return this.$store.getters.entity(this.type, this.id); },
-    isEmpty() { return isEmpty(this.$store.state.shop[this.type][this.id]); },
+    isEmpty() { return isEmpty(this.$store.state.shop.product[this.id]); },
   },
 };
 </script>

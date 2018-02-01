@@ -4,7 +4,7 @@
     <template slot="header">
       <v-btn
         @click.native="filterPanelToggle"
-        flat class="hidden-sm-and-up mx-0"
+        flat class="mx-0"
       >
         <span style="font-weight: bold;" class="white--text">Фильтр</span>
       </v-btn>

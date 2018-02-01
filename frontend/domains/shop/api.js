@@ -1,5 +1,8 @@
 /* eslint-disable */
 import axios from 'axios';
+import {
+  ENTITY_TYPES,
+} from '~/domains/barrel.types';
 
 axios.interceptors.request.use((config) => {
   config.url = process.env.server.URL + config.url;
@@ -11,24 +14,51 @@ axios.interceptors.response.use(
   err => Promise.reject(err && err.response && err.response.data),
 );
 
-class Products {
+class Product {
   get() { return axios.get('/products'); }
-  post(product) { return axios.post('/admin/products', product); }
-  put(product) { return axios.put('/admin/products', product); }
+  post(product) {
+    return axios({
+      method: 'post',
+      url: '/admin/products',
+      data: product,
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  }
+  put(product) {
+    return axios({
+      method: 'put',
+      url: '/admin/products',
+      data: product,
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  }
   delete(productID) { return axios.delete('/admin/products', { data: { id: productID } }); }
 }
 
-class Categories {
+class Category {
   get() { return axios.get('/categories'); }
-  post(category) { return axios.post('/admin/categories', category); }
-  put(category) { return axios.put('/admin/categories', category); }
+  post(category) {
+    return axios({
+      method: 'post',
+      url: '/admin/categories',
+      data: category,
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  }
+  put(category) {
+    return axios({
+      method: 'put',
+      url: '/admin/categories',
+      data: category,
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  }
   delete(categoryID) { return axios.delete('/admin/categories', { data: { id: categoryID } }); }
 }
 
-class Brands {
+class Brand {
   get() { return axios.get('/brands'); }
   post(brand) {
-    console.log('brand', brand);
     return axios({
       method: 'post',
       url: '/admin/brands',
@@ -36,17 +66,24 @@ class Brands {
       headers: { 'content-type': 'multipart/form-data' },
     });
   }
-  put(brand) { return axios.put('/admin/brands', brand); }
+  put(brand) {
+    return axios({
+      method: 'put',
+      url: '/admin/brands',
+      data: brand,
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  }
   delete(brandID) { return axios.delete('/admin/brands', { data: { id: brandID } }); }
 }
 
 class Api {
   constructor() {
-    this.category = new Categories();
-    this.brand = new Brands();
-    this.product = new Products();
+    this[ENTITY_TYPES.category] = new Category();
+    this[ENTITY_TYPES.brand] = new Brand();
+    this[ENTITY_TYPES.product] = new Product();
   };
 };
 
-const ApiShop = new Api();
-export { ApiShop };
+const apiShop = new Api();
+export { apiShop };

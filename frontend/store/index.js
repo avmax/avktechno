@@ -1,7 +1,7 @@
 import { module as shop } from '~/domains/shop/state';
 import { module as edition } from '~/domains/edition/state';
 import { module as filter } from '~/domains/filter/state';
-import { module as user } from '~/domains/user/state.user';
+import { module as user } from '~/domains/user/store';
 import { module as ui } from '~/domains/common/state.ui';
 import { module as cart } from '~/domains/cart/state.cart';
 

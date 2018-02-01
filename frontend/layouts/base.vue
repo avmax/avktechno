@@ -7,10 +7,11 @@
 
     <template v-if="!isSpinner">
       <slot name="panels"/>
+      <the-sidebar/>
 
       <v-content>
         <the-notifications/>
-        <v-container fluid >
+        <v-container fluid>
           <v-layout column fill-width>
             <v-flex>
               <nuxt/>
@@ -33,6 +34,7 @@
 <script>
 import TheHeader from '~/domains/common/TheHeader.vue';
 import TheFooter from '~/domains/common/TheFooter.vue';
+import TheSidebar from '~/domains/common/TheSidebar/base.vue';
 import TheNotifications from '~/domains/common/TheNotifications.vue';
 import {
   ENTITY_ALL_LOAD,
@@ -46,6 +48,7 @@ export default {
   components: {
     TheHeader,
     TheFooter,
+    TheSidebar,
     TheNotifications,
     GridLoader,
   },

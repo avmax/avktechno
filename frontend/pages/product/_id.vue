@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ViewProduct from '~/domains/shop/EntityView/product.vue';
+import ViewProduct from '~/domains/shop/Product/view.vue';
 
 export default {
   layout: 'normal',

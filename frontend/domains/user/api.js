@@ -7,5 +7,5 @@ class Api {
   }
 }
 
-const ApiUser = new Api();
-export { ApiUser };
+const apiUser = new Api();
+export { apiUser };

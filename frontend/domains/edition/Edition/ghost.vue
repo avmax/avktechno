@@ -1,11 +1,11 @@
 <template>
-  <v-flex v-if="isEditionAvailable" class="edition__ghost " xs12 :sm6="!fluid" :lg4="!fluid">
+  <v-flex v-if="isEditionAvailable" class="edition__ghost " xs12 sm6 :lg4="!fluid">
     <div class="edition__ghost-inner">
       <v-btn
         @click="add()"
-        fab small color="accent" light
+        color="accent" light
       >
-        <v-icon >add</v-icon>
+        {{ btnText }}
       </v-btn>
     </div>
   </v-flex>
@@ -19,6 +19,7 @@ export default {
   mixins: [EditionBase],
   props: {
     fluid: Boolean,
+    btnText: String,
   },
   methods: {
     add() { this.$emit('add'); },

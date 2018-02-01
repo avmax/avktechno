@@ -22,15 +22,10 @@ exports.get = async (req, res, next) => {
     let data;
 
     model = await db.m.b.findAll();
-    data = await Promise.all(model.map(async (itemModel) => {
-      const itemData = itemModel.get({ plain: true });
-      const products = await itemModel.getProducts();
-      const categories = await Promise.all(products.map(p => p.getCategories()));
-      itemData.refs = {
-        product: products.map(p => p.get({ plain: true }).id),
-        category: uniq(flatten(categories).map(c => c.get({ plain: true }).id)),
-      };
-      return itemData;
+    data = await Promise.all(model.map(async (modelItem) => {
+      const dataItem = modelItem.retrieve();
+      dataItem.refs = await modelItem.getRefs();
+      return dataItem;
     }));
 
     res.status(200).send(data);
@@ -51,8 +46,8 @@ exports.post = async (req, res, next) => {
 
     data = modelFromReq(req);
     model = await db.m.b.create(data);
-    data = model.get({ plain: true });
-    data.refs = { product: [], category: [] };
+    data = model.retrieve();
+    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -81,7 +76,9 @@ exports.put = async (req, res, next) => {
     data = modelFromReq(req);
     model = await db.m.b.findById(data.id);
     await model.update(data);
-    data = model.get({ plain: true });
+    await model.update(data);
+    data = model.retrieve();
+    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -91,6 +88,9 @@ exports.put = async (req, res, next) => {
     switch (err.constructor) {
       case BrandError:
         message = err.message;
+        break;
+      case db.s.UniqueConstraintError:
+        message = 'сервер: Имя бренда должно быть уникальным!';
         break;
       default:
         message = 'сервер: Казус при обновлении бренда :(';

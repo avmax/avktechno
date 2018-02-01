@@ -10,6 +10,7 @@
     app
     clipped
     fixed
+    right
   >
     <component :is="editionPanel"/>
   </v-navigation-drawer>
@@ -25,7 +26,7 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState({
-      isEditionPanelOpened: ({ edition }) => edition.isEnabled,
+      isEditionPanelOpened: ({ edition }) => edition.isActive,
       editionPanel({ edition }) {
         let component;
         switch (edition.entityType) {

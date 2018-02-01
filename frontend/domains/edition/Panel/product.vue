@@ -15,13 +15,20 @@
       validate-on-blur
       required/>
 
+      <v-text-field
+      v-model="model.identificator"
+      @input="onFormControlChange"
+      label="Vin номер"
+      :rules="rules.vin"
+      validate-on-blur
+      required/>
+
       <v-select
-      label="Выберите категории"
+      label="Выберите категорию"
       :items="categories"
       v-model="model.refs.category"
       item-text="name"
       item-value="id"
-      multiple
       max-height="400"
       @input="onFormControlChange"
       persistent-hint
@@ -235,6 +242,7 @@ export default {
     return {
       rules: {
         name: [validatorRequired()],
+        vin: [validatorRequired()],
         imgUrl: [validatorRequired()],
         features: [validatorRequired()],
         price: [validatorRequired()],
@@ -256,20 +264,26 @@ export default {
     const model = this.model;
     const refs = model.refs || {};
     refs.brand = refs.brand ? refs.brand[0] : null;
-    refs.category = refs.category || [];
+    refs.category = refs.category ? refs.category[0] : null;
     model.refs = refs;
-    model.footer = model.footer || {};
     model.currency = model.currency || '$';
+    if (!model.footer) {
+      Vue.set(model, 'footer', {});
+    } else {
+      model.footer = model.footer;
+    }
+    if (!model.charachteristics) {
+      Vue.set(model, 'charachteristics', []);
+    } else {
+      model.charachteristics = model.charachteristics;
+    }
+    if (!model.features) {
+      Vue.set(model, 'features', []);
+    } else {
+      model.footer = model.features;
+    }
   },
   methods: {
-    featuresRemove(index) {
-      this.model.features.splice(index, 1);
-      this.onFormControlChange();
-    },
-    featuresAdd() {
-      if (!this.model.features) { Vue.set(this.model, 'features', []); }
-      this.model.features.push({ title: '', items: [''] });
-    },
     featuresItemRemove(index, i) {
       this.model.features[index].items.splice(i, 1);
       this.onFormControlChange();
@@ -277,16 +291,12 @@ export default {
     featuresItemAdd(index) {
       this.model.features[index].items.push('');
     },
-    charachteristicsRemove(index) {
-      this.model.charachteristics.splice(index, 1);
+    featuresRemove(index) {
+      this.model.features.splice(index, 1);
       this.onFormControlChange();
     },
-    charachteristicsAdd() {
-      if (!this.model.charachteristics) { Vue.set(this.model, 'charachteristics', []); }
-      this.model.charachteristics.push({
-        title: '',
-        items: [{ key: '', val: '' }],
-      });
+    featuresAdd() {
+      this.model.features.push({ title: '', items: [''] });
     },
     charachteristicsRemoveItem(index, i) {
       this.model.charachteristics[index].items.splice(i, 1);
@@ -295,11 +305,20 @@ export default {
     charachteristicsAddItem(index) {
       this.model.charachteristics[index].items.push({ key: '', val: '' });
     },
+    charachteristicsRemove(index) {
+      this.model.charachteristics.splice(index, 1);
+      this.onFormControlChange();
+    },
+    charachteristicsAdd() {
+      this.model.charachteristics.push({
+        title: '',
+        items: [{ key: '', val: '' }],
+      });
+    },
     getProperModel() {
       const model = cloneDeep(this.model);
       const refs = model.refs;
       Object.keys(refs)
-        .filter(key => !Array.isArray(refs[key]))
         .forEach(key => refs[key] = refs[key] ? [refs[key]] : []);
 
       return model;

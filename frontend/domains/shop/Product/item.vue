@@ -1,14 +1,15 @@
 <template>
 <v-card class="entity-item-product">
-  <v-card-media class="entity-item-product__media mb-3" :src="imgUrl"/>
-  <v-card-title class="entity-item-product__text title pt-0">{{name}}</v-card-title>
-  <v-card-text class="entity-item-product__text subheading pt-0">Цена: {{price}} {{currency}}</v-card-text>
-  <v-card-text class="entity-item-product__text subheading entity-item-product__info pt-0">{{info}}</v-card-text>
+  <v-card-media class="entity-item-product__media mb-3" :src="model.imgUrl"/>
+  <v-card-title class="entity-item-product__text title pt-0">{{model.name}}</v-card-title>
+  <v-card-text class="entity-item-product__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
+  <v-card-text class="entity-item-product__text subheading entity-item-product__info pt-0">Категория: {{category.name}}</v-card-text>
+  <v-card-text class="entity-item-product__text subheading entity-item-product__info pt-0">Бренд: {{brand.name}}</v-card-text>
   <v-card-actions class="entity-item-product__actions pa-3">
     <v-layout wrap class="ma-0">
       <v-flex xs12 class="pa-0 mb-2">
         <v-btn
-          :to="link"
+          :to="{ name: 'product-id', params: { id: model.id }}"
           nuxt
           block
           secondary
@@ -41,22 +42,20 @@
 </template>
 
 <script>
-import EntityProduct from '../mixins/product';
+import Base from './base';
 
 export default {
   name: 'entity-item-product',
-  mixins: [EntityProduct],
+  mixins: [Base],
   props: {
-    id: [Number, String],
-    link: Object,
-    imgUrl: String,
-    name: String,
-    info: Object,
-    price: [Number, String],
-    currency: String,
-    ghost: Boolean,
+    data: {
+      type: Object,
+      required: true,
+      default: () => {},
+    },
   },
   computed: {
+    model() { return this.data; },
     addToCartBtnText() {
       return this.$route.path === '/cart'
         ? 'Добавить'

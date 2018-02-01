@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    :permanent="$vuetify.breakpoint.smAndUp"
     :value="isFilterPanelOpened"
     fixed
     left
@@ -16,59 +15,50 @@
 
       <h3>Поиск по названию</h3>
       <v-text-field
-        v-model="name"
+        :value="name"
+        @input="filterByString($event, 'name')"
         label="Введите название продукта"
+        clearable
       />
 
       <h3>Поиск по VIN номеру</h3>
       <v-text-field
-        v-model="vin"
+        :value="identificator"
+        @input="filterByString($event, 'identificator')"
         label="Введите VIN продукта"
+        clearable
       />
 
       <v-divider class="mt-3 mb-4"/>
 
-      <!-- <v-select
-      v-if="type"
-      label="Выберите тип"
-      :items="model.types"
-      item-text="name"
-      item-value="value"
-      item-disabled="disabled"
-      v-model="type"
-      persistent-hint/>
+      <v-select
+        label="Выберите категории"
+        :items="model.category"
+        v-model="category"
+        item-text="name"
+        item-value="id"
+        max-height="400"
+        multiple
+        chips
+        deletable-chips
+        clearable
+        persistent-hint
+      />
 
       <v-select
-      v-if="subtype"
-      label="Выберите подтип"
-      :items="model.subtypes"
-      item-text="name"
-      item-value="value"
-      item-disabled="disabled"
-      v-model="subtype"
-      persistent-hint/>
-
-      <v-divider class="mt-3 mb-4"/> -->
-
-      <v-select
-      label="Выберите категории"
-      :items="model.category"
-      v-model="category"
-      item-text="name"
-      item-value="id"
-      max-height="400"
-      multiple
-      persistent-hint/>
-
-      <v-select
-      label="Выберите бренды"
-      :items="model.brand"
-      v-model="brand"
-      item-text="name"
-      item-value="id"
-      max-height="400"
-      multiple
-      persistent-hint/>
+        label="Выберите бренды"
+        :items="model.brand"
+        v-model="brand"
+        :disabled="!model.brand.length"
+        item-text="name"
+        item-value="id"
+        max-height="400"
+        multiple
+        chips
+        deletable-chips
+        clearable
+        persistent-hint
+      />
 
       <v-divider class="mt-3 mb-4"/>
 
@@ -77,12 +67,14 @@
       <v-layout>
         <v-flex xs6 class="mr-4">
           <v-text-field
+          @input="filterByPrice($event)"
           v-model="priceFrom"
           label="От"
           type="number"/>
         </v-flex>
         <v-flex xs6>
           <v-text-field
+          @input="filterByPrice($event)"
           v-model="priceTo"
           label="До"
           type="number"/>
@@ -92,10 +84,10 @@
       <v-divider class="mt-3 mb-5"/>
 
       <v-btn
-      @click.native="close()"
+      @click.native="close(false)"
       block
       secondary
-      class="hidden-sm-and-up mb-3">
+      class="mb-3">
         Закрыть
       </v-btn>
       <v-btn @click.native="reset()"
@@ -110,12 +102,14 @@
 <script>
 import { ENTITY_TYPES } from '~/domains/barrel.types';
 import {
-  FILTER_VISIBILITY_TOGGLE,
-  FILTER_HIDDEN_SET,
+  FILTER_VISIBILITY_SET,
+  FILTER_CHOSEN_SET,
   FILTER_DROP,
 } from '~/domains/barrel.state';
 import { mapState, mapMutations } from 'vuex';
-import { difference } from 'lodash/fp';
+import { uniq, flatten } from 'lodash/fp';
+
+const PRICE_MAXIMUM = 10000000;
 
 export default {
   name: 'filter-panel',
@@ -126,10 +120,10 @@ export default {
         [ENTITY_TYPES.brand]: 'Бренд',
         [ENTITY_TYPES.product]: 'Продукт',
       },
-      priceTo: null,
       priceFrom: null,
+      priceTo: PRICE_MAXIMUM,
       name: null,
-      vin: null,
+      identificator: null,
     };
   },
   computed: {
@@ -137,102 +131,104 @@ export default {
       isFilterPanelOpened: ({ filter }) => filter.isOpened,
     }),
     model() {
-      const { getters, state } = this.$store;
-      const { shop } = state;
-
-      return {
-        types: Object.values(ENTITY_TYPES)
-          .filter(v => v !== ENTITY_TYPES.product)
-          .map(v => ({ name: this.types[v], value: v, disabled: v === this.subtype })),
-        subtypes: Object.values(ENTITY_TYPES)
-          .map(v => ({ name: this.types[v], value: v, disabled: v === this.type })),
-        category: getters.entities(ENTITY_TYPES.category),
-        brand: getters.entities(ENTITY_TYPES.brand),
-        product: getters.entities(ENTITY_TYPES.product),
-      };
+      const { state, getters } = this.$store;
+      const { filter } = state;
+      const category = getters.categories;
+      const brand = getters.brands.filter((b) => {
+        const { id } = b;
+        return filter.chosen.brand.indexOf(id) !== -1;
+      });
+      // const brand = getters.brands;
+      const product = getters.products;
+      return { category, product, brand };
     },
-    // type: {
-    //   get() {
-    //     return this.$store.state.filter.type;
-    //   },
-    //   set(v) {
-    //     this.$store.commit(FILTER_TYPE_SET, v);
-    //   },
-    // },
-    // subtype: {
-    //   get() {
-    //     return this.$store.state.filter.subtype;
-    //   },
-    //   set(v) {
-    //     this.$store.commit(FILTER_SUBTYPE_SET, v);
-    //   },
-    // },
     category: {
       get() {
-        const { filter } = this.$store.state;
-        const all = this.model.category;
-        const hidden = filter.hidden.category;
-        return all.filter(c => hidden.indexOf(c.id) === -1);
+        const { state, getters } = this.$store;
+        const { filter } = state;
+        const chosen = filter.chosen.category.map(id => getters.category(id));
+        return chosen;
       },
-      set(v) { this.filterByIDs(v, 'category'); },
+      set(v) {
+        const { commit, getters } = this.$store;
+        commit(FILTER_CHOSEN_SET('category'), v);
+        const categories = v.map(id => getters.category(id));
+        const getRefs = type => uniq(flatten(categories.map(c => c.refs[type])));
+        commit(FILTER_CHOSEN_SET('brand'), getRefs('brand'));
+        commit(FILTER_CHOSEN_SET('product'), getRefs('product'));
+      },
     },
     brand: {
       get() {
-        const { filter } = this.$store.state;
-        const all = this.model.brand;
-        const hidden = filter.hidden.brand;
-        return all.filter(b => hidden.indexOf(b.id) === -1);
+        const { state, getters } = this.$store;
+        const { filter } = state;
+        const chosen = filter.chosen.brand.map(id => getters.brand(id));
+        return chosen;
       },
-      set(v) { this.filterByIDs(v, 'brand'); },
+      set(v) {
+        const { commit } = this.$store;
+        commit(FILTER_CHOSEN_SET('brand'), v);
+      },
     },
-  },
-  watch: {
-    priceFrom(v) {
-      if (v) {
-        const products = this.model.product.filter(p => p.price < +v).map(p => p.id);
-        this.$store.commit(FILTER_HIDDEN_SET(ENTITY_TYPES.product), products);
-      }
-    },
-    priceTo(v) {
-      if (v) {
-        const products = this.model.product.filter(p => p.price > +v).map(p => p.id);
-        this.$store.commit(FILTER_HIDDEN_SET(ENTITY_TYPES.product), products);
-      }
-    },
-    name(v) { this.filterByString(v, 'name'); },
-    vin(v) { this.filterByString(v, 'vin'); },
   },
   methods: {
     ...mapMutations({
-      close: FILTER_VISIBILITY_TOGGLE,
+      close: FILTER_VISIBILITY_SET,
     }),
     filterByString(str, key) {
-      const arr = this.model.product;
+      let products = this.model.product;
+
+      if (str) {
+        products = products.filter(p => p[key].toLowerCase().indexOf(str.toLowerCase()) !== -1);
+      } else {
+        products = [];
+      }
+
+      this.filterProducts(products);
+    },
+    filterByPrice(v) {
+      const to = this.priceTo;
+      const from = this.priceFrom;
+      let products = this.model.product;
+
+      if (v) {
+        products = products.filter(p => p.price >= +from && p.price <= +to);
+      } else {
+        products = [];
+      }
+
+      this.filterProducts(products);
+    },
+    filterProducts(products) {
       const { commit } = this.$store;
       let payload;
 
-      if (str) {
-        payload = arr.filter(a => a[key].toLowerCase().indexOf(str.toLowerCase()) === -1);
-        payload = payload.map(r => r.id);
-      } else {
-        payload = [];
-      }
+      const normalize = type => uniq(flatten(products.map(p => p.refs[type])));
 
-      commit(FILTER_HIDDEN_SET(ENTITY_TYPES.product), payload);
+      this.resetLocal();
+      payload = normalize('category');
+      commit(FILTER_CHOSEN_SET('category'), payload);
+      payload = normalize('brand');
+      commit(FILTER_CHOSEN_SET('brand'), payload);
+      payload = products.map(r => r.id);
+      commit(FILTER_CHOSEN_SET('product'), payload);
     },
-    filterByIDs(v, key) {
-      const all = Object.values(this.model[key]).map(o => o.id);
-      const payload = difference(all, v);
-      this.$store.commit(FILTER_HIDDEN_SET(ENTITY_TYPES[key]), payload);
+    resetLocal() {
+      this.priceFrom = null;
+      this.priceTo = PRICE_MAXIMUM;
+      this.name = null;
+      this.identificator = null;
     },
     reset() {
       const { commit } = this.$store;
       commit(FILTER_DROP);
-      this.priceTo = null;
-      this.priceFrom = null;
-      this.name = null;
-      this.vin = null;
+      this.resetLocal();
     },
+  },
+  mounted() {
+    const { commit } = this.$store;
+    const breakpoint = this.$vuetify.breakpoint.smAndUp;
+    commit(FILTER_VISIBILITY_SET, breakpoint);
   },
 };
 </script>

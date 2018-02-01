@@ -7,7 +7,7 @@ import {
 import {
   EDITION_TYPES,
 } from '~/domains/barrel.types';
-import { cloneDeep, isObject } from 'lodash/fp';
+import { cloneDeep } from 'lodash/fp';
 import { mapState } from 'vuex';
 
 
@@ -40,18 +40,10 @@ export default {
       }
     },
     async handleSubmit() {
-      const isFile = o => o && o.name && o.size && o.type;
       if (this.$refs.form.validate()) {
         try {
-          const model = this.getProperModel();
-          const data = Object.keys(model).reduce((acc, key) => {
-            let val = model[key];
-            val = !isFile(val) && isObject(val) ? JSON.stringify(val) : val;
-            acc.append(key, val);
-            return acc;
-          }, new FormData());
-
-          await this.$store.dispatch(EDITION_SAVE(this.type), data);
+          const entity = this.getProperModel();
+          await this.$store.dispatch(EDITION_SAVE(this.type), entity);
           this.$store.commit(EDITION_STOP);
         } catch (err) {
           this.message = err.message || 'произошла ошибка :(';

@@ -3,7 +3,6 @@
   <h3 class="mb-3">{{isTypeCreate ? 'Создать бренд' : 'Редактировать бренд'}}</h3>
   <v-form
     ref="form"
-    @keyup.enter.native="handleSubmit"
     v-model="isValid"
     lazy-validation>
     <v-layout column>

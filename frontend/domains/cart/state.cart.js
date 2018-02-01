@@ -21,7 +21,7 @@ const mutations = {
     const { items } = state;
     items[id] -= 1;
     if (items[id] === 0) {
-      Vue.delete(items[id]);
+      Vue.delete(items, id);
     }
   },
 };

@@ -15,16 +15,12 @@ exports.get = async (req, res, next) => {
   {
     let model;
     let data;
+
     model = await db.m.c.findAll();
-    data = await Promise.all(model.map(async (item) => {
-      const model = item.get({ plain: true });
-      const products = await item.getProducts();
-      const brands = await Promise.all(products.map(p => p.getBrand()));
-      model.refs = {
-        product: products.map(p => p.get({ plain: true }).id),
-        brand: uniq(brands.filter(b => !!b).map(b => b.get({ plain: true }).id)),
-      };
-      return model;
+    data = await Promise.all(model.map(async (modelItem) => {
+      const dataItem = modelItem.retrieve();
+      dataItem.refs = await modelItem.getRefs();
+      return dataItem;
     }));
 
     res.status(200).send(data);
@@ -43,8 +39,8 @@ exports.post = async (req, res, next) => {
     let data;
     data = modelFromReq(req);
     model = await db.m.c.create(data);
-    data = model.get({ plain: true });
-    data.refs = { brand: [], product: [] };
+    data = model.retrieve();
+    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -72,7 +68,8 @@ exports.put = async (req, res, next) => {
     data = modelFromReq(req);
     model = await db.m.c.findById(data.id);
     await model.update(data);
-    data = model.get({ plain: true });
+    data = model.retrieve();
+    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -93,16 +90,15 @@ exports.put = async (req, res, next) => {
 
 
 exports.delete = async (req, res, next) => {
-  const body = req.body || { };
-  const { id } = body;
-
   try
   {
     let model;
     let data;
+
     data = modelFromReq(req);
     model = await db.m.c.findById(data.id);
     model.destroy();
+
     res.status(200).send();
   }
   catch(err)

@@ -5,50 +5,90 @@
       <h1 class="text-xs-left text-md-center">Корзина</h1>
     </div>
 
-    <v-layout v-if="!collections || !collections.length" align-center justify-center>
+    <v-layout v-if="!products || !products.length" align-center justify-center>
       <h2>Корзина пуста</h2>
     </v-layout>
 
     <template v-else>
-      <v-form class="page__form my-5" ref="form" v-model="form.isValid">
+      <v-form
+        ref="form"
+        v-model="form.isValid"
+        lazy-validation
+        class="page__form my-5"
+      >
         <div class="subheader pa-0">Пожалуйста, заполните и отправьте данную форму, и мы свяжемся с Вами в течение 5 минут!</div>
-        <v-text-field label="Ваше имя" v-model="form.value.name" :rules="form.rules.name" autofocus required/>
-        <v-text-field label="Ваш телефон" mask="+7 (###) ###-##-##" v-model="form.value.phone" :rules="form.rules.phone" required/>
-        <v-text-field label="Ваша почта" v-model="form.value.mail" :rules="form.rules.mail" required/>
-        <v-btn class="ml-0 mt-3" :disabled="!form.isValid" @click="submit">Отправить</v-btn>
+        <v-text-field
+          label="Ваше имя"
+          v-model="form.value.name"
+          :rules="form.rules.name"
+          autofocus
+          validate-on-blur
+          required
+        />
+        <v-text-field
+          label="Ваш телефон"
+          mask="+7 (###) ###-##-##"
+          v-model="form.value.phone"
+          :rules="form.rules.phone"
+          validate-on-blur
+          required
+        />
+        <v-text-field
+          label="Ваша почта"
+          v-model="form.value.mail"
+          :rules="form.rules.mail"
+          validate-on-blur
+          required
+        />
+        <v-btn
+          class="ml-0 mt-3"
+          :disabled="!form.isValid"
+          @click="submit"
+          primary
+        >
+          Отправить
+        </v-btn>
       </v-form>
 
-      <h2 class="text-xs-center mb-4">Выбранные товары. Общая сумма: {{totalPrice}} рублей.</h2>
-      <entity-exposition
-        :type="type"
-        :subtype="subtype"
-        :data="collections"
-      />
+      <h2 class="text-xs-center mb-4">Выбранные товары. Общая сумма: {{totalPrice}} ₽</h2>
+
+      <!-- items -->
+      <product-collection>
+        <v-flex
+          v-for="p in products"
+          :key="p.id"
+          xs12 sm6 lg4
+        >
+          <product-item
+            :data="p"
+          />
+        </v-flex>
+      </product-collection>
     </template>
   </v-layout>
 </v-container>
 </template>
 
 <script>
-import EntityExposition from '~/domains/shop/EntityExposition/base.vue';
 import { ApiCart } from '~/domains/barrel.api';
-import { ENTITY_TYPES, NOTIFICATION_TYPES } from '~/domains/barrel.types';
+import { NOTIFICATION_TYPES } from '~/domains/barrel.types';
 import {
   NOTIFICATION_OPEN,
   NOTIFICATION_LAST_CLOSE,
 } from '~/domains/barrel.state';
-import { cloneDeep } from 'lodash/fp';
+import ProductCollection from '~/domains/shop/Product/collection.vue';
+import ProductItem from '~/domains/shop/Product/item.vue';
 
 export default {
-  components: { EntityExposition },
-  layout: 'easy',
+  components: {
+    ProductCollection,
+    ProductItem,
+  },
+  layout: 'base',
   data() {
     return {
-      type: ENTITY_TYPES.category,
-      subtype: ENTITY_TYPES.product,
-      hiddenType: ENTITY_TYPES.brand,
       form: {
-        isValid: false,
+        isValid: true,
         value: {
           name: null,
           phone: null,
@@ -63,52 +103,23 @@ export default {
           mail: [
             v => !!v || 'Это поле обязательно',
             // eslint-disable-next-line
-            v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Email должен быть валидным'
+            v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Email должен быть валидным',
           ],
         },
       },
     };
   },
   computed: {
-    collections() {
+    products() {
       const { state, getters } = this.$store;
       const { cart } = state;
-
-      const collections = getters.entities(this.type).map((id) => {
-        const collectionModel = getters.entity(this.type, id);
-        const collection = {
-          model: collectionModel,
-          items: collectionModel.refs[this.subtype]
-            .filter(id => !!cart.items[id])
-            .map((id) => {
-              const item = cloneDeep(getters.entity(this.subtype, id));
-              if (item.info) {
-                item.info = item.info[this.hiddenType];
-              }
-              return item;
-            }),
-        };
-
-        return collection;
-      });
-
-      return collections.filter(c => c.items.length);
-    },
-    items() {
-      const { state, getters } = this.$store;
-      const { cart } = state;
-      return Object.keys(cart.items)
-        .filter(id => !!cart.items[id])
-        .map(id => ({
-          name: getters.entity(ENTITY_TYPES.product, id).name,
-          id: id,
-          count: cart.items[id],
-          price: getters.entity(ENTITY_TYPES.product, id).price,
-        }));
+      const IDs = Object.keys(cart.items);
+      const products = IDs.map(id => ({ ...getters.product(id), count: cart.items[id] }));
+      return products;
     },
     totalPrice() {
       let sum = 0;
-      this.items.forEach(item => sum += item.price * item.count);
+      this.products.forEach(p => sum += p.price * p.count);
       return sum;
     },
   },
@@ -118,7 +129,7 @@ export default {
       const { commit } = this.$store;
 
       if (form.validate()) {
-        const data = { ...this.form.value, items: this.items };
+        const data = { ...this.form.value, items: this.products };
         try {
           await ApiCart.askForCall(data);
           commit(NOTIFICATION_OPEN, {

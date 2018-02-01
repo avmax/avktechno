@@ -2,8 +2,9 @@ const ProductError = require('../errors').ProductError;
 const { isArray } = require('lodash/fp');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const Product = sequelize.define(
     'product',
+    // associations: true
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      identificator: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -126,26 +132,39 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    {
-      getterMethods: {
-        async refs() {
-          const category = await this.getCategories();
-          const brand = await this.getBrand();
-          const refs = {
-            brand: brand ? [brand.get().id] : [],
-            category: category.map(c => c.get().id),
-          }
-          return refs;
-        },
-        async info() {
-          const brand = await this.getBrand();
-          const category = await this.getCategories();
-          return {
-            brand: brand ? 'Бренд: ' + brand.get({ plain: true }).name : null,
-            category: 'Категория: ' + category.map(c => c.get({ plain: true }).name).join(', '),
-          };
-        },
-      },
-    },
   );
+
+  Product.prototype.retrieve = function() {
+    const plain = this.get({ plain: true });
+
+    delete plain.brandId;
+    delete plain.categoryId;
+    delete plain.createdAt;
+    delete plain.updatedAt;
+    return plain;
+  };
+
+  Product.prototype.setRefs = async function(refs) {
+    const { category, brand } = refs;
+    if (category) {
+      await this.setCategory(category);
+    }
+
+    if (brand) {
+      await this.setBrand(brand);
+    }
+  };
+
+  Product.prototype.getRefs = async function() {
+    const category = await this.getCategory();
+    const brand = await this.getBrand();
+
+    const refs = {
+      brand: brand && [brand.get('id')] || [],
+      category: category && [category.get('id')] || [],
+    };
+    return refs;
+  };
+
+  return Product;
 };

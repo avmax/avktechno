@@ -43,9 +43,9 @@ class DB {
     this.query = utils.promisify(this.c.query.bind(this.c));
     this.m = {
       c: this.s.import(_r('category')),
+      s: this.s.import(_r('subcategory')),
       b: this.s.import(_r('brand')),
       p: this.s.import(_r('product')),
-      cp: this.s.define('category-product'),
     };
   }
 
@@ -63,8 +63,10 @@ class DB {
             ALTER DATABASE ${NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
           `)
 
-          await this.m.c.belongsToMany(this.m.p, { through: this.m.cp });
-          await this.m.p.belongsToMany(this.m.c, { through: this.m.cp });
+          await this.m.s.belongsTo(this.m.c);
+          await this.m.c.hasMany(this.m.s);
+          await this.m.p.belongsTo(this.m.c);
+          await this.m.c.hasMany(this.m.p);
           await this.m.p.belongsTo(this.m.b);
           await this.m.b.hasMany(this.m.p);
           // await this.s.authenticate();

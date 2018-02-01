@@ -9,10 +9,14 @@ const modelFromReq = (req) => {
 
   const parse = val => val ? JSON.parse(val) : val;
 
-  model.refs = parse(model.refs);
   model.footer = parse(model.footer);
   model.features = parse(model.features);
   model.charachteristics = parse(model.charachteristics);
+
+  model.refs = parse(model.refs);
+  if (model.refs) {
+    Object.keys(model.refs).forEach(key => model.refs[key] = model.refs[key][0] || null);
+  }
 
   if (file && file.filename) {
     model.imgUrl = imgURL(file.filename);
@@ -30,9 +34,8 @@ exports.get = async (req, res, next) => {
 
     model = await db.m.p.findAll();
     data = await Promise.all(model.map(async (itemModel) => {
-      const itemData = itemModel.get({ plain: true });
-      itemData.info = await itemData.info;
-      itemData.refs = await itemData.refs;
+      const itemData = itemModel.retrieve();
+      itemData.refs = await itemModel.getRefs();
       return itemData;
     }));
 
@@ -51,12 +54,11 @@ exports.post = async (req, res, next) => {
     let data;
 
     data = modelFromReq(req);
+
     model = await db.m.p.create(data);
-    await model.setCategories(data.refs.category);
-    await model.setBrand(data.refs.brand[0]);
+    await model.setRefs(data.refs);
     data = model.get({ plain: true });
-    data.info = await data.info;
-    data.refs = await data.refs;
+    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -68,7 +70,7 @@ exports.post = async (req, res, next) => {
         message = err.message;
         break;
       case db.s.UniqueConstraintError:
-        message = 'сервер: Имя продукта должно быть уникальным!';
+        message = 'сервер: Имя и VIN продукта должны быть уникальными!';
         break;
       default:
         message = 'сервер: Казус при добавлении продукта :(';
@@ -85,11 +87,9 @@ exports.put = async (req, res, next) => {
     data = modelFromReq(req);
     model = await db.m.p.findById(data.id);
     await model.update(data);
-    await model.setCategories(data.refs.category);
-    await model.setBrand(data.refs.brand[0]);
+    await model.setRefs(data.refs);
     data = model.get({ plain: true });
-    data.info = await data.info;
-    data.refs = await data.refs;
+    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -99,6 +99,9 @@ exports.put = async (req, res, next) => {
     switch (err.constructor) {
       case ProductError:
         message = err.message;
+        break;
+      case db.s.UniqueConstraintError:
+        message = 'сервер: Имя и VIN продукта должны быть уникальными!';
         break;
       default:
         message = 'сервер: Казус при обновлении продукта :(';

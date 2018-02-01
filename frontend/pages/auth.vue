@@ -1,46 +1,48 @@
 <template>
-<div class="page page_auth">
-  <div class="page__content">
-    <v-layout row justify-center>
-      <v-divider></v-divider>
-      <v-flex xs12 md4 lg3>
-        <h1 class="headline mb-1 text-xs-center">Авторизация</h1>
-        <v-form v-model="valid">
-          <v-layout column>
+<v-app id="avmax">
+  <div class="page page_auth">
+    <div class="page__content">
+      <v-layout row justify-center>
+        <v-divider></v-divider>
+        <v-flex xs12 md4 lg3>
+          <h1 class="headline mb-1 text-xs-center">Авторизация</h1>
+          <v-form v-model="valid">
+            <v-layout column>
 
-            <v-text-field
-            label="Логин"
-            v-model="form.value.login"
-            :rules="form.rules.login"
-            :counter="20"
-            required/>
+              <v-text-field
+              label="Логин"
+              v-model="form.value.login"
+              :rules="form.rules.login"
+              :counter="20"
+              required/>
 
-            <v-text-field
-            label="Пароль"
-            v-model="form.value.password"
-            :rules="form.rules.password"
-            type="password"
-            class="mb-3"
-            required/>
+              <v-text-field
+              label="Пароль"
+              v-model="form.value.password"
+              :rules="form.rules.password"
+              type="password"
+              class="mb-3"
+              required/>
 
-            <v-btn
-            @click="submit"
-            :disabled="!valid"
-            class="mt-0 mr-0 mb-0 ml-0"
-            color="primary"
-            large>
-              Войти
-            </v-btn>
+              <v-btn
+              @click="submit"
+              :disabled="!valid"
+              class="mt-0 mr-0 mb-0 ml-0"
+              color="primary"
+              large>
+                Войти
+              </v-btn>
 
-          </v-layout>
-        </v-form>
+            </v-layout>
+          </v-form>
 
-      </v-flex>
-      <v-divider></v-divider>
-    </v-layout>
+        </v-flex>
+        <v-divider></v-divider>
+      </v-layout>
+    </div>
+
   </div>
-
-</div>
+</v-app>
 </template>
 
 
@@ -53,7 +55,7 @@ import {
   USER_SIGN_IN,
   NOTIFICATION_OPEN,
 } from '~/domains/barrel.state';
-import { ApiUser } from '~/domains/barrel.api';
+import { apiUser } from '~/domains/barrel.api';
 
 export default {
   name: 'page-auth',
@@ -84,9 +86,9 @@ export default {
       const { commit } = this.$store;
 
       try {
-        const data = await ApiUser.signIn(this.form.value);
+        const data = await apiUser.signIn(this.form.value);
         commit(USER_SIGN_IN, data);
-        this.$router.push('/product');
+        this.$router.push('/');
       } catch (err) {
         console.log('err', err);
         commit(NOTIFICATION_OPEN, {
