@@ -7,7 +7,7 @@
   dismissible
   class="text-xs-center"
   :class="{ 'mt-0': index === 0, 'mb-4': index === notifications.length - 1 }"
-  style="width: 100%; color: black;"
+  style="width: 100%; color: white;"
   transition="slide-y-transition"
   @input="notificationClose(index)"
   :key="`index-${index}`">
