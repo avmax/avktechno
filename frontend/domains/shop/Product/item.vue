@@ -3,6 +3,12 @@
   <v-card-media class="entity-item-product__media mb-3" :src="model.imgUrl"/>
   <v-card-title class="entity-item-product__text title pt-0">{{model.name}}</v-card-title>
   <v-card-text class="entity-item-product__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
+  <v-divider class="mb-3"/>
+  <v-card-text
+    class="entity-item-product__text subheading entity-item-product__info pt-0"
+  >
+      Артикул: {{model.identificator}}
+  </v-card-text>
   <v-card-text
     v-if="isPageCart"
     class="entity-item-product__text subheading entity-item-product__info pt-0"
@@ -18,7 +24,7 @@
   <v-card-text
     class="entity-item-product__text subheading entity-item-product__info pt-0"
   >
-      Бренд:
+      Производитель:
       <template v-if="brand">
         {{brand.name}}
       </template>
@@ -29,9 +35,7 @@
 
   <v-divider/>
 
-  <v-card-text class="subheading">
-    {{ model.descriptionShort }}
-  </v-card-text>
+  <v-card-text class="subheading" v-html="chopStr(model.descriptionShort, 150)"/>
 
   <v-divider/>
 
@@ -88,6 +92,21 @@ export default {
     model() { return this.data; },
     isPageCart() { return this.$route.path === '/cart'; },
     addToCartBtnText() { return this.isPageCart ? 'Добавить' : 'В корзину'; },
+  },
+  methods: {
+    chopStr(str, length) {
+      const l = str.length;
+      let res;
+
+      if (l >= length) {
+        res = `${str.substring(1, length)}...`;
+      } else {
+        const d = Math.round((length - l) / 2);
+        const str2 = new Array(d + 1).join('a ');
+        res = str.concat(`<span style="opacity: 0;">${str2}</span>`);
+      }
+      return res;
+    },
   },
 };
 </script>

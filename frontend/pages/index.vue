@@ -29,7 +29,7 @@
               </v-flex>
               <v-flex>
                 <edition-ghost
-                  btn-text="Добавить бренд"
+                  btn-text="Добавить производителя"
                   @add="add('brand')"
                   fluid
                 />

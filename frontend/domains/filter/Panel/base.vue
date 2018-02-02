@@ -46,7 +46,7 @@
         label="Выберите подкатегории"
         :items="model.subcategory"
         v-model="subcategory"
-        :disabled="!category"
+        :disabled="!category || !!category.refs.product.length"
         item-text="name"
         item-value="id"
         max-height="400"
@@ -58,10 +58,10 @@
       />
 
       <v-select
-        label="Выберите бренды"
+        label="Выберите производителей"
         :items="model.brand"
         v-model="brand"
-        :disabled="!model.brand.length || !model.subcategory.length || !category"
+        :disabled="!category || (!category.refs.product.length && !subcategory.length)"
         item-text="name"
         item-value="id"
         max-height="400"
@@ -151,7 +151,7 @@ export default {
     model() {
       const { getters } = this.$store;
       const category = getters.categories
-        .filter(c => +c.depth === 1);
+        .filter(c => c && +c.depth === 1);
       const subcategory = this.category
         ? this.category.refs.category.map(id => getters.category(id))
         : [];
@@ -189,7 +189,7 @@ export default {
         const { filter } = state;
         const chosen = filter.chosen.category
           .map(id => getters.category(id))
-          .filter(c => +c.depth === 2);
+          .filter(c => c && +c.depth === 2);
         return chosen;
       },
       set(v) {

@@ -18,7 +18,7 @@
       <v-text-field
       v-model="model.identificator"
       @input="onFormControlChange"
-      label="Vin номер"
+      label="Артикул"
       :rules="rules.vin"
       validate-on-blur
       required/>
@@ -35,7 +35,7 @@
       color="white"/>
 
       <v-select
-      label="Выберите бренд"
+      label="Выберите производителя"
       :items="brands"
       v-model="model.refs.brand"
       item-text="name"
@@ -260,6 +260,7 @@ export default {
       rules: {
         name: [validatorRequired()],
         vin: [validatorRequired()],
+        brand: [validatorRequired()],
         imgUrl: [validatorRequired()],
         features: [validatorRequired()],
         price: [validatorRequired()],

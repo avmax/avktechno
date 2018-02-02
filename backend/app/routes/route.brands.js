@@ -33,7 +33,7 @@ exports.get = async (req, res, next) => {
   catch(err)
   {
     console.log(err);
-    next(new BrandError('сервер: Казус при загрузке брендов', err));
+    next(new BrandError('сервер: Казус при загрузке производителей', err));
   }
 };
 
@@ -56,10 +56,10 @@ exports.post = async (req, res, next) => {
     let message;
     switch (err.constructor) {
       case db.s.UniqueConstraintError:
-        message = 'сервер: Имя бренда должно быть уникальным!';
+        message = 'сервер: Имя производителяя должно быть уникальным!';
         break;
       default:
-        message = 'сервер: Казус при добавлении бренда :(';
+        message = 'сервер: Казус при добавлении производителяя :(';
     }
     console.log(err);
     next(new BrandError(message, err));
@@ -90,10 +90,10 @@ exports.put = async (req, res, next) => {
         message = err.message;
         break;
       case db.s.UniqueConstraintError:
-        message = 'сервер: Имя бренда должно быть уникальным!';
+        message = 'сервер: Имя производителя должно быть уникальным!';
         break;
       default:
-        message = 'сервер: Казус при обновлении бренда :(';
+        message = 'сервер: Казус при обновлении производителя :(';
     }
 
     next(new BrandError(message, err));
@@ -115,7 +115,7 @@ exports.delete = async (req, res, next) => {
     let message;
     switch (err.constructor) {
       default:
-        message = 'сервер: Казус при удалении бренда :(';
+        message = 'сервер: Казус при удалении производителя :(';
     }
     next(new BrandError(message, err));
   }

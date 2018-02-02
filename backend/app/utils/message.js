@@ -1,7 +1,7 @@
 var nodemailer = require('nodemailer');
 
 const FROM = 'avmax.web@gmail.com';
-const TO = '2347366@mail.ru';
+const TO = 'e.kanaeva@avktechno.com';
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -13,7 +13,7 @@ var transporter = nodemailer.createTransport({
 
 var mailOptions = {
   from: FROM,
-  to: FROM,
+  to: TO,
   subject: 'АВК-ТЕХНО: запрос на покупку товаров.',
   text: 'That was easy!'
 };

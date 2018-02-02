@@ -43,21 +43,25 @@
       </v-card-text>
       <v-divider class="mb-4 mt-4"/>
 
-      <template v-if="brand || category">
-        <v-card-text
-          v-if="category.name"
-          class="entity-view-product__card-info-item title pb-0"
-        >
-          <span>Категория:</span> <span style="font-weight: normal;"> {{category.name}}</span>
-        </v-card-text>
-        <v-card-text
-          v-if="brand.name"
-          class="entity-view-product__card-info-item title"
-        >
-          <span>Бренд:</span> <span style="font-weight: normal;"> {{brand.name}}</span>
-        </v-card-text>
-        <v-divider class="my-4"/>
-      </template>
+      <v-card-text
+        class="entity-view-product__card-info-item title pb-0"
+      >
+        <span>Артикул:</span> <span style="font-weight: normal;"> {{model.identificator}}</span>
+      </v-card-text>
+      <v-card-text
+        v-if="category.name"
+        class="entity-view-product__card-info-item title pb-0"
+      >
+        <span>Категория:</span> <span style="font-weight: normal;"> {{category.name}}</span>
+      </v-card-text>
+      <v-card-text
+        v-if="brand.name"
+        class="entity-view-product__card-info-item title"
+      >
+        <span>Производитель:</span> <span style="font-weight: normal;"> {{brand.name}}</span>
+      </v-card-text>
+      <v-divider class="my-4"/>
+
 
       <template>
         <v-card-text class="title pb-0">Описание:</v-card-text>

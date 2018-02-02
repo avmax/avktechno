@@ -5,10 +5,9 @@
       <section>
         <div>
           <h2 class="mb-3">О компании</h2>
-          <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong>BAROID (HALLIBURTON)</strong> в РФ с 2010 года.</p>
-          <v-parallax class="my-5" src="/bg.jpg" height="200"/>
+          <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong>BAROID (HALLIBURTON)</strong> <v-avatar class="ml-1"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar> в РФ с 2010 года.</p>
+          <v-parallax class="my-5 hidden-sm-and-down" src="/intro.png" height="250"/>
           <p>За это время она прошла путь до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: <strong>бентонит</strong> и <strong>полимеры</strong> <strong> BAROID</strong>, <strong>установки ГНБ</strong> и комплектующих к ним, <strong>горно-шахтное оборудование</strong> и установки для <strong>микротоннелирования</strong>, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих заводов производителей!</p>
-          <v-parallax class="my-5" src="/bg.jpg" height="200"/>
           <p>Обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p>
         </div>
       </section>
@@ -40,15 +39,15 @@
           <template scope="{ add, edit, remove, isEditionAvailable }">
             <v-container fluid class="pa-0" grid-list-xl>
               <v-layout row wrap justify-start>
-                <v-flex v-if="isEditionAvailable" xs12 sm4 md3 lg2 xl1>
+                <v-flex v-if="isEditionAvailable" xs12 sm4 lg3 xl2>
                   <edition-ghost
-                    btn-text="Добавить бренд"
+                    btn-text="Добавить производителя"
                     @add="add('brand')"
                     fluid
                   />
                 </v-flex>
                 <v-flex
-                  xs12 sm4 md3 lg2 xl1
+                  xs12 sm4 lg3 xl2
                   v-for="b in brands"
                   :key="b.id"
                 >
