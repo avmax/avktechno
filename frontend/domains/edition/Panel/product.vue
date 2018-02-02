@@ -73,6 +73,16 @@
         </v-flex>
       </v-layout>
 
+      <v-text-field
+        label="Количество в наличии"
+        @input="onFormControlChange"
+        type="number"
+        v-model="model.amount"
+        :rules="rules.amount"
+        required
+        validate-on-blur
+      />
+
       <v-divider class="my-3"/>
 
       <v-text-field
@@ -86,6 +96,13 @@
       v-model="model.description"
       @input="onFormControlChange"
       label="Описание"
+      multi-line
+      :rows="1"/>
+
+      <v-text-field
+      v-model="model.descriptionShort"
+      @input="onFormControlChange"
+      label="Короткое описание"
       multi-line
       :rows="1"/>
 
@@ -246,6 +263,7 @@ export default {
         imgUrl: [validatorRequired()],
         features: [validatorRequired()],
         price: [validatorRequired()],
+        amount: [validatorRequired()],
         charachteristics: [validatorRequired()],
       },
     };

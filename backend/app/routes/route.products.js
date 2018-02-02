@@ -122,7 +122,7 @@ exports.delete = async (req, res, next) => {
     model = await db.m.p.findById(data.id);
     model.destroy();
 
-    res.status(200).send();
+    res.status(200).send(true);
   }
   catch(err)
   {

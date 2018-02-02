@@ -1,13 +1,14 @@
 <template>
 <div
-class="entity-view-product py-2">
+  class="entity-view-product py-2"
+>
   <v-fade-transition>
     <v-card v-if="model" class="entity-view-product__card">
       <v-card-media class="entity-view-product__card-media" :src="model.imgUrl"/>
-      <v-card-title class="entity-view-product__card-header display-1 pb-0" style="font-weight: bolder;">
+      <v-card-title class="entity-view-product__card-header headline pb-0" style="font-weight: bolder;">
         {{model.name}}
       </v-card-title>
-      <v-card-title class="display-1 pt-0">
+      <v-card-title class="title pt-3">
         {{model.title}}
       </v-card-title>
 
@@ -34,7 +35,7 @@ class="entity-view-product py-2">
         </v-btn>
         <v-btn
         :disabled="!count"
-        class="d-inline-block entity-view-product__card-action ma-0"
+        class="d-inline-block entity-view-product__card-action ma-0 white--text"
         color="red lighten-1"
         @click="removeFromCart">
           Убрать из корзины
@@ -45,20 +46,21 @@ class="entity-view-product py-2">
       <template v-if="brand || category">
         <v-card-text
           v-if="category.name"
-          class="entity-view-product__card-info-item subheading"
+          class="entity-view-product__card-info-item title pb-0"
         >
-          Категория: {{category.name}}
+          <span>Категория:</span> <span style="font-weight: normal;"> {{category.name}}</span>
         </v-card-text>
         <v-card-text
           v-if="brand.name"
-          class="entity-view-product__card-info-item subheading"
+          class="entity-view-product__card-info-item title"
         >
-          Бренд: {{brand.name}}
+          <span>Бренд:</span> <span style="font-weight: normal;"> {{brand.name}}</span>
         </v-card-text>
         <v-divider class="my-4"/>
       </template>
 
-      <template v-if="model.description">
+      <template>
+        <v-card-text class="title pb-0">Описание:</v-card-text>
         <v-card-text class="entity-view-product__card-description subheading" v-html="model.description"/>
         <v-divider class="my-4"/>
       </template>
@@ -207,9 +209,6 @@ export default {
 
 @media all and (min-width: 768px) {
 .entity-view-product {
-  max-width: 720px;
-  margin: 0 auto;
-
   &__card {
     &-media {
       height: 400px !important;

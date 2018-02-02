@@ -4,6 +4,7 @@
   <v-card-title class="entity-item-product__text title pt-0">{{model.name}}</v-card-title>
   <v-card-text class="entity-item-product__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
   <v-card-text
+    v-if="isPageCart"
     class="entity-item-product__text subheading entity-item-product__info pt-0"
   >
     Категория:
@@ -25,6 +26,15 @@
         отсутствует
       </template>
   </v-card-text>
+
+  <v-divider/>
+
+  <v-card-text class="subheading">
+    {{ model.descriptionShort }}
+  </v-card-text>
+
+  <v-divider/>
+
   <v-card-actions class="entity-item-product__actions pa-3">
     <v-layout wrap class="ma-0">
       <v-flex xs12 class="pa-0 mb-2">
@@ -76,11 +86,8 @@ export default {
   },
   computed: {
     model() { return this.data; },
-    addToCartBtnText() {
-      return this.$route.path === '/cart'
-        ? 'Добавить'
-        : 'В корзину';
-    },
+    isPageCart() { return this.$route.path === '/cart'; },
+    addToCartBtnText() { return this.isPageCart ? 'Добавить' : 'В корзину'; },
   },
 };
 </script>

@@ -77,33 +77,31 @@ export default {
 <style lang="scss" scoped>
 #avmax {
 .page_contact {
-.page {
   p {
     text-align: left;
   }
 
-  &__map {
-    height: 300px;
-    width: 100%;
-  }
+  .page {
 
-  &__content {
-    position: relative;
-    z-index: 1;
+    &__map {
+      height: 300px;
+      width: 100%;
+    }
+
+    &__content {
+      position: relative;
+      z-index: 1;
+    }
   }
-}
 
 
 @media all and (min-width: 768px) {
-.page {
-  font-size: 17px;
+  font-size: 18px;
 
   p {
     text-align: justify;
   }
 }
-}
-
 }
 }
 </style>

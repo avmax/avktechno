@@ -1,7 +1,7 @@
 <template>
 <div class="page page_about">
   <v-container class="page__inner pa-0">
-    <v-layout column class="page__content black--text">
+    <v-layout column class="page__content">
       <section>
         <div>
           <h2 class="mb-3">О компании</h2>
@@ -33,21 +33,72 @@
         <p>Установки для горизонтально-направленного бурения, а также запчасти и комплектующие дляних, установки для открытых работ, горно-шахтное оборудование и технику для микротоннелирования, комплекты геотермального оборудования, буровые растворы <strong>Baroid</strong> и многое другое входит в нашу компетенцию.</p>
         <p><strong>АВК ТЕХНО</strong> осуществляет продажу и покупку новой и бывшей в употреблении техники по наиболее выгодным для вас ценам, предоставляя своим клиентам лучшие условия. Наша компания осуществляет ремонт, сервисное и гарантийное обслуживание. Мы предлагаем нашим клиентам и партнерам самые выгодные условия сотрудничества, оптимальные цены и широкий ассортимент продукции. Вам понравится быть нашим партнером.</p>
       </section> -->
+
+      <section class="partners">
+        <h2 class="mb-3">Наши партнеры</h2>
+        <edition>
+          <template scope="{ add, edit, remove, isEditionAvailable }">
+            <v-container fluid class="pa-0" grid-list-xl>
+              <v-layout row wrap justify-start>
+                <v-flex v-if="isEditionAvailable" xs12 sm4 md3 lg2 xl1>
+                  <edition-ghost
+                    btn-text="Добавить бренд"
+                    @add="add('brand')"
+                    fluid
+                  />
+                </v-flex>
+                <v-flex
+                  xs12 sm4 md3 lg2 xl1
+                  v-for="b in brands"
+                  :key="b.id"
+                >
+                  <edition>
+                    <brand-item :data="b"/>
+                    <edition-controls
+                      slot="controls"
+                      is-edit
+                      is-remove
+                      @edit="edit('brand', b)"
+                      @remove="remove('brand', b.id)"
+                    />
+                  </edition>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </template>
+        </edition>
+      </section>
     </v-layout>
   </v-container>
 </div>
 </template>
 
 <script>
+import BrandItem from '~/domains/shop/Brand/item.vue';
+import Edition from '~/domains/edition/Edition/edition';
+import EditionControls from '~/domains/edition/Edition/controls';
+import EditionGhost from '~/domains/edition/Edition/ghost';
+
 export default {
-  layout: 'base',
+  layout: 'normal',
+  components: {
+    BrandItem,
+    Edition,
+    EditionControls,
+    EditionGhost,
+  },
+  computed: {
+    brands() {
+      const items = this.$store.getters.brands;
+      return items;
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #avmax {
 .page_about {
-.page {
   p {
     text-align: left;
   }
@@ -61,17 +112,14 @@ export default {
     position: relative;
     z-index: 1;
   }
-}
 
 
 @media all and (min-width: 768px) {
-.page {
-  font-size: 17px;
+  font-size: 18px;
 
   p {
     text-align: justify;
   }
-}
 }
 }
 }

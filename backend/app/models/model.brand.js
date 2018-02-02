@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgUrl: {
         type: DataTypes.STRING(1234) ,
-        defaultValue: 'http://lorempixel.com/400/200/sports/1/',
+        defaultValue: 'http://localhost:4251/placeholder.jpg',
       },
     },
   );

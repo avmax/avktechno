@@ -23,12 +23,25 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.BLOB,
+        get() {
+          let data = this.getDataValue('title') || '';
+          data = data.toString('utf-8');
+          return data;
+        },
       },
       description: {
         type: DataTypes.BLOB,
         get() {
           let data = this.getDataValue('description') || '';
+          data = data.toString('utf-8');
+          return data;
+        },
+      },
+      descriptionShort: {
+        type: DataTypes.BLOB,
+        get() {
+          let data = this.getDataValue('descriptionShort') || '';
           data = data.toString('utf-8');
           return data;
         },
@@ -57,8 +70,11 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue('footer', data);
         },
       },
+      amount: {
+        type: DataTypes.BIGINT,
+      },
       price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
       },
       currency: {
         type: DataTypes.STRING,
@@ -66,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgUrl: {
         type: DataTypes.STRING(1234) ,
-        defaultValue: 'http://lorempixel.com/400/200/sports/1/',
+        defaultValue: 'http://localhost:4251/placeholder.jpg',
       },
       features: {
         type: DataTypes.BLOB,
