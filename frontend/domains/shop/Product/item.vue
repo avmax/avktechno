@@ -1,17 +1,17 @@
 <template>
-<v-card class="entity-item-product">
-  <v-card-media class="entity-item-product__media mb-3" :src="model.imgUrl"/>
-  <v-card-title class="entity-item-product__text title pt-0">{{model.name}}</v-card-title>
-  <v-card-text class="entity-item-product__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
+<v-card class="product-item">
+  <v-card-media class="product-item__media mb-3" :height="200" :src="model.imgUrl"/>
+  <v-card-title class="product-item__text title pt-0">{{model.name}}</v-card-title>
+  <v-card-text class="product-item__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
   <v-divider class="mb-3"/>
   <v-card-text
-    class="entity-item-product__text subheading entity-item-product__info pt-0"
+    class="product-item__text subheading product-item__info pt-0"
   >
       Артикул: {{model.identificator}}
   </v-card-text>
   <v-card-text
     v-if="isPageCart"
-    class="entity-item-product__text subheading entity-item-product__info pt-0"
+    class="product-item__text subheading product-item__info pt-0"
   >
     Категория:
     <template v-if="category">
@@ -22,7 +22,7 @@
     </template>
   </v-card-text>
   <v-card-text
-    class="entity-item-product__text subheading entity-item-product__info pt-0"
+    class="product-item__text subheading product-item__info pt-0"
   >
       Производитель:
       <template v-if="brand">
@@ -39,7 +39,7 @@
 
   <v-divider/>
 
-  <v-card-actions class="entity-item-product__actions pa-3">
+  <v-card-actions class="product-item__actions pa-3">
     <v-layout wrap class="ma-0">
       <v-flex xs12 class="pa-0 mb-2">
         <v-btn
@@ -47,12 +47,12 @@
           nuxt
           block
           secondary
-          class="entity-item-product__action-item ml-0">
+          class="product-item__action-item ml-0">
           Узнать подробнее
         </v-btn>
       </v-flex>
       <v-flex xs12 class="pa-0" style="display: flex;">
-        <v-btn class="entity-item-product__action-item pa-0 ma-0 mr-2"
+        <v-btn class="product-item__action-item pa-0 ma-0 mr-2"
           style="flex-grow: 1;"
           success
           @click="addToCart"
@@ -62,7 +62,7 @@
             <span class="px-1" style="transform: translateY(-1px);"> | </span>{{count}} шт.
           </template>
         </v-btn>
-        <v-btn class="entity-item-product__action-item pa-0 ma-0"
+        <v-btn class="product-item__action-item pa-0 ma-0"
           :disabled="!count"
           error
           @click="removeFromCart"
@@ -79,7 +79,7 @@
 import Base from './base';
 
 export default {
-  name: 'entity-item-product',
+  name: 'product-item',
   mixins: [Base],
   props: {
     data: {
@@ -111,9 +111,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #avmax {
-.entity-item-product {
+.product-item {
   position: relative;
   width: 100%;
   max-width: calc(100vw - 50px);
@@ -122,15 +122,6 @@ export default {
   text-align: left;
   width: 100%;
   height: 100%;
-
-  &__media {
-    height: 200px !important;
-    background-color: white;
-
-    &__background {
-      background-size: 100% 100% !important;
-    }
-  }
 
   &__text {
     white-space: nowrap;

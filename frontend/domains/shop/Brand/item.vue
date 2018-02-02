@@ -15,12 +15,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.brand-item {
-  .card__media__background {
-    background-size: auto 100% !important;
-  }
-}
-</style>
-

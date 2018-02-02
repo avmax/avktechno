@@ -1,35 +1,9 @@
 #avmax {
-.cardaaaa {
-  text-align: left;
-  width: 100%;
-  height: 100%;
-
+.card {
   &__media {
-    height: 200px !important;
-    background-color: white;
-
     &__background {
-      background-size: 100% 100% !important;
+      background-size: auto 100% !important;
     }
-  }
-
-  &__text {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: inline-block;
-    padding-top: 0 !important;
-    padding-bottom: 8px !important;
-  }
-
-  &__controls {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
   }
 }
 }
