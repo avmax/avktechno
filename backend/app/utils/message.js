@@ -1,9 +1,9 @@
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 const FROM = 'avmax.web@gmail.com';
 const TO = 'e.kanaeva@avktechno.com';
 
-var transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'avmax.web@gmail.com',
@@ -11,24 +11,23 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-var mailOptions = {
+const mailOptions = {
   from: FROM,
-  to: TO,
   subject: 'АВК-ТЕХНО: запрос на покупку товаров.',
-  text: 'That was easy!'
 };
 
+const opts = (message, target) => ({
+    ...mailOptions, text: message || 'That was easy!',
+    to: target || TO,
+  });
+
 const messenger = {
-  async send(message) {
-    return new Promise((resolve, reject) => {
-      transporter.sendMail({ ...mailOptions, text: message }, function(error, info) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(info);
-        }
-      });
-    });
+  async send(message, target) {
+    if (!Array.isArray(target)) {
+      await transporter.sendMail(opts(message, target));
+    } else {
+      await Promise.all(target.map(t => transporter.sendMail(opts(message, t))));
+    }
   }
 };
 

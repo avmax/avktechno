@@ -27,7 +27,6 @@
         />
         <v-text-field
           label="Ваш телефон"
-          mask="+7 (###) ###-##-##"
           v-model="form.value.phone"
           :rules="form.rules.phone"
           validate-on-blur
@@ -42,6 +41,7 @@
         />
         <v-btn
           class="ml-0 mt-3"
+          :loading="form.isPending"
           :disabled="!form.isValid"
           @click="submit"
           primary
@@ -93,6 +93,7 @@ export default {
     return {
       form: {
         isValid: true,
+        isPending: false,
         value: {
           name: null,
           phone: null,
@@ -131,6 +132,7 @@ export default {
       const { commit } = this.$store;
 
       if (form.validate()) {
+        this.form.isPending = true;
         const data = { ...this.form.value, items: this.products };
         try {
           await ApiCart.askForCall(data);
@@ -138,6 +140,7 @@ export default {
             message: 'Спасибо! Вот-вот свяжемся с Вами!',
             type: NOTIFICATION_TYPES.success,
           });
+          this.form.isPending = false;
           setTimeout(() => commit(NOTIFICATION_LAST_CLOSE), 3000);
           form.reset();
         } catch (err) {
@@ -145,6 +148,7 @@ export default {
             message: 'Просим прощения, у нас произошла ошибка!',
             type: NOTIFICATION_TYPES.error,
           });
+          this.form.isPending = false;
           setTimeout(() => commit(NOTIFICATION_LAST_CLOSE), 3000);
         }
       }

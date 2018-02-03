@@ -1,5 +1,10 @@
 const messenger = require('../utils/message');
 
+const TO = [
+  'e.kanaeva@avktechno.com',
+  '2347366@mail.ru',
+];
+
 exports.post = async (req, res, next) => {
   const { body } = req;
   const { name, phone, mail, items } = body;
@@ -9,7 +14,7 @@ exports.post = async (req, res, next) => {
 
   try
   {
-    messenger.send(message);
+    await messenger.send(message, TO);
     res.status(200).send(true);
   }
   catch (err)

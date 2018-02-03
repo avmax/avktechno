@@ -21,11 +21,11 @@
         clearable
       />
 
-      <h3>Поиск по VIN номеру</h3>
+      <h3>Поиск по артикулу</h3>
       <v-text-field
         v-model="identificator"
         @input="filterByString($event, 'identificator')"
-        label="Введите VIN продукта"
+        label="Введите артиукул продукта"
         clearable
       />
 
