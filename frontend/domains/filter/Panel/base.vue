@@ -114,7 +114,7 @@
       </v-btn>
       <v-btn @click.native="reset()"
       block
-      color="red lighten-1">
+      color="red lighten-1 white--text">
         Сбросить
       </v-btn>
     </div>
