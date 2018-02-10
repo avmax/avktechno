@@ -7,7 +7,7 @@
     mobile-break-point="960"
     stateless
     touchless
-    width="300"
+    width="400"
     app
     clipped
     fixed
@@ -29,7 +29,7 @@
 
 
 <script>
-import ShopMenu from '~/domains/shop/menu/base';
+import ShopMenu from '~/domains/shop/Menu/base';
 import Search from '~/domains/filter/Search';
 
 export default {
@@ -38,7 +38,10 @@ export default {
     Search,
   },
   computed: {
-    isOpened() { return this.$vuetify.breakpoint.mdAndUp; },
+    isOpened() {
+      const { $vuetify, $store } = this;
+      return $vuetify.breakpoint.mdAndUp && !$store.state.edition.isActive;
+    },
   },
 };
 </script>

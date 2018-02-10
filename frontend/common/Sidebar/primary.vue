@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import ShopMenu from '~/domains/shop/menu/base';
+import ShopMenu from '~/domains/shop/Menu/base';
 import Search from '~/domains/filter/Search';
 
 export default {

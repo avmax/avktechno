@@ -12,7 +12,7 @@
             :name="category.name"
           >
 
-          <v-container v-if="isEditionAvailable && !category.refs.product.length && category.depth === 1" class="my-5 pa-0" fluid grid-list-xl>
+          <v-container v-if="isEditionAvailable && !category.refs.product.length && +category.depth === 1" class="my-5 pa-0" fluid grid-list-xl>
             <v-layout row wrap>
               <v-flex xs12>
                 <edition-ghost
