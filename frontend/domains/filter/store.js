@@ -1,108 +1,63 @@
-import {
-  ENTITY_TYPES,
-} from '~/barrel/types';
+const FILTER_BY_STRING_FILTER = queryKey => `filter: сортировать по ключу <${queryKey}>`;
+const FILTER_SUITABLE_SET = queryKey => `filter: засетить доступные по ключу <${queryKey}>`;
 
-const FILTER_VISIBILITY_TOGGLE = 'фильтр: toggle отображение';
-const FILTER_VISIBILITY_SET = 'фильтр: задать отображение';
-const FILTER_DROP = 'фильтр: сбросить полностью';
-const FILTER_HIDDEN_SET = entityType => `фильтр: спрятать итемы типа <${entityType}>`;
-const FILTER_CHOSEN_SET = entityType => `фильтр: показать итемы типа <${entityType}>`;
-const FILTER_CHOSEN_REMOVE = entityType => `фильтр: убрать итем типа <${entityType}>`;
-const FILTER_CHOSEN_ADD = entityType => `фильтр: добавить итем типа <${entityType}>`;
+const state = ({ queryKeys }) => {
+  const s = { };
 
-
-const state = (entityTypes) => {
-  const s = {
-    isOpened: false,
-    chosen: { },
-    hidden: { },
-  };
-
-  Object.values(entityTypes).forEach((type) => {
-    s.chosen[type] = [];
-    s.hidden[type] = [];
-  });
+  queryKeys.forEach(key => s[key] = []);
 
   return s;
 };
 
-const mutations = (entityTypes) => {
-  const chosenSet = function(type) {
+const mutations = ({ queryKeys }) => {
+  const suitableSet = function(queryKey) {
     return (state, payload) => {
-      state.chosen[type] = payload;
+      state[queryKey] = payload;
     };
   };
 
-  const hiddenSet = function(type) {
-    return (state, payload) => {
-      state.hidden[type] = payload;
-    };
-  };
+  const m = { };
 
-  const chosenAdd = function(type) {
-    return (state, payload) => {
-      const item = payload;
-      state.chosen[type].push(item);
-    };
-  };
-
-  const chosenRemove = function(type) {
-    return (state, payload) => {
-      const item = payload;
-      const index = state.chosen[type].indexOf(item);
-      if (index !== -1) {
-        state.chosen[type].slice(index, 1);
-      }
-    };
-  };
-
-  const m = {
-    [FILTER_VISIBILITY_TOGGLE](state) {
-      state.isOpened = !state.isOpened;
-    },
-    [FILTER_VISIBILITY_SET](state, payload) {
-      state.isOpened = payload;
-    },
-    [FILTER_DROP](state) {
-      state.type = null;
-      state.subtype = null;
-
-      Object.values(entityTypes).forEach((type) => {
-        state.chosen[type] = [];
-      });
-    },
-  };
-
-  Object.values(entityTypes).forEach((type) => {
-    m[FILTER_HIDDEN_SET(type)] = hiddenSet(type);
-    m[FILTER_CHOSEN_SET(type)] = chosenSet(type);
-    m[FILTER_CHOSEN_REMOVE(type)] = chosenRemove(type);
-    m[FILTER_CHOSEN_ADD(type)] = chosenAdd(type);
-  });
+  queryKeys.forEach(key => m[FILTER_SUITABLE_SET(key)] = suitableSet(key));
 
   return m;
 };
 
-const actions = () => {
+const actions = ({ queryKeys }) => {
+  const byKey = function(queryKey) {
+    return (context, payload) => {
+      const { commit, getters } = context;
+      const target = payload;
+      const products = getters.products;
+
+      const suitable = products.filter(p => p[queryKey].indexOf(target) !== -1);
+      commit(FILTER_SUITABLE_SET(queryKey), suitable);
+    };
+  };
+
   const a = { };
+
+  queryKeys.forEach(key => a[FILTER_BY_STRING_FILTER(key)] = byKey(key));
+
   return a;
 };
 
-const module = {
-  state: state(ENTITY_TYPES),
-  mutations: mutations(ENTITY_TYPES),
-  actions: actions(),
+
+const moduleFactory = ({ queryKeys }) => ({
+  state: state({ queryKeys }),
+  mutations: mutations({ queryKeys }),
+  actions: actions({ queryKeys }),
+});
+
+const config = {
+  queryKeys: ['name', 'identificator'],
 };
 
+const module = moduleFactory(config);
 
 export {
   module,
 
-  FILTER_VISIBILITY_SET,
-  FILTER_VISIBILITY_TOGGLE,
-  FILTER_DROP,
-  FILTER_CHOSEN_SET,
-  FILTER_HIDDEN_SET,
-  FILTER_CHOSEN_REMOVE,
-  FILTER_CHOSEN_ADD,
+  FILTER_BY_STRING_FILTER,
+  FILTER_SUITABLE_SET,
 };

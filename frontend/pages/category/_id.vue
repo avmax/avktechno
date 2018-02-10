@@ -1,71 +1,45 @@
 <template>
-  <v-layout class="page page_products" column>
-    <div class="page__header">
-      <h1 class="text-xs-left text-md-center">Все продукты</h1>
-    </div>
+  <div class="page page_category-view">
+    <!-- <div class="page__header">
+      <h1 class="text-xs-left text-md-center">{{ category.name }}</h1>
+    </div> -->
 
     <v-layout class="page__content" column>
-      <v-layout
-        v-if="!categories || !categories.length"
-        justify-center align-center fill-height
-      >
-        <div class="title text-xs-center my-4" style="font-weight: normal;">
-          <h4 class="headline mb-4">Добро пожаловать в интернет магазин компании <strong>АВК ТЕХНО!</strong></h4>
-          <p>Мы очень надеемся, что на нашем сайте Вы найдете интересующий Вас товар.</p>
-          <p>Для этой цели на нашем сайте предоставлена гибкая система фильтрации товаров.</p>
-          <p>Пожалуйста, настройте <strong>фильтр</strong> в панели слева, и мы уверены, Вы найдете то, что ищете.</p>
-        </div>
-      </v-layout>
       <edition>
         <template scope="{ add, edit, remove, isEditionAvailable }">
-          <v-container v-if="isEditionAvailable" class="my-5 pa-0" fluid grid-list-xl>
+          <product-collection
+            :title="category.title"
+            :name="category.name"
+          >
+
+          <v-container v-if="isEditionAvailable && !category.refs.product.length && category.depth === 1" class="my-5 pa-0" fluid grid-list-xl>
             <v-layout row wrap>
-              <v-flex xs12 sm6>
+              <v-flex xs12>
                 <edition-ghost
-                  btn-text="Добавить категорию"
-                  @add="add('category', { depth: 1 })"
-                  fluid
-                />
-              </v-flex>
-              <v-flex>
-                <edition-ghost
-                  btn-text="Добавить производителя"
-                  @add="add('brand')"
+                  btn-text="Добавить подкатегорию"
+                  @add="add('category', { depth: 2, refs: { category: [category.id] }})"
                   fluid
                 />
               </v-flex>
             </v-layout>
           </v-container>
 
-          <product-collection
-            v-for="c in categories"
-            v-if="+c.depth === 1"
-            :title="c.title"
-            :name="c.name"
-            :key="c.id"
-          >
             <edition-controls
               slot="header"
               is-edit
               is-remove
-              @edit="edit('category', c)"
-              @remove="remove('category', c.id)"
+              @edit="edit('category', category)"
+              @remove="remove('category', category.id)"
               style="margin-bottom: -10px;"
             />
-            <v-flex xs12 v-if="isEditionAvailable && !c.refs.product.length">
-              <edition-ghost
-                btn-text="Добавить подкатегорию"
-                @add="add('category', { refs: { 'category': [c.id] }, depth: 2 })"
-              />
-            </v-flex>
-            <v-flex xs12 sm6 lg4 v-if="isEditionAvailable && !c.refs.category.length">
+            <v-flex xs12 sm6 lg4 v-if="isEditionAvailable && !(category.depth === 1 && category.refs.category.length !== 0)">
               <edition-ghost
                 btn-text="Добавить продукт"
-                @add="add('product', { refs: { category: [c.id] }})"
+                @add="add('product', { refs: { category: [category.id] }})"
               />
             </v-flex>
             <v-flex
-              v-for="p in c.refs.product"
+              v-for="p in category.refs.product"
               v-if="getProduct(p)"
               xs12 sm6 lg4
               :key="p.id"
@@ -83,11 +57,11 @@
                 />
               </edition>
             </v-flex>
-            <v-flex xs12 v-if="getCategories(c.refs.category).length">
+            <v-flex xs12 v-if="getCategories(category.refs.category).length">
               <product-collection
                 class="pl-5"
-                v-for="sc in getCategories(c.refs.category)"
-                v-if="sc"
+                v-for="sc in getCategories(category.refs.category)"
+                v-if="sc && sc.depth === 2"
                 :title="sc.title"
                 :name="sc.name"
                 :key="sc.id"
@@ -133,9 +107,8 @@
         </template>
       </edition>
     </v-layout>
-  </v-layout>
+  </div>
 </template>
-
 
 <script>
 import Edition from '~/domains/edition/Edition/edition';
@@ -145,7 +118,6 @@ import ProductCollection from '~/domains/shop/Product/collection.vue';
 import ProductItem from '~/domains/shop/Product/item.vue';
 
 export default {
-  name: 'page-products',
   layout: 'hard',
   components: {
     Edition,
@@ -155,11 +127,8 @@ export default {
     ProductItem,
   },
   computed: {
-    categories() {
-      const { getters } = this.$store;
-      const items = getters.categories;
-      return items;
-    },
+    id() { return +this.$route.params.id; },
+    category() { return this.$store.getters.category(this.id); },
   },
   methods: {
     getCategories(ids) {
@@ -179,7 +148,7 @@ export default {
 
 <style lang="scss">
 #avmax {
-.page_products {
+.page_category-view {
 .page {
   &__content {
     max-width: 1200px;

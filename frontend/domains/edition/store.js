@@ -2,9 +2,6 @@ import {
   ENTITY_ADD,
   ENTITY_EDIT,
   ENTITY_REMOVE,
-
-  FILTER_CHOSEN_ADD,
-  FILTER_CHOSEN_REMOVE,
 } from '~/barrel/state';
 import {
   EDITION_TYPES,
@@ -86,7 +83,6 @@ const actions = (entitiyTypes) => {
       try {
         await apiShop[type].delete(id);
         commit(ENTITY_REMOVE(type), id);
-        commit(FILTER_CHOSEN_REMOVE(type), id);
       } catch (err) {
         console.log(err);
         return Promise.reject(err);
@@ -113,7 +109,6 @@ const actions = (entitiyTypes) => {
 
         commit(EDITION_STOP);
         commit(ENTITY_ADD(type), data);
-        commit(FILTER_CHOSEN_ADD(type), data.id);
 
         Object.keys(refs).forEach((k) => {
           refs[k].forEach((v) => {

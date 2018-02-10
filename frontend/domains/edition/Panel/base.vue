@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    slot="panels"
     :value="isEditionPanelOpened"
     disable-resize-watcher
     disable-route-watcher

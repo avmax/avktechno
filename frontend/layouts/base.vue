@@ -34,7 +34,7 @@
 <script>
 import TheHeader from '~/common/Header/the.vue';
 import TheFooter from '~/common/Footer/the.vue';
-import TheSidebar from '~/common/Sidebar/the.vue';
+import TheSidebar from '~/common/Sidebar/primary.vue';
 import TheNotifications from '~/common/Notification/container.vue';
 import {
   ENTITY_ALL_LOAD,

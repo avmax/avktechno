@@ -59,7 +59,7 @@ import { apiUser } from '~/barrel/api';
 
 export default {
   name: 'page-auth',
-  layout: 'easy',
+  layout: 'base',
   data() {
     return {
       valid: false,

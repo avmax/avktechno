@@ -1,16 +1,16 @@
 <template>
 <v-toolbar app fixed clipped-left color="primary" dark>
-  <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-sm-and-up"/>
-  <v-toolbar-title class="hidden-sm-and-down mr-2">АВК ТЕХНО</v-toolbar-title>
-  <router-link class="link mr-3 white--text ml-3 hidden-sm-and-down" to="/">Товары</router-link>
-  <router-link class="link mr-3 white--text hidden-sm-and-down" to="/contact">Контакты</router-link>
-  <router-link class="link mr-3 white--text hidden-sm-and-down" to="/about">О нас</router-link>
+  <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-md-and-up"/>
+  <v-toolbar-title class="hidden-xs-only mr-2">АВК ТЕХНО</v-toolbar-title>
+  <router-link class="link mr-3 white--text ml-3 hidden-xs-only" to="/">Товары</router-link>
+  <router-link class="link mr-3 white--text hidden-xs-only" to="/contact">Контакты</router-link>
+  <router-link class="link mr-3 white--text hidden-xs-only" to="/about">О нас</router-link>
 
   <v-spacer class="hidden-sm-and-down"/>
 
   <slot/>
 
-  <v-spacer class="hidden-sm-and-up"/>
+  <v-spacer class="hidden-xs-and-up"/>
 
   <v-btn
     to="/cart"
@@ -18,8 +18,8 @@
     flat
     class="ml-0 mr-2"
   >
-    <span class="hidden-sm-and-down white--text">Корзина</span>
-    <v-icon class="hidden-md-and-up" large color="grey lighten-1">shopping_cart</v-icon>
+    <span class="hidden-xs-only white--text">Корзина</span>
+    <v-icon class="hidden-sm-and-up" large color="grey lighten-1">shopping_cart</v-icon>
     <span :class="{ 'pr-1': $vuetify.breakpoint.smAndDown, 'px-2' : $vuetify.breakpoint.smAndUp }">|</span><span>{{totalPrice.RUB}} RUB</span>
   </v-btn>
 </v-toolbar>
