@@ -13,6 +13,8 @@
     hide-overlay
   >
 
+    <search class="pt-2"/>
+
     <v-list class="py-0">
       <v-list-group :value="isCatalogueOpened">
         <v-list-tile
@@ -66,10 +68,12 @@
 
 <script>
 import ShopMenu from '~/domains/shop/menu/base';
+import Search from '~/domains/filter/Search';
 
 export default {
   components: {
     ShopMenu,
+    Search,
   },
   data() {
     return {

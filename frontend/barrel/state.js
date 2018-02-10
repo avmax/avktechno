@@ -14,8 +14,7 @@ import {
 } from '~/domains/edition/store';
 
 import {
-  FILTER_BY_STRING_FILTER,
-  FILTER_SUITABLE_SET,
+  FILTER_MULTIPLE_SET,
 } from '~/domains/filter/store';
 
 import {
@@ -52,8 +51,7 @@ export {
   EDITION_SAVE,
   EDITION_STOP,
 
-  FILTER_BY_STRING_FILTER,
-  FILTER_SUITABLE_SET,
+  FILTER_MULTIPLE_SET,
 
   USER_SIGN_IN,
   USER_SIGN_OUT,

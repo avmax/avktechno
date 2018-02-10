@@ -6,11 +6,7 @@
   <router-link class="link mr-3 white--text hidden-xs-only" to="/contact">Контакты</router-link>
   <router-link class="link mr-3 white--text hidden-xs-only" to="/about">О нас</router-link>
 
-  <v-spacer class="hidden-sm-and-down"/>
-
-  <slot/>
-
-  <v-spacer class="hidden-xs-and-up"/>
+  <v-spacer/>
 
   <v-btn
     to="/cart"

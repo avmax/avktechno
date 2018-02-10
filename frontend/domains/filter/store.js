@@ -1,63 +1,53 @@
-const FILTER_BY_STRING_FILTER = queryKey => `filter: сортировать по ключу <${queryKey}>`;
-const FILTER_SUITABLE_SET = queryKey => `filter: засетить доступные по ключу <${queryKey}>`;
+import { intersection } from 'lodash/fp';
 
-const state = ({ queryKeys }) => {
+const FILTER_MULTIPLE_SET = (entityType, filterType) => `filter: засетить <${entityType}> по признаку <${filterType}>`;
+
+const types = ['category', 'brand', 'product'];
+const queryKeys = ['name', 'identificator'];
+
+const state = () => {
   const s = { };
 
-  queryKeys.forEach(key => s[key] = []);
+  types.forEach(key => s[key] = {});
+  queryKeys.forEach(key => s.product[key] = []);
 
   return s;
 };
 
-const mutations = ({ queryKeys }) => {
-  const suitableSet = function(queryKey) {
+const mutations = () => {
+  const setMultiple = function(entityType, filterType) {
     return (state, payload) => {
-      state[queryKey] = payload;
+      state[entityType][filterType] = payload;
     };
   };
 
   const m = { };
 
-  queryKeys.forEach(key => m[FILTER_SUITABLE_SET(key)] = suitableSet(key));
+  queryKeys.forEach((key) => {
+    m[FILTER_MULTIPLE_SET('product', key)] = setMultiple('product', key);
+  });
 
   return m;
 };
 
-const actions = ({ queryKeys }) => {
-  const byKey = function(queryKey) {
-    return (context, payload) => {
-      const { commit, getters } = context;
-      const target = payload;
-      const products = getters.products;
+const getters = () => {
+  const g = {};
 
-      const suitable = products.filter(p => p[queryKey].indexOf(target) !== -1);
-      commit(FILTER_SUITABLE_SET(queryKey), suitable);
-    };
-  };
+  types.forEach(type => g[`${type}-filtered`] = state => intersection(Object.values(state[type])));
 
-  const a = { };
-
-  queryKeys.forEach(key => a[FILTER_BY_STRING_FILTER(key)] = byKey(key));
-
-  return a;
+  return g;
 };
 
-
-const moduleFactory = ({ queryKeys }) => ({
-  state: state({ queryKeys }),
-  mutations: mutations({ queryKeys }),
-  actions: actions({ queryKeys }),
+const moduleFactory = () => ({
+  state: state(),
+  getters: getters(),
+  mutations: mutations(),
 });
 
-const config = {
-  queryKeys: ['name', 'identificator'],
-};
-
-const module = moduleFactory(config);
+const module = moduleFactory();
 
 export {
   module,
 
-  FILTER_BY_STRING_FILTER,
-  FILTER_SUITABLE_SET,
+  FILTER_MULTIPLE_SET,
 };

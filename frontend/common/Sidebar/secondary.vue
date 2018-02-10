@@ -14,6 +14,9 @@
     left
     hide-overlay
   >
+
+    <search class="py-3"/>
+
     <v-toolbar class="title pl-3" flat>
       Категории
     </v-toolbar>
@@ -27,10 +30,12 @@
 
 <script>
 import ShopMenu from '~/domains/shop/menu/base';
+import Search from '~/domains/filter/Search';
 
 export default {
   components: {
     ShopMenu,
+    Search,
   },
   computed: {
     isOpened() { return this.$vuetify.breakpoint.mdAndUp; },
