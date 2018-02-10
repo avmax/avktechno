@@ -1,46 +1,32 @@
 <template>
   <v-list class="py-0 shop-menu">
-    <template
+    <v-list-group
       v-for="item in menu"
       v-if="+item.depth === 1"
+      :value="item.isActive"
+      :key="item.id"
     >
       <v-list-tile
-        v-if="item.refs.product.length !== 0"
+        slot="item"
         :to="{ name: 'category-id', params: { id: item.id } }"
-        :key="item.id"
       >
         <v-list-tile-content>
           <v-list-tile-title>{{ item.name }}</v-list-tile-title>
         </v-list-tile-content>
+        <v-list-tile-action v-if="item.refs.category.length">
+          <v-icon>keyboard_arrow_down</v-icon>
+        </v-list-tile-action>
       </v-list-tile>
-
-      <v-list-group
-        v-if="item.refs.product.length === 0"
-        :value="item.isActive"
-        :key="item.id"
+      <v-list-tile
+        v-for="id in item.refs.category"
+        :to="{ name: 'category-id', params: { id: id } }"
+        :key="id"
       >
-        <v-list-tile
-          slot="item"
-          :to="{ name: 'category-id', params: { id: item.id } }"
-        >
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-          </v-list-tile-content>
-          <v-list-tile-action>
-            <v-icon>keyboard_arrow_down</v-icon>
-          </v-list-tile-action>
-        </v-list-tile>
-        <v-list-tile
-          v-for="id in item.refs.category"
-          :to="{ name: 'category-id', params: { id: id } }"
-          :key="id"
-        >
-          <v-list-tile-content>
-            <v-list-tile-title>{{ getCategory(id).name }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list-group>
-    </template>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ getCategory(id).name }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list-group>
   </v-list>
 </template>
 
