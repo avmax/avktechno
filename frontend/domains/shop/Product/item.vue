@@ -18,7 +18,7 @@
       {{category.name}}
     </template>
     <template v-else>
-      отсутствует
+      не указана
     </template>
   </v-card-text>
   <v-card-text
@@ -29,7 +29,7 @@
         {{brand.name}}
       </template>
       <template v-else>
-        отсутствует
+        не указан
       </template>
   </v-card-text>
 

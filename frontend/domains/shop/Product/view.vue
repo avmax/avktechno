@@ -9,20 +9,23 @@
         {{model.name}}
       </v-card-title>
 
-      <v-divider class="mb-4"/>
+      <v-divider/>
       <v-card-title v-if="model.title" class="title">
         {{model.title}}
       </v-card-title>
-      <v-card-text class="product-view__card-actions headline">
-        <v-chip
-        class="product-view__card-price title ma-0 mb-3"
+      <v-card-text class="product-view__card-actions headline pt-0">
+        <div
+        class="product-view__card-price title mx-0 mb-3 d-block primary--text"
         label
         outline
         disabled
         color="primary"
         v-if="model.price">
-          Цена: {{model.price}} {{model.currency}}
-        </v-chip>
+          Цена:
+          <br class="hidden-sm-and-up"> {{model.prices.RUB}} RUB <span class="hidden-xs-only">|</span>
+          <br class="hidden-sm-and-up"> {{model.prices.USD}} USD <span class="hidden-xs-only">|</span>
+          <br class="hidden-sm-and-up"> {{model.prices.EUR}} EUR
+        </div>
         <v-btn
         class="d-inline-block product-view__card-action ma-0"
         color="success"
@@ -55,10 +58,9 @@
         <span>Категория:</span> <span style="font-weight: normal;"> {{category.name}}</span>
       </v-card-text>
       <v-card-text
-        v-if="brand.name"
         class="product-view__card-info-item title"
       >
-        <span>Производитель:</span> <span style="font-weight: normal;"> {{brand.name}}</span>
+        <span>Производитель:</span> <span style="font-weight: normal;"> {{brand && brand.name || 'не указан'}}</span>
       </v-card-text>
       <v-divider class="my-4"/>
 
@@ -230,7 +232,7 @@ export default {
     }
 
     &-price {
-      margin-bottom: 0px !important;
+      margin-bottom: 15px !important;
       margin-right: 16px !important;
     }
 
