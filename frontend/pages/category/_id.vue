@@ -59,7 +59,6 @@
             </v-flex>
             <v-flex xs12 v-if="getCategories(category.refs.category).length">
               <product-collection
-                class="pl-5"
                 v-for="sc in getCategories(category.refs.category)"
                 v-if="sc && sc.depth === 2"
                 :title="sc.title"

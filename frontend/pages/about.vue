@@ -1,15 +1,16 @@
 <template>
 <div class="page page_about">
-  <v-container class="page__inner pa-0">
+  <v-container class="page__inner px-0 py-4">
+    <v-layout class="page__header" justify-space-between>
+      <h2 class="mb-3">О компании</h2>
+      <v-avatar size="96px" class="page__logo hidden-sm-and-down ml-1"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar>
+    </v-layout>
     <v-layout column class="page__content">
       <section>
-        <div>
-          <h2 class="mb-3">О компании</h2>
-          <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong>BAROID (HALLIBURTON)</strong> <v-avatar class="ml-1"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar> в РФ с 2010 года.</p>
-          <v-parallax class="my-5 hidden-sm-and-down" src="/intro.png" height="250"/>
-          <p>За это время она прошла путь до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: <strong>бентонит</strong> и <strong>полимеры</strong> <strong> BAROID</strong>, <strong>установки ГНБ</strong> и комплектующих к ним, <strong>горно-шахтное оборудование</strong> и установки для <strong>микротоннелирования</strong>, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих заводов производителей!</p>
-          <p>Обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p>
-        </div>
+        <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong>BAROID (HALLIBURTON)</strong> <v-avatar class="ml-1 hidden-md-and-up"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar> в РФ с 2010 года.</p>
+        <v-parallax class="my-5 hidden-sm-and-down" src="/intro.png" height="250"/>
+        <p>За это время она прошла путь до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: <strong>бентонит</strong> и <strong>полимеры</strong> <strong> BAROID</strong>, <strong>установки ГНБ</strong> и комплектующих к ним, <strong>горно-шахтное оборудование</strong> и установки для <strong>микротоннелирования</strong>, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих заводов производителей!</p>
+        <p>Обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p>
       </section>
 
       <v-divider class="my-4"/>
@@ -102,14 +103,16 @@ export default {
     text-align: left;
   }
 
-  &__map {
-    height: 300px;
-    width: 100%;
-  }
+  .page {
+    &__header {
+      position: relative;
+    }
 
-  &__content {
-    position: relative;
-    z-index: 1;
+    &__logo {
+      position: absolute;
+      right: -20px;
+      top: -20px;
+    }
   }
 
 
