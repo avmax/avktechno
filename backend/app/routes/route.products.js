@@ -70,7 +70,7 @@ exports.post = async (req, res, next) => {
         message = err.message;
         break;
       case db.s.UniqueConstraintError:
-        message = 'сервер: Имя и VIN продукта должны быть уникальными!';
+        message = 'сервер: Артикул продукта должен быть уникальным!';
         break;
       default:
         message = 'сервер: Казус при добавлении продукта :(';
