@@ -110,7 +110,13 @@ const actions = (entitiyTypes) => {
         commit(EDITION_STOP);
         commit(ENTITY_ADD(type), data);
 
+        if (!refs) { return; }
+
         Object.keys(refs).forEach((k) => {
+          if (type === 'product' && k === 'brand') {
+            return;
+          }
+
           refs[k].forEach((v) => {
             const ref = cloneDeep(rootState.shop[k][v]);
             ref.refs[type].push(data.id);
@@ -137,7 +143,13 @@ const actions = (entitiyTypes) => {
 
         commit(ENTITY_EDIT(type), data);
 
+        if (!refsNew || !refsOld) { return; }
+
         Object.keys(refsNew).forEach((k) => {
+          if (type === 'product' && k === 'brand') {
+            return;
+          }
+
           const n = refsNew[k];
           const o = refsOld[k];
           const toBeInserted = difference(n, o);

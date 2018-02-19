@@ -7,8 +7,9 @@
   "scripts": {
     "start": "npm run prod:start",
     "dev": "cross-env NODE_ENV='development' nuxt",
-    "prod:build": "cross-env NODE_ENV='production' BASE_URL='http://90.156.142.46' nuxt build",
-    "prod:start": "cross-env NODE_ENV='production' BASE_URL='http://90.156.142.46' nuxt start",
+    "prod:build": "cross-env NODE_ENV='production' nuxt build",
+    "prod:start": "cross-env NODE_ENV='production' nuxt start",
+    "prod:generate": "cross-env NODE_ENV='production' nuxt generate",
     "prod": "run prod:build && npm run prod:start",
     "production": "npm run prod:build && pm2 start npm --name avktechno-frontend -- start",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",

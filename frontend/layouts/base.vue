@@ -65,13 +65,16 @@ export default {
       isSpinner: ({ ui }) => ui.spinner,
     }),
   },
-  async beforeMount() {
-    const stop = timer();
-    console.log('start load all');
-    await this.$store.dispatch(ENTITY_ALL_LOAD());
-    console.log('end load all', stop());
-    this.$store.commit(SPINNER_HIDE);
-    // setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+  async mounted() {
+    if (!process.env.isProd) {
+      const stop = timer();
+      console.log('start load all');
+      await this.$store.dispatch(ENTITY_ALL_LOAD());
+      console.log('end load all', stop());
+      this.$store.commit(SPINNER_HIDE);
+    } else {
+      setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+    }
   },
 };
 </script>
