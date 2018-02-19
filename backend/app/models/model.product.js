@@ -166,6 +166,13 @@ module.exports = (sequelize, DataTypes) => {
 
     plain.prices = prices;
 
+    const refs = {
+      brand: plain.brandId && [plain.brandId] || [],
+      category: plain.categoryId && [plain.categoryId] || [],
+    };
+
+    plain.refs = refs;
+
     delete plain.brandId;
     delete plain.categoryId;
     delete plain.createdAt;
@@ -182,17 +189,6 @@ module.exports = (sequelize, DataTypes) => {
     if (brand) {
       await this.setBrand(brand);
     }
-  };
-
-  Product.prototype.getRefs = async function() {
-    const category = await this.getCategory();
-    const brand = await this.getBrand();
-
-    const refs = {
-      brand: brand && [brand.get('id')] || [],
-      category: category && [category.get('id')] || [],
-    };
-    return refs;
   };
 
   return Product;

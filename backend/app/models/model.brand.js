@@ -30,16 +30,5 @@ module.exports = (sequelize, DataTypes) => {
     return plain;
   };
 
-  Brand.prototype.getRefs = async function() {
-      const products = await this.getProducts();
-      const categories = await Promise.all(products.map(p => p.getCategory()));
-      const refs = {
-        product: products.map(p => p.get({ plain: true }).id),
-        category: uniq(categories.filter(c => !!c).map(c => c.get({ plain: true }).id)),
-      };
-
-      return refs;
-  };
-
   return Brand;
 };

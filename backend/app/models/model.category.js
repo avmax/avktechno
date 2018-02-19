@@ -42,13 +42,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Category.prototype.getRefs = async function() {
     const products = await this.getProducts();
-    const brands = await Promise.all(products.map(p => p.getBrand()));
     const categories = await this.getCategories();
     const parent = this.get('categoryId');
 
     const refs = {
       product: products.map(p => p.get({ plain: true }).id),
-      brand: uniq(brands.filter(b => !!b).map(b => b.get({ plain: true }).id)),
       category: parent
         ? [parent]
         : categories.map(c => c.get({ plain: true }).id),

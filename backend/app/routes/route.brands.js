@@ -2,6 +2,7 @@ const db = require('../db');
 const BrandError = require('../errors').BrandError;
 const { uniq, flatten } = require('lodash/fp');
 const { imgURL } = require('../utils/img');
+const timer = require('../../../utils/timer')();
 
 const modelFromReq = (req) => {
   const { body, file } = req;
@@ -21,13 +22,14 @@ exports.get = async (req, res, next) => {
     let model;
     let data;
 
+    const stop = timer();
     model = await db.m.b.findAll();
     data = await Promise.all(model.map(async (modelItem) => {
       const dataItem = modelItem.retrieve();
-      dataItem.refs = await modelItem.getRefs();
       return dataItem;
     }));
 
+    console.log('end brands', stop());
     res.status(200).send(data);
   }
   catch(err)
@@ -47,7 +49,6 @@ exports.post = async (req, res, next) => {
     data = modelFromReq(req);
     model = await db.m.b.create(data);
     data = model.retrieve();
-    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }
@@ -78,7 +79,6 @@ exports.put = async (req, res, next) => {
     await model.update(data);
     await model.update(data);
     data = model.retrieve();
-    data.refs = await model.getRefs();
 
     res.status(200).send(data);
   }

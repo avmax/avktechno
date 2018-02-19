@@ -42,6 +42,9 @@ import {
 } from '~/barrel/state';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { mapState } from 'vuex';
+import Timer from '../../utils/timer';
+
+const timer = Timer();
 
 export default {
   name: 'layout-base',
@@ -63,7 +66,10 @@ export default {
     }),
   },
   async beforeMount() {
+    const stop = timer();
+    console.log('start load all');
     await this.$store.dispatch(ENTITY_ALL_LOAD());
+    console.log('end load all', stop());
     this.$store.commit(SPINNER_HIDE);
     // setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
   },
