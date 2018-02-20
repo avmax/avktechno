@@ -1,7 +1,7 @@
 <template>
 <v-card class="product-item">
   <v-card-media class="product-item__media mb-3" :height="200" :src="model.imgUrl"/>
-  <v-card-title class="product-item__text title pt-0">{{model.name}}</v-card-title>
+  <v-card-title class="product-item__text product-item__text_title title pt-0">{{model.name}}</v-card-title>
   <v-card-text class="product-item__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
   <v-divider class="mb-3"/>
   <v-card-text
@@ -35,7 +35,7 @@
 
   <v-divider/>
 
-  <v-card-text class="subheading" v-html="chopStr(model.descriptionShort, 150)"/>
+  <!-- <v-card-text class="subheading" v-html="chopStr(model.descriptionShort, 150)"/> -->
 
   <v-divider/>
 
@@ -124,12 +124,15 @@ export default {
   height: 100%;
 
   &__text {
-    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
     padding-top: 0 !important;
     padding-bottom: 8px !important;
+
+      &_title {
+        height: 60px !important;
+      }
   }
 
   &__action-item {
