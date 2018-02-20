@@ -1,7 +1,6 @@
 const db = require('../db');
 const CategoryError = require('../errors').CategoryError;
 const { uniq } = require('lodash/fp');
-const timer = require('../../../utils/timer')();
 
 const modelFromReq = (req) => {
   const { body } = req;
@@ -23,7 +22,6 @@ exports.get = async (req, res, next) => {
     let model;
     let data;
 
-    const stop = timer();
     model = await db.m.c.findAll();
     data = await Promise.all(model.map(async (modelItem) => {
       const dataItem = modelItem.retrieve();
@@ -31,7 +29,6 @@ exports.get = async (req, res, next) => {
       return dataItem;
     }));
 
-    console.log('categories end', stop());
     res.status(200).send(data);
   }
   catch(err)

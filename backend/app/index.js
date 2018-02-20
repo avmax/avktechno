@@ -34,7 +34,7 @@ server.use((err, req, res, next) => {
 const start = async () => {
   try {
     await db.init();
-    await money.init();
+    money.init();
     server.listen(SERVER_PORT, () => {
       console.log(`сервер запущен на порту ${SERVER_PORT}`);
       console.log(`клиент ожидается по урлу ${CLIENT_URL}`);
