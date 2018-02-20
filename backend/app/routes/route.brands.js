@@ -2,6 +2,7 @@ const db = require('../db');
 const BrandError = require('../errors').BrandError;
 const { uniq, flatten } = require('lodash/fp');
 const { imgURL } = require('../utils/img');
+const timer = require('../../../utils/timer')();
 
 const modelFromReq = (req) => {
   const { body, file } = req;
@@ -21,6 +22,7 @@ exports.get = async (req, res, next) => {
     let model;
     let data;
 
+    const stop = timer();
     model = await db.m.b.findAll();
     data = await Promise.all(model.map(async (modelItem) => {
       const dataItem = modelItem.retrieve();
@@ -28,6 +30,7 @@ exports.get = async (req, res, next) => {
       return dataItem;
     }));
 
+    console.log('brands end', stop());
     res.status(200).send(data);
   }
   catch(err)

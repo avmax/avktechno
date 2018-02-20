@@ -62,10 +62,13 @@ export default {
       isSpinner: ({ ui }) => ui.spinner,
     }),
   },
-  async beforeMount() {
-    await this.$store.dispatch(ENTITY_ALL_LOAD());
-    this.$store.commit(SPINNER_HIDE);
-    // setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+  async mounted() {
+    if (!process.env.isProd) {
+      await this.$store.dispatch(ENTITY_ALL_LOAD());
+      this.$store.commit(SPINNER_HIDE);
+    } else {
+      setTimeout(() => this.$store.commit(SPINNER_HIDE), 500);
+    }
   },
 };
 </script>

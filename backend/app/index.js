@@ -3,6 +3,7 @@ const config = require('../../config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const money = require('./utils/money');
 
 const server = express();
 const SERVER_PORT = config.server.port;
@@ -33,6 +34,7 @@ server.use((err, req, res, next) => {
 const start = async () => {
   try {
     await db.init();
+    await money.init();
     server.listen(SERVER_PORT, () => {
       console.log(`сервер запущен на порту ${SERVER_PORT}`);
       console.log(`клиент ожидается по урлу ${CLIENT_URL}`);
