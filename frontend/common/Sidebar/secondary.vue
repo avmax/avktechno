@@ -7,7 +7,7 @@
     mobile-break-point="960"
     stateless
     touchless
-    width="400"
+    width="320"
     app
     clipped
     fixed
