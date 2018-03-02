@@ -32,7 +32,7 @@
               @remove="remove('category', category.id)"
               style="margin-bottom: -10px;"
             />
-            <v-flex xs12 sm6 lg4 v-if="isEditionAvailable && !(category.depth === 1 && category.refs.category.length !== 0)">
+            <v-flex xs12 sm4 lg3 xl2 v-if="isEditionAvailable && !(category.depth === 1 && category.refs.category.length !== 0)">
               <edition-ghost
                 btn-text="Добавить продукт"
                 @add="add('product', { refs: { category: [category.id] }})"
@@ -41,7 +41,7 @@
             <v-flex
               v-for="p in category.refs.product"
               v-if="getProduct(p)"
-              xs12 sm6 lg4
+              xs12 sm4 lg3 xl2
               :key="p.id"
             >
               <edition>
@@ -73,7 +73,7 @@
                   @remove="remove('category', sc.id)"
                   style="margin-bottom: -10px;"
                 />
-                <v-flex xs12 sm6 lg4 v-if="isEditionAvailable">
+                <v-flex xs12 sm4 lg3 xl2 v-if="isEditionAvailable">
                   <edition-ghost
                     btn-text="Добавить продукт"
                     @add="add('product', { refs: { category: [sc.id] }})"
@@ -82,7 +82,7 @@
                 <v-flex
                   v-for="sp in sc.refs.product"
                   v-if="getProduct(sp)"
-                  xs12 sm6 lg4
+                  xs12 sm4 lg3 xl2
                   :key="sp.id"
                 >
                   <edition>

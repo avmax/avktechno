@@ -58,7 +58,7 @@
                 @add="add('category', { refs: { 'category': [c.id] }, depth: 2 })"
               />
             </v-flex>
-            <v-flex xs12 sm6 lg4 v-if="isEditionAvailable && !c.refs.category.length">
+            <v-flex xs12 sm4 lg3 xl2 v-if="isEditionAvailable && !c.refs.category.length">
               <edition-ghost
                 btn-text="Добавить продукт"
                 @add="add('product', { refs: { category: [c.id] }})"
@@ -67,7 +67,7 @@
             <v-flex
               v-for="p in c.refs.product"
               v-if="getProduct(p)"
-              xs12 sm6 lg4
+              xs12 sm4 lg3 xl2
               :key="p.id"
             >
               <edition>
@@ -100,7 +100,7 @@
                   @remove="remove('category', sc.id)"
                   style="margin-bottom: -10px;"
                 />
-                <v-flex xs12 sm6 lg4 v-if="isEditionAvailable">
+                <v-flex xs12 sm4 lg3 xl2 v-if="isEditionAvailable">
                   <edition-ghost
                     btn-text="Добавить продукт"
                     @add="add('product', { refs: { category: [sc.id] }})"
@@ -109,7 +109,7 @@
                 <v-flex
                   v-for="sp in sc.refs.product"
                   v-if="getProduct(sp)"
-                  xs12 sm6 lg4
+                  xs12 sm4 lg3 xl2
                   :key="sp.id"
                 >
                   <edition>

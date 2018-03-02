@@ -1,17 +1,17 @@
 <template>
 <v-card class="product-item">
-  <v-card-media class="product-item__media mb-3" :height="200" :src="model.imgUrl"/>
+  <v-card-media class="product-item__media mb-3" :height="150" :src="model.imgUrl"/>
   <v-card-title class="product-item__text product-item__text_title title pt-0">{{model.name}}</v-card-title>
-  <v-card-text class="product-item__text subheading pt-0">Цена: {{model.price}} {{model.currency}}</v-card-text>
-  <v-divider class="mb-3"/>
+  <v-card-text class="product-item__text subheading pt-0 pb-1">Цена: {{model.price}} {{model.currency}}</v-card-text>
+  <v-divider class="mb-1"/>
   <v-card-text
-    class="product-item__text subheading product-item__info pt-0"
+    class="product-item__text subheading product-item__info py-0"
   >
       Артикул: {{model.identificator}}
   </v-card-text>
   <v-card-text
     v-if="isPageCart"
-    class="product-item__text subheading product-item__info pt-0"
+    class="product-item__text subheading product-item__info py-0"
   >
     Категория:
     <template v-if="category">
@@ -22,7 +22,7 @@
     </template>
   </v-card-text>
   <v-card-text
-    class="product-item__text subheading product-item__info pt-0"
+    class="product-item__text subheading product-item__info py-0"
   >
       Производитель:
       <template v-if="brand">
@@ -37,7 +37,7 @@
 
   <!-- <v-card-text class="subheading" v-html="chopStr(model.descriptionShort, 150)"/> -->
 
-  <v-divider/>
+  <v-divider mb-1/>
 
   <v-card-actions class="product-item__actions pa-3">
     <v-layout wrap class="ma-0">
@@ -127,17 +127,22 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
-    padding-top: 0 !important;
-    padding-bottom: 8px !important;
+    font-size: 14px !important;
 
       &_title {
-        height: 60px !important;
+        height: 40px !important;
+        font-size: 16px !important;
       }
   }
 
   &__action-item {
     text-align: center;
     border-radius: 0;
+    font-size: 12px !important;
+
+    .btn__content {
+      padding: 0 !important;
+    }
   }
 }
 }
