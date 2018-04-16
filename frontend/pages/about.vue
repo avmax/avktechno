@@ -7,7 +7,8 @@
     </v-layout>
     <v-layout column class="page__content">
       <section>
-        <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong>BAROID (HALLIBURTON)</strong> <v-avatar class="ml-1 hidden-md-and-up"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar> в РФ с 2010 года.</p>
+        <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong><a href="http://www.halliburton.com/">BAROID (HALLIBURTON)</a></strong> <v-avatar class="ml-1 hidden-md-and-up"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar> в РФ с 2010 года.</p>
+        <p>А так же мы являемся партнером <strong><a href="https://cebo.com/en/">Cebo Holland</a></strong>
         <v-parallax class="my-5 hidden-sm-and-down" src="/intro.png" height="250"/>
         <p>За это время она прошла путь до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: <strong>бентонит</strong> и <strong>полимеры</strong> <strong> BAROID</strong>, <strong>установки ГНБ</strong> и комплектующих к ним, <strong>горно-шахтное оборудование</strong> и установки для <strong>микротоннелирования</strong>, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих заводов производителей!</p>
         <p>Обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p>
