@@ -184,12 +184,12 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Product.prototype.getRefs = async function() {
-    const category = await this.getCategory();
-    const brand = await this.getBrand();
+    const categoryId = this.dataValues.categoryId;
+    const brandId = this.dataValues.brandId;
 
     const refs = {
-      brand: brand && [brand.get('id')] || [],
-      category: category && [category.get('id')] || [],
+      brand: brandId && [brandId] || [],
+      category: categoryId && [categoryId] || [],
     };
     return refs;
   };
