@@ -1,6 +1,8 @@
 const ProductError = require('../errors').ProductError;
 const { isArray, cloneDeep } = require('lodash/fp');
 const money = require('../utils/money').money;
+const config = require('../../../config');
+const BASE_URL = config.baseURL;
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
@@ -81,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgUrl: {
         type: DataTypes.STRING(1234) ,
-        defaultValue: 'http://localhost:4251/placeholder.jpg',
+        defaultValue: `${BASE_URL}/placeholder.jpg`,
       },
       features: {
         type: DataTypes.BLOB,
