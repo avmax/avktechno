@@ -36,6 +36,8 @@ export default {
 <style lang="scss" scoped>
 #avmax {
 .shop-entity-collection {
+  min-width: 100%;
+
   &__header {
     &-name {
       display: flex;

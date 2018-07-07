@@ -10,6 +10,7 @@ const config = () => {
       host: env.DB_HOST || 'localhost',
     },
     baseURL: env.BASE_URL || 'http://localhost',
+    domainURL: env.DOMAIN_URL || 'http://avktechno.com',
     server: {
       port: +env.SERVER_PORT || 4251,
     },
