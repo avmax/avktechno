@@ -1,4 +1,6 @@
 const { uniq, cloneDeep } = require('lodash/fp');
+const config = require('../../../config');
+const BASE_URL = config.baseURL;
 
 module.exports = (sequelize, DataTypes) => {
   const Brand = sequelize.define(
@@ -16,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgUrl: {
         type: DataTypes.STRING(1234) ,
-        defaultValue: 'http://localhost:4251/placeholder.jpg',
+        defaultValue: `${BASE_URL}/placeholder.jpg`,
       },
     },
   );
