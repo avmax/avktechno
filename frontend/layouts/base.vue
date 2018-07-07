@@ -9,7 +9,7 @@
       <slot name="panels"/>
       <the-sidebar/>
 
-      <v-content>
+      <v-content class="content">
         <the-notifications/>
         <v-container fluid>
           <v-layout column fill-width>
@@ -79,6 +79,13 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+}
+
+.content {
+  @media all and (max-width: 400px) {
+    width: 100%;
+    overflow: hidden;
+  }
 }
 }
 </style>
