@@ -1,6 +1,8 @@
 <template>
   <v-app id="avmax">
 
+    <div v-html="yaMetrics"></div>
+
     <the-header>
       <slot name="header" slot="header"/>
     </the-header>
