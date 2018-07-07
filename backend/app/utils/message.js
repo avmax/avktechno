@@ -24,10 +24,15 @@ const opts = (message, target) => ({
 
 const messenger = {
   async send(message, target) {
-    if (!Array.isArray(target)) {
-      await transporter.sendMail(opts(message, target));
-    } else {
-      await Promise.all(target.map(t => transporter.sendMail(opts(message, t))));
+    try {
+      if (!Array.isArray(target)) {
+        await transporter.sendMail(opts(message, target));
+      } else {
+        await Promise.all(target.map(t => transporter.sendMail(opts(message, t))));
+      }
+    } catch(err) {
+      console.log('FAILURE AT SENDING MESSAGE', err);
+      return Promise.reject(err);
     }
   }
 };
