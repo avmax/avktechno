@@ -2,12 +2,13 @@ const nodemailer = require('nodemailer');
 
 const FROM = 'avmax.web@gmail.com';
 const TO = 'e.kanaeva@avktechno.com';
+// const TO = 'a.ponomarenko@takewing.ru';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'avmax.web@gmail.com',
-    pass: 'yyRKT7737gjR'
+    pass: 'wfJJi7717yY'
   }
 });
 
@@ -17,8 +18,8 @@ const mailOptions = {
 };
 
 const opts = (message, target) => ({
-    ...mailOptions, text: message || 'That was easy!',
-    to: target || TO,
+    ...mailOptions, text: message || '=',
+    to: TO,
   });
 
 const messenger = {
