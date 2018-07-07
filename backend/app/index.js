@@ -5,6 +5,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const money = require('./utils/money');
 
+const profiler = require('./middleware/profiler');
+
 const server = express();
 const SERVER_PORT = config.server.port;
 const CLIENT_URL = config.client.URL;
@@ -20,6 +22,10 @@ server.use((req, res, next) => {
 
 server.use(bodyParser.json());
 server.use(express.static('static'));
+
+if (!config.isProd) {
+  server.use(profiler);
+}
 
 server.use(require('./router').public);
 server.use('/admin', require('./router').admin);
@@ -38,6 +44,7 @@ const start = async () => {
     server.listen(SERVER_PORT, () => {
       console.log(`сервер запущен на порту ${SERVER_PORT}`);
       console.log(`клиент ожидается по урлу ${CLIENT_URL}`);
+      console.log(`сервер запущен в ${config.isProd ? 'production' : 'development'} режиме`);
     });
   } catch(err) {
     console.error('сервер наебнулся:', err);

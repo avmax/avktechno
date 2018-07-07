@@ -11,10 +11,10 @@ const config = () => {
     },
     baseURL: env.BASE_URL || 'http://localhost',
     server: {
-      port: +env.SERVER_PORT,
+      port: +env.SERVER_PORT || 4251,
     },
     client: {
-      port: +env.CLIENT_PORT,
+      port: +env.CLIENT_PORT || 4252,
     },
     isProd: env.IS_PROD || isProd,
   }
