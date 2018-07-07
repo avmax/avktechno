@@ -19,6 +19,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'keywords', content: 'ГНБ, бурение, горно-шахтное оборудование, бентониты, полимеры, смазка, масла, запчасти, baroid, vermeer, ditch witch, copper, penetrol, fuse-it' },
+      { name: 'yandex-verification', content: '02f259ff5e21fedb' },
       { hid: 'description', name: 'description', content: 'Поставки бентонита для ГНБ, полимеров для ГНБ, масел Copper, масел Vermeer, запасных частей  и прочей сопутствующей продукции  по горизонтальному направленному бурению.' },
     ],
     link: [
