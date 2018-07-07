@@ -1,6 +1,5 @@
 <template>
   <v-app id="avmax">
-    <div v-html="yaMetrics"></div>
 
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
