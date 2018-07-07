@@ -1,6 +1,8 @@
 const ProductError = require('../errors').ProductError;
 const { isArray, cloneDeep } = require('lodash/fp');
 const money = require('../utils/money').money;
+const config = require('../../../config');
+const BASE_URL = config.baseURL;
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
@@ -81,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgUrl: {
         type: DataTypes.STRING(1234) ,
-        defaultValue: 'http://localhost:4251/placeholder.jpg',
+        defaultValue: `${BASE_URL}/placeholder.jpg`,
       },
       features: {
         type: DataTypes.BLOB,
@@ -184,12 +186,12 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Product.prototype.getRefs = async function() {
-    const category = await this.getCategory();
-    const brand = await this.getBrand();
+    const categoryId = this.dataValues.categoryId;
+    const brandId = this.dataValues.brandId;
 
     const refs = {
-      brand: brand && [brand.get('id')] || [],
-      category: category && [category.get('id')] || [],
+      brand: brandId && [brandId] || [],
+      category: categoryId && [categoryId] || [],
     };
     return refs;
   };

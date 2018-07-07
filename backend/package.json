@@ -6,8 +6,11 @@
   "private": true,
   "scripts": {
     "start": "npm run prod",
+
     "dev": "cross-env NODE_ENV='development' gulp dev",
-    "prod": "cross-env NODE_ENV='production' CLIENT_PORT=80 node ./app",
+
+    "prod": "cross-env NODE_ENV='production' node ./app",
+
     "production": "pm2 start npm --name avktechno-backend -- start"
   },
   "dependencies": {

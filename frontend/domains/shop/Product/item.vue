@@ -2,7 +2,7 @@
 <v-card class="product-item">
   <v-card-media class="product-item__media mb-3" :height="150" :src="model.imgUrl"/>
   <v-card-title class="product-item__text product-item__text_title title pt-0">{{model.name}}</v-card-title>
-  <v-card-text class="product-item__text subheading pt-0 pb-1">Цена: {{model.price}} {{model.currency}}</v-card-text>
+  <v-card-text class="product-item__text subheading pt-0 pb-1">Цена: {{computedPrice}}</v-card-text>
   <v-divider class="mb-1"/>
   <v-card-text
     class="product-item__text subheading product-item__info py-0"
@@ -42,14 +42,14 @@
   <v-card-actions class="product-item__actions pa-3">
     <v-layout wrap class="ma-0">
       <v-flex xs12 class="pa-0 mb-2">
-        <v-btn
+        <!-- <v-btn
           :to="{ name: 'product-id', params: { id: model.id }}"
           nuxt
           block
           secondary
           class="product-item__action-item ml-0">
           Узнать подробнее
-        </v-btn>
+        </v-btn> -->
       </v-flex>
       <v-flex xs12 class="pa-0" style="display: flex;">
         <v-btn class="product-item__action-item pa-0 ma-0 mr-2"
@@ -92,6 +92,11 @@ export default {
     model() { return this.data; },
     isPageCart() { return this.$route.path === '/cart'; },
     addToCartBtnText() { return this.isPageCart ? 'Добавить' : 'В корзину'; },
+    computedPrice() {
+      const { model } = this;
+      const actualPrice = +model.price ? `${model.price} ${model.currency}` : 'Не указана';
+      return actualPrice;
+    },
   },
   methods: {
     chopStr(str, length) {
@@ -130,7 +135,7 @@ export default {
     font-size: 14px !important;
 
       &_title {
-        height: 40px !important;
+        height: 60px !important;
         font-size: 16px !important;
       }
   }

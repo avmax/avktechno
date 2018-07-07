@@ -1,8 +1,16 @@
 const path = require('path');
-const APP_CONFIG = require('./config');
+const config = require('./config');
+
+const CLIENT_PORT = config.client.port;
+const SERVER_URL = config.server.URL;
+
+console.log(`клиент запущен на порту ${CLIENT_PORT}`);
+console.log(`сервер ожидается по урлу ${SERVER_URL}`);
+console.log(`клиент запущен в ${config.isProd ? 'production' : 'development'} режиме`);
+console.log('\n');
 
 module.exports = {
-  env: APP_CONFIG,
+  env: config,
   // env
   // Headers of the page
   head: {
@@ -10,7 +18,8 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' },
+      { name: 'keywords', content: 'ГНБ, бурение, горно-шахтное оборудование, бентониты, полимеры, смазка, масла, запчасти, baroid, vermeer, ditch witch, copper, penetrol, fuse-it' },
+      { hid: 'description', name: 'description', content: 'Поставки бентонита для ГНБ, полимеров для ГНБ, масел Copper, масел Vermeer, запасных частей  и прочей сопутствующей продукции  по горизонтальному направленному бурению.' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
