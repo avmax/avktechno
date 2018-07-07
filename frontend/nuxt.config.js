@@ -1,8 +1,16 @@
 const path = require('path');
-const APP_CONFIG = require('./config');
+const config = require('./config');
+
+const CLIENT_PORT = config.client.port;
+const SERVER_URL = config.server.URL;
+
+console.log(`клиент запущен на порту ${CLIENT_PORT}`);
+console.log(`сервер ожидается по урлу ${SERVER_URL}`);
+console.log(`клиент запущен в ${config.isProd ? 'production' : 'development'} режиме`);
+console.log('\n');
 
 module.exports = {
-  env: APP_CONFIG,
+  env: config,
   // env
   // Headers of the page
   head: {

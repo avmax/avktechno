@@ -6,12 +6,22 @@
   "private": true,
   "scripts": {
     "start": "npm run prod:start",
-    "dev": "cross-env NODE_ENV='development' SERVER_PORT=4251 CLIENT_PORT=80 HOST=0.0.0.0 nuxt",
-    "prod:build": "cross-env NODE_ENV='production' SERVER_PORT=4251 CLIENT_PORT=80 HOST=0.0.0.0 nuxt build",
-    "prod:start": "cross-env NODE_ENV='production' SERVER_PORT=4251 CLIENT_PORT=80 HOST=0.0.0.0 nuxt start",
+
+    "dev": "npm run dev:runtime",
+    "dev:runtime": "cross-env NODE_ENV='development' nuxt",
+    "dev:build": "cross-env NODE_ENV='development' nuxt build",
+    "dev:generate": "cross-env NODE_ENV='development' nuxt generate",
+    "dev:start": "cross-env NODE_ENV='development' nuxt start",
+    "dev:launch": "npm run dev:build && npm run dev:start",
+
+    "prod:runtime": "cross-env NODE_ENV='production' nuxt",
+    "prod:build": "cross-env NODE_ENV='production' nuxt build",
     "prod:generate": "cross-env NODE_ENV='production' nuxt generate",
-    "prod": "npm run prod:build && npm run prod:start",
+    "prod:start": "cross-env NODE_ENV='production' nuxt start",
+    "prod:launch": "npm run prod:build && npm run prod:start",
+
     "production": "npm run prod:build && pm2 start npm --name avktechno-frontend -- start",
+
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },

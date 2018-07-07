@@ -11,10 +11,10 @@ const config = () => {
     },
     baseURL: env.BASE_URL || 'http://90.156.142.46',
     server: {
-      port: +env.SERVER_PORT,
+      port: +env.SERVER_PORT || 4251,
     },
     client: {
-      port: +env.CLIENT_PORT,
+      port: +env.CLIENT_PORT || 80,
     },
     isProd: env.IS_PROD || isProd,
   }
