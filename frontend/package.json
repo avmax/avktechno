@@ -6,22 +6,18 @@
   "private": true,
   "scripts": {
     "start": "npm run prod:start",
-
     "dev": "npm run dev:runtime",
     "dev:runtime": "cross-env NODE_ENV='development' nuxt",
     "dev:build": "cross-env NODE_ENV='development' HOST=0.0.0.0 nuxt build",
     "dev:generate": "cross-env NODE_ENV='development' nuxt generate",
     "dev:start": "cross-env NODE_ENV='development' HOST=0.0.0.0 nuxt start",
     "dev:launch": "npm run dev:build && npm run dev:start",
-
     "prod:runtime": "cross-env NODE_ENV='production' nuxt",
     "prod:build": "cross-env NODE_ENV='production' HOST=0.0.0.0 nuxt build",
     "prod:generate": "cross-env NODE_ENV='production' nuxt generate",
     "prod:start": "cross-env NODE_ENV='production' HOST=0.0.0.0 nuxt start",
     "prod:launch": "npm run prod:build && npm run prod:start",
-
     "production": "npm run prod:build && pm2 start npm --name avktechno-frontend -- start",
-
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
@@ -31,6 +27,7 @@
     "lodash": "^4.17.4",
     "nuxt": "1.0.0-rc11",
     "pm2": "^2.9.1",
+    "vue-analytics": "^5.12.2",
     "vue-spinner": "^1.0.3",
     "vue2-google-maps": "^0.8.4",
     "vuetify": "^0.17.2"
