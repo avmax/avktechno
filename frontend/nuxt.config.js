@@ -69,6 +69,10 @@ module.exports = {
         loader: 'babel-loader',
       });
     },
+
+    babel: {
+      plugins: ['transform-object-assign'],
+    },
   },
 };
 
