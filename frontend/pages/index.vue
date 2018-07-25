@@ -1,190 +1,127 @@
 <template>
-  <v-layout class="page page_products" column>
-    <div class="page__header">
-      <h1 class="text-xs-left text-md-center">Все продукты</h1>
-    </div>
+<div class="page page_about">
+  <v-container class="page__inner px-0 py-4">
+    <v-layout class="page__header" justify-space-between>
+      <h2 class="mb-3">О компании</h2>
+      <v-avatar size="96px" class="page__logo hidden-sm-and-down ml-1"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar>
+    </v-layout>
+    <v-layout column class="page__content">
+      <section>
+        <p>Компания <strong>АВК ТЕХНО</strong> является официальным дилером <strong><a href="http://www.halliburton.com/">BAROID (HALLIBURTON)</a></strong> <v-avatar class="ml-1 hidden-md-and-up"><img src="/baroid.logo.png" alt="Baroid logo"></v-avatar> в РФ с 2010 года.</p>
+        <p>А так же мы являемся партнером <strong><a href="https://cebo.com/en/">Cebo Holland</a></strong>
+        <v-parallax class="my-5 hidden-sm-and-down" src="/intro.png" height="250"/>
+        <p>За это время она прошла путь до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: <strong>бентонит</strong> и <strong>полимеры</strong> <strong> BAROID</strong>, <strong>установки ГНБ</strong> и комплектующих к ним, <strong>горно-шахтное оборудование</strong> и установки для <strong>микротоннелирования</strong>, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих заводов производителей!</p>
+        <p>Обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p>
+      </section>
 
-    <v-layout class="page__content" column>
-      <v-layout
-        v-if="!categories || !categories.length"
-        justify-center align-center fill-height
-      >
-        <div class="title text-xs-center my-4" style="font-weight: normal;">
-          <h4 class="headline mb-4">Добро пожаловать в интернет магазин компании <strong>АВК ТЕХНО!</strong></h4>
-          <p>Мы очень надеемся, что на нашем сайте Вы найдете интересующий Вас товар.</p>
-          <p>Для этой цели на нашем сайте предоставлена гибкая система фильтрации товаров.</p>
-          <p>Пожалуйста, настройте <strong>фильтр</strong> в панели слева, и мы уверены, Вы найдете то, что ищете.</p>
+      <v-divider class="my-4"/>
+
+      <!-- <section> -->
+        <!-- <div> -->
+          <!-- <h2 class="mb-3">О Компании</h2> -->
+        <!-- </div> -->
+          <!-- <p>Компания <strong>АВК ТЕХНО</strong> - официальный дилер <strong>BAROID (HALLIBURTON)</strong> в Российской Федерации.</p> -->
+          <!-- <p>Компания <strong>АВК ТЕХНО</strong> на рынке уже 6 лет и за это время она прошла путь от только что зародившейся, до одной из самых востребованных компаний, осуществляющих поставку широкого ассортимента продукции: утсановки горизонтально-направленного бурения и комплектующих к ним, горно-шахтное оборудование и устаноновки для микротоннелирования, оборудование для геотермального отопления, а также запчасти для вышеуказанного оборудования от ведущих  заводов производителей! </p> -->
+          <!-- <p>Компания <strong>АВК ТЕХНО</strong> с 2010 года обзавелась своими филиалами в таких крупных промышленных регионах, как Урал, Сибирь и Ставропольский край, где сосредоточено огромное количество наших партнеров. Но мы не собираемся останавливаться на достигнутом и всегда будем стремиться к еще большим достижениям, успехам и победам!</p> -->
+      <!-- </section> -->
+      <!-- <section>
+        <div>
+          <h2 class="mb-3">Наши возможности</h2>
         </div>
-      </v-layout>
-      <edition>
-        <template scope="{ add, edit, remove, isEditionAvailable }">
-          <v-container v-if="isEditionAvailable" class="my-5 pa-0" fluid grid-list-xl>
-            <v-layout row wrap>
-              <v-flex xs12 sm6>
-                <edition-ghost
-                  btn-text="Добавить категорию"
-                  @add="add('category', { depth: 1 })"
-                  fluid
-                />
-              </v-flex>
-              <v-flex>
-                <edition-ghost
-                  btn-text="Добавить производителя"
-                  @add="add('brand')"
-                  fluid
-                />
-              </v-flex>
-            </v-layout>
-          </v-container>
+        <p>Компания <strong>АВК ТЕХНО</strong> - официальный дилер <strong>BAROID (HALLIBURTON)</strong> в Российской Федерации.</p>
+        <p>Компания <strong>АВК ТЕХНО</strong> появилась на свет в недалеком 2010 году, но за это время смогла покорить сердца своих заказчиков и партнеров. Мы с радостью осуществим Вашу мечту и поставим именно ту технику, которую Вы выбрали из обширного мира производителей. </p>
+        <p>Нам доставляет огромное удовольствие работать по всей России и иметь партнеров в самых удаленных ее точках. При этом больше всего поставок осуществляется в  Сибирь, Урал и Ставропольский край с их крупнейшими городами и развитыми регионами, в которых современные технологии ГНБ, микротоннелирование и горно-шахтная промышленность развивается огромными шагами!</p>
+        <p>Установки для горизонтально-направленного бурения, а также запчасти и комплектующие дляних, установки для открытых работ, горно-шахтное оборудование и технику для микротоннелирования, комплекты геотермального оборудования, буровые растворы <strong>Baroid</strong> и многое другое входит в нашу компетенцию.</p>
+        <p><strong>АВК ТЕХНО</strong> осуществляет продажу и покупку новой и бывшей в употреблении техники по наиболее выгодным для вас ценам, предоставляя своим клиентам лучшие условия. Наша компания осуществляет ремонт, сервисное и гарантийное обслуживание. Мы предлагаем нашим клиентам и партнерам самые выгодные условия сотрудничества, оптимальные цены и широкий ассортимент продукции. Вам понравится быть нашим партнером.</p>
+      </section> -->
 
-          <product-collection
-            v-for="c in categories"
-            v-if="+c.depth === 1"
-            :title="c.title"
-            :name="c.name"
-            :key="c.id"
-          >
-            <edition-controls
-              slot="header"
-              is-edit
-              is-remove
-              @edit="edit('category', c)"
-              @remove="remove('category', c.id)"
-              style="margin-bottom: -10px;"
-            />
-            <v-flex xs12 v-if="isEditionAvailable && !c.refs.product.length">
-              <edition-ghost
-                btn-text="Добавить подкатегорию"
-                @add="add('category', { refs: { 'category': [c.id] }, depth: 2 })"
-              />
-            </v-flex>
-            <v-flex xs12 sm4 lg3 xl2 v-if="isEditionAvailable && !c.refs.category.length">
-              <edition-ghost
-                btn-text="Добавить продукт"
-                @add="add('product', { refs: { category: [c.id] }})"
-              />
-            </v-flex>
-            <v-flex
-              v-for="p in c.refs.product"
-              v-if="getProduct(p)"
-              xs12 sm4 lg3 xl2
-              :key="p.id"
-            >
-              <edition>
-                <product-item
-                  :data="getProduct(p)"
-                />
-                <edition-controls
-                  slot="controls"
-                  is-edit
-                  is-remove
-                  @edit="edit('product', getProduct(p))"
-                  @remove="remove('product', p)"
-                />
-              </edition>
-            </v-flex>
-            <v-flex xs12 v-if="getCategories(c.refs.category).length">
-              <product-collection
-                class="pl-5"
-                v-for="sc in getCategories(c.refs.category)"
-                v-if="sc"
-                :title="sc.title"
-                :name="sc.name"
-                :key="sc.id"
-              >
-                <edition-controls
-                  slot="header"
-                  is-edit
-                  is-remove
-                  @edit="edit('category', sc)"
-                  @remove="remove('category', sc.id)"
-                  style="margin-bottom: -10px;"
-                />
-                <v-flex xs12 sm4 lg3 xl2 v-if="isEditionAvailable">
+      <section class="partners">
+        <h2 class="mb-3">Наши партнеры</h2>
+        <edition>
+          <template scope="{ add, edit, remove, isEditionAvailable }">
+            <v-container fluid class="pa-0" grid-list-xl>
+              <v-layout row wrap justify-start>
+                <v-flex v-if="isEditionAvailable" xs12 sm4 lg3 xl2>
                   <edition-ghost
-                    btn-text="Добавить продукт"
-                    @add="add('product', { refs: { category: [sc.id] }})"
+                    btn-text="Добавить производителя"
+                    @add="add('brand')"
+                    fluid
                   />
                 </v-flex>
                 <v-flex
-                  v-for="sp in sc.refs.product"
-                  v-if="getProduct(sp)"
                   xs12 sm4 lg3 xl2
-                  :key="sp.id"
+                  v-for="b in brands"
+                  :key="b.id"
                 >
                   <edition>
-                    <product-item
-                      :data="getProduct(sp)"
-                    />
+                    <brand-item :data="b"/>
                     <edition-controls
                       slot="controls"
                       is-edit
                       is-remove
-                      @edit="edit('product', getProduct(sp))"
-                      @remove="remove('product', sp)"
+                      @edit="edit('brand', b)"
+                      @remove="remove('brand', b.id)"
                     />
                   </edition>
                 </v-flex>
-                <v-divider slot="footer" class="mb-4 mt-5"/>
-              </product-collection>
-            </v-flex>
-            <v-divider slot="footer" class="mb-4 mt-5"/>
-          </product-collection>
-        </template>
-      </edition>
+              </v-layout>
+            </v-container>
+          </template>
+        </edition>
+      </section>
     </v-layout>
-  </v-layout>
+  </v-container>
+</div>
 </template>
 
-
 <script>
+import BrandItem from '~/domains/shop/Brand/item.vue';
 import Edition from '~/domains/edition/Edition/edition';
 import EditionControls from '~/domains/edition/Edition/controls';
 import EditionGhost from '~/domains/edition/Edition/ghost';
-import ProductCollection from '~/domains/shop/Product/collection.vue';
-import ProductItem from '~/domains/shop/Product/item.vue';
 
 export default {
-  name: 'page-products',
-  layout: 'hard',
+  layout: 'normal',
   components: {
+    BrandItem,
     Edition,
     EditionControls,
     EditionGhost,
-    ProductCollection,
-    ProductItem,
   },
   computed: {
-    categories() {
-      const { getters } = this.$store;
-      const items = getters.categories;
+    brands() {
+      const items = this.$store.getters.brands;
       return items;
-    },
-  },
-  methods: {
-    getCategories(ids) {
-      const { getters } = this.$store;
-      const items = ids.map(id => getters.category(id));
-      return items;
-    },
-    getProduct(id) {
-      const { getters } = this.$store;
-      const item = getters.product(id);
-      return item;
     },
   },
 };
 </script>
 
-
 <style lang="scss">
 #avmax {
-.page_products {
-.page {
-  &__content {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
+.page_about {
+  p {
+    text-align: left;
+  }
+
+  .page {
+    &__header {
+      position: relative;
+    }
+
+    &__logo {
+      position: absolute;
+      right: -20px;
+      top: -20px;
+    }
+  }
+
+
+@media all and (min-width: 768px) {
+  font-size: 18px;
+
+  p {
+    text-align: justify;
   }
 }
 }
