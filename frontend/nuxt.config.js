@@ -39,7 +39,7 @@ module.exports = {
   ],
   // Build configuration
   build: {
-    vendor: ['vuetify', 'axios'],
+    vendor: ['core-js/fn/object/assign', 'vuetify', 'axios'],
     postcss: [
       // eslint-disable-next-line
       require('postcss-cssnext')(),
