@@ -44,6 +44,7 @@ import {
 } from '~/barrel/state';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { mapState } from 'vuex';
+import 'core-js/fn/object/assign';
 import yaMetrics from '../utils/ya-metrics.js';
 
 export default {
