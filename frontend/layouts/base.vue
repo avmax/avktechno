@@ -1,6 +1,8 @@
 <template>
   <v-app id="avmax">
 
+    <div v-html="yaMetrics"></div>
+
     <the-header>
       <slot name="header" slot="header"/>
     </the-header>
@@ -9,7 +11,7 @@
       <slot name="panels"/>
       <the-sidebar/>
 
-      <v-content>
+      <v-content class="content">
         <the-notifications/>
         <v-container fluid>
           <v-layout column fill-width>
@@ -42,6 +44,7 @@ import {
 } from '~/barrel/state';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { mapState } from 'vuex';
+import yaMetrics from '../utils/ya-metrics.js';
 
 export default {
   name: 'layout-base',
@@ -54,7 +57,7 @@ export default {
   },
   data() {
     return {
-      test: false,
+      yaMetrics,
     };
   },
   computed: {
@@ -79,6 +82,13 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+}
+
+.content {
+  @media all and (max-width: 400px) {
+    width: 100%;
+    overflow: hidden;
+  }
 }
 }
 </style>

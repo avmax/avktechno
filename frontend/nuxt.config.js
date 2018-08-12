@@ -19,6 +19,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'keywords', content: 'ГНБ, бурение, горно-шахтное оборудование, бентониты, полимеры, смазка, масла, запчасти, baroid, vermeer, ditch witch, copper, penetrol, fuse-it' },
+      { name: 'yandex-verification', content: '02f259ff5e21fedb' },
       { hid: 'description', name: 'description', content: 'Поставки бентонита для ГНБ, полимеров для ГНБ, масел Copper, масел Vermeer, запасных частей  и прочей сопутствующей продукции  по горизонтальному направленному бурению.' },
     ],
     link: [
@@ -38,7 +39,7 @@ module.exports = {
   ],
   // Build configuration
   build: {
-    vendor: ['vuetify', 'axios'],
+    vendor: ['core-js/fn/object/assign', 'vuetify', 'axios'],
     postcss: [
       // eslint-disable-next-line
       require('postcss-cssnext')(),
@@ -67,6 +68,10 @@ module.exports = {
         include: [path.resolve(__dirname, './node_modules/vue2-google-maps')],
         loader: 'babel-loader',
       });
+    },
+
+    babel: {
+      plugins: ['transform-object-assign'],
     },
   },
 };
