@@ -25,7 +25,7 @@
 
     <template v-else>
       <v-layout  row align-center justify-center>
-        <grid-loader :loading="true" color="#003559"/>
+        <grid-loader :loading="true" color="#FFD000"/>
       </v-layout>
     </template>
 
