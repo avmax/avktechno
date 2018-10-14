@@ -13,6 +13,7 @@
       autofocus
       :rules="rules.name"
       validate-on-blur
+      color="secondary"
       required/>
 
       <v-text-field
@@ -21,6 +22,7 @@
       label="Артикул"
       :rules="rules.vin"
       validate-on-blur
+      color="secondary"
       required/>
 
       <v-select
@@ -32,7 +34,7 @@
       max-height="400"
       @input="onFormControlChange"
       persistent-hint
-      color="white"/>
+      color="secondary"/>
 
       <v-select
       label="Выберите производителя"
@@ -43,7 +45,7 @@
       max-height="400"
       @input="onFormControlChange"
       persistent-hint
-      color="white"/>
+      color="secondary"/>
 
       <v-layout
       row wrap
@@ -56,7 +58,8 @@
           v-model="model.price"
           :rules="rules.price"
           required
-          validate-on-blur/>
+          validate-on-blur
+          color="secondary"/>
         </v-flex>
         <v-flex xs3>
           <v-select
@@ -69,7 +72,8 @@
           :rules="rules.price"
           validate-on-blur
           required
-          persistent-hint/>
+          persistent-hint
+          color="secondary"/>
         </v-flex>
       </v-layout>
 
@@ -81,6 +85,7 @@
         :rules="rules.amount"
         required
         validate-on-blur
+        color="secondary"
       />
 
       <v-divider class="my-3"/>
@@ -90,6 +95,7 @@
       @input="onFormControlChange"
       label="Заголовок"
       multi-line
+      color="secondary"
       :rows="1"/>
 
       <v-text-field
@@ -97,6 +103,7 @@
       @input="onFormControlChange"
       label="Описание"
       multi-line
+      color="secondary"
       :rows="1"/>
 
       <v-text-field
@@ -104,6 +111,7 @@
       @input="onFormControlChange"
       label="Короткое описание"
       multi-line
+      color="secondary"
       :rows="1"/>
 
       <input-file label="Картинка" v-model="model.image"/>
@@ -111,6 +119,7 @@
       <v-text-field
       v-model="model.footer.title"
       @input="onFormControlChange"
+      color="secondary"
       label="Заголовок подвала"/>
 
       <v-text-field
@@ -118,6 +127,7 @@
       @input="onFormControlChange"
       label="Текст подвала"
       multi-line
+      color="secondary"
       :rows="1"/>
 
       <v-divider class="my-3"/>
@@ -131,6 +141,7 @@
             <v-text-field
             v-model="model.features[index].title"
             @input="onFormControlChange"
+            color="secondary"
             label="Заголовок списка"/>
             <v-btn
             @click="featuresRemove(index)"
@@ -151,6 +162,7 @@
             :rows="1"
             :rules="rules.features"
             validate-on-blur
+            color="secondary"
             required/>
             <v-btn
             @click="featuresItemRemove(index, i)"

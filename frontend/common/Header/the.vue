@@ -1,10 +1,10 @@
 <template>
 <v-toolbar app fixed clipped-left color="primary" dark>
-  <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-md-and-up"/>
-  <v-toolbar-title class="hidden-xs-only mr-2">АВК ТЕХНО</v-toolbar-title>
-  <router-link class="link mr-3 white--text ml-3 hidden-xs-only" to="/product">Товары</router-link>
-  <router-link class="link mr-3 white--text hidden-xs-only" to="/contact">Контакты</router-link>
-  <router-link class="link mr-3 white--text hidden-xs-only" to="/">О нас</router-link>
+  <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-md-and-up black--text"/>
+  <v-toolbar-title class="hidden-xs-only mr-2 black--text">БЕНТО КЛУБ</v-toolbar-title>
+  <router-link class="link mr-3 black--text ml-3 hidden-xs-only" to="/product">Товары</router-link>
+  <router-link class="link mr-3 black--text hidden-xs-only" to="/contact">Контакты</router-link>
+  <router-link class="link mr-3 black--text hidden-xs-only" to="/">О нас</router-link>
 
   <v-spacer/>
 
@@ -14,9 +14,11 @@
     flat
     class="ml-0 mr-2"
   >
-    <span class="hidden-xs-only white--text">Корзина</span>
+    <span class="hidden-xs-only black--text">Корзина</span>
     <v-icon class="hidden-sm-and-up" large color="grey lighten-1">shopping_cart</v-icon>
-    <span :class="{ 'pr-1': $vuetify.breakpoint.smAndDown, 'px-2' : $vuetify.breakpoint.smAndUp }">|</span><span>{{totalPrice.RUB}} RUB</span>
+    <span class="black--text">
+      <span :class="{ 'pr-1': $vuetify.breakpoint.smAndDown, 'px-2' : $vuetify.breakpoint.smAndUp }">|</span><span>{{totalPrice.RUB}} RUB</span>
+    </span>
   </v-btn>
 </v-toolbar>
 </template>

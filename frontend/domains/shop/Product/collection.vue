@@ -2,7 +2,7 @@
 <div class="shop-entity-collection py-3" v-if="$slots.default">
 
   <v-layout class="mb-4 shop-entity-collection__header" align-center justify-start wrap>
-    <span class="link display-1 primary--text">{{name}}</span>
+    <span class="link display-1 secondary--text">{{name}}</span>
     <slot name="header"/>
     <!-- <h3 class="shop-entity-collection__header-title heading" v-if="title">{{title}}</h3> -->
   </v-layout>

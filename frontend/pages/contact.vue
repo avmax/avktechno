@@ -7,50 +7,24 @@
           <h2 class="mb-3">Контакты</h2>
         </div>
         <div class="contacts__section">
-          <p class="title pt-3">Телефон в Москве:</p>
-          <p class="pl-4"><a href="tel:+74952800575" class="primary--text lighten-1">+7 (495) 280 05 75</a></p>
-          <p class="pl-4"><a href="mailto:info@avktechno.com" class="primary--text lighten-1">info@avktechno.com</a></p>
           <p class="title pt-3">Наши менеджеры:</p>
-          <p class="pl-4">Екатерина:</p>
-          <p class="pl-4"><a href="tel:+79776900403" class="primary--text lighten-1">+7 (977) 690 04 03</a></p>
-          <p class="pl-4"><a href="tel:+79776900403" class="primary--text lighten-1">+7 (499) 490 13 96</a></p>
-          <p class="pl-4"><a href="mailto:e.kanaeva@avktechno.com" class="primary--text lighten-1">e.kanaeva@avktechno.com</a></p>
+          <p class="pl-4"><a href="tel:+74952800554" class="secondary--text lighten-1">+7 (495) 280 05 54</a></p>
+          <p class="pl-4"><a href="tel:+74953746724" class="secondary--text lighten-1">+7 (495) 374 67 24</a></p>
+          <p class="pl-4"><a href="mailto:e.nozdrina@bento-club.ru" class="secondary--text lighten-1">e.nozdrina@bento-club.ru</a></p>
+          <p class="pl-4"><a href="mailto:info@bento-club.ru" class="secondary--text lighten-1">info@bento-club.ru</a></p>
         </div>
         <div class="contacts__section">
-          <p class="title pt-3">Адрес офиса в Москве:</p>
+          <p class="title pt-3">Адрес офиса и склада:</p>
           <p class="pl-4 mb-4">
-            ОФИС: 140033, Московская область, Люберецкий р-н, п.Малаховка, ул. Жуковского, д. 30 каб.15
+            Московская область, г.Котельники, Дзержинское шоссе, д.2 <br>
+            Загрузка на складе ежедневно с понедельника-по пятницу с 9-00 до 18-00.
           </p>
           <gmap-map
           class="page__map mb-5"
-          :center="maps.office.moscow.center"
-          :zoom="maps.office.moscow.zoom">
+          :center="maps.office.center"
+          :zoom="maps.office.zoom">
             <gmap-marker
-            :position="maps.office.moscow.center"/>
-          </gmap-map>
-
-          <p class="title pt-3">Адрес склада в Москве:</p>
-          <p class="pl-4 mb-4">
-            г. Москва, Дмитровское шоссе, ул. Дубнинская 81. Склад "Евра 4"
-          </p>
-          <gmap-map
-          class="page__map mb-5"
-          :center="maps.stock.moscow.center"
-          :zoom="maps.stock.moscow.zoom">
-            <gmap-marker
-            :position="maps.stock.moscow.center"/>
-          </gmap-map>
-
-          <p class="title pt-3">Адрес складa в Санкт-Петербурге:</p>
-          <p class="pl-4 mb-4">
-            Ленинградская обл., Тельмановское с.п., автодорога "Подъезд к г.Колпино", дом 5. Склад "Евра 4"
-          </p>
-          <gmap-map
-          class="page__map"
-          :center="maps.stock.peter.center"
-          :zoom="maps.stock.peter.zoom">
-            <gmap-marker
-            :position="maps.stock.peter.center"/>
+            :position="maps.office.center"/>
           </gmap-map>
         </div>
       </section>
@@ -66,29 +40,11 @@ export default {
     return {
       maps: {
         office: {
-          moscow: {
-            center: {
-              lat: 55.642580,
-              lng: 38.009373,
-            },
-            zoom: 17,
+          center: {
+            lat: 55.6574046,
+            lng: 37.8587071,
           },
-        },
-        stock: {
-          moscow: {
-            center: {
-              lat: 55.891441,
-              lng: 37.555696,
-            },
-            zoom: 17,
-          },
-          peter: {
-            center: {
-              lat: 59.725295,
-              lng: 30.609047,
-            },
-            zoom: 17,
-          },
+          zoom: 17,
         },
       },
     };

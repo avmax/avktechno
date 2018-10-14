@@ -38,7 +38,7 @@
         </v-btn>
         <v-btn
         :disabled="!count"
-        class="d-inline-block product-view__card-action ma-0 white--text"
+        class="d-inline-block product-view__card-action ma-0 black--text"
         color="red lighten-1"
         @click="removeFromCart">
           Убрать из корзины
@@ -152,7 +152,7 @@ export default {
 
     &-media {
       height: 200px !important;
-      background-color: white;
+      background-color: black;
     }
 
     &-title {

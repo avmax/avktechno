@@ -8,6 +8,7 @@
     <v-layout column>
       <v-text-field
       v-model="model.name"
+      color="secondary"
       @input="onFormControlChange"
       label="Название"
       autofocus

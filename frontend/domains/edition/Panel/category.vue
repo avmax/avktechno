@@ -13,6 +13,7 @@
     lazy-validation>
     <v-layout column>
       <v-text-field
+      color="secondary"
       v-model="model.name"
       @input="onFormControlChange"
       label="Название"
@@ -30,6 +31,7 @@
       >
         <v-flex xs11>
           <v-text-field
+            color="secondary"
             v-model="model.refs.category[index]"
             @input="onFormControlChange"
             label="Имя подкатегори"

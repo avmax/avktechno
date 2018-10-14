@@ -1,7 +1,7 @@
 <template>
-  <v-footer app fixed color="primary" dark class="white--text">
+  <v-footer app fixed color="primary" dark class="black--text">
     <span>&copy; {{year}}</span>
-    <a href="tel:+74952800575" class="pl-3 white--text">+7 (495) 280 0575</a>
+    <a href="tel:+74953746724" class="pl-3 black--text">+7 (495) 374 67 24</a>
   </v-footer>
 </template>
 
