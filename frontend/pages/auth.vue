@@ -14,6 +14,7 @@
               v-model="form.value.login"
               :rules="form.rules.login"
               :counter="20"
+              color="secondary"
               required/>
 
               <v-text-field
@@ -22,6 +23,7 @@
               :rules="form.rules.password"
               type="password"
               class="mb-3"
+              color="secondary"
               required/>
 
               <v-btn

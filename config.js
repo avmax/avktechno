@@ -6,7 +6,7 @@ const config = () => {
     db: {
       name: env.DB_NAME || 'avktechno',
       username: env.DB_USER || 'root',
-      password: env.DB_PASSWORD || '12345',
+      password: env.DB_PASSWORD || '7757',
       host: env.DB_HOST || 'localhost',
     },
     baseURL: env.BASE_URL || 'http://90.156.142.46',

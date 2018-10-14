@@ -2,6 +2,7 @@
   <div class="avm-search px-3">
     <v-text-field
       label="Искать по артикулу"
+      color="secondary"
       @input="search($event)"
     />
   </div>

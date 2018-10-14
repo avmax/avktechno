@@ -14,7 +14,7 @@ module.exports = {
   // env
   // Headers of the page
   head: {
-    title: 'АВК ТЕХНО',
+    title: 'БЕНТО КЛУБ',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

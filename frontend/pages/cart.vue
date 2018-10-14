@@ -24,6 +24,7 @@
           autofocus
           validate-on-blur
           required
+          color="secondary"
         />
         <v-text-field
           label="Ваш телефон"
@@ -31,6 +32,7 @@
           :rules="form.rules.phone"
           validate-on-blur
           required
+          color="secondary"
         />
         <v-text-field
           label="Ваша почта"
@@ -38,6 +40,7 @@
           :rules="form.rules.mail"
           validate-on-blur
           required
+          color="secondary"
         />
         <v-btn
           class="ml-0 mt-3"
