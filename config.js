@@ -9,7 +9,7 @@ const config = () => {
       password: env.DB_PASSWORD || '7757',
       host: env.DB_HOST || 'localhost',
     },
-    baseURL: env.BASE_URL || 'http://localhost',
+    baseURL: env.BASE_URL || 'http://35.231.61.228',
     domainURL: env.DOMAIN_URL || 'http://kaluga-farm.ru',
     server: {
       port: +env.SERVER_PORT || 4251,
