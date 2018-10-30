@@ -11,7 +11,7 @@
 
     "prod": "cross-env NODE_ENV='production' node ./app",
 
-    "production": "pm2 start npm --name avktechno-backend -- start"
+    "production": "pm2 start npm --name kaluga-farm-backend -- start"
   },
   "dependencies": {
     "axios": "^0.17.1",
