@@ -4,13 +4,13 @@ const isProd = env.NODE_ENV && env.NODE_ENV.indexOf('prod') !== -1;
 const config = () => {
   const cfg = {
     db: {
-      name: env.DB_NAME || 'avktechno',
+      name: env.DB_NAME || 'kaluga',
       username: env.DB_USER || 'root',
       password: env.DB_PASSWORD || '7757',
       host: env.DB_HOST || 'localhost',
     },
     baseURL: env.BASE_URL || 'http://localhost',
-    domainURL: env.DOMAIN_URL || 'http://avktechno.com',
+    domainURL: env.DOMAIN_URL || 'http://kaluga-farm.ru',
     server: {
       port: +env.SERVER_PORT || 4251,
     },

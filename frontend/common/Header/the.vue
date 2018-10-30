@@ -1,9 +1,8 @@
 <template>
 <v-toolbar app fixed clipped-left color="primary" dark>
   <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-md-and-up black--text"/>
-  <v-toolbar-title class="hidden-xs-only mr-2 black--text">БЕНТО КЛУБ</v-toolbar-title>
+  <v-toolbar-title class="hidden-xs-only mr-2 black--text">Kaluga Farm</v-toolbar-title>
   <router-link class="link mr-3 black--text ml-3 hidden-xs-only" to="/product">Товары</router-link>
-  <router-link class="link mr-3 black--text hidden-xs-only" to="/contact">Контакты</router-link>
   <router-link class="link mr-3 black--text hidden-xs-only" to="/">О нас</router-link>
 
   <v-spacer/>

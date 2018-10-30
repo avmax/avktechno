@@ -1,10 +1,6 @@
 const messenger = require('../utils/message');
 
 const TO = [
-  'e.kanaeva@avktechno.com',
-  '2347366@mail.ru',
-  'e.nozdrina@bento-club.ru',
-  'info@bento-club.ru',
   'avmax.web@gmail.com',
 ];
 

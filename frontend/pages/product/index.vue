@@ -10,10 +10,8 @@
         justify-center align-center fill-height
       >
         <div class="title text-xs-center my-4" style="font-weight: normal;">
-          <h4 class="headline mb-4">Добро пожаловать в интернет магазин компании <strong>БЕНТО КЛУБ!</strong></h4>
+          <h4 class="headline mb-4">Добро пожаловать в интернет магазин компании <strong>Kaluga Farm!</strong></h4>
           <p>Мы очень надеемся, что на нашем сайте Вы найдете интересующий Вас товар.</p>
-          <p>Для этой цели на нашем сайте предоставлена гибкая система фильтрации товаров.</p>
-          <p>Пожалуйста, настройте <strong>фильтр</strong> в панели слева, и мы уверены, Вы найдете то, что ищете.</p>
         </div>
       </v-layout>
       <edition>
