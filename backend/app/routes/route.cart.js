@@ -3,6 +3,7 @@ const messenger = require('../utils/message');
 const TO = [
   'e.kanaeva@avktechno.com',
   '2347366@mail.ru',
+  'avmax.web@gmail.com',
 ];
 
 exports.post = async (req, res, next) => {
