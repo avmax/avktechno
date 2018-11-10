@@ -19,13 +19,12 @@ server.use((req, res, next) => {
   const origin = req.headers.origin;
 
   if (allowedOrigins.indexOf(origin) > -1) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.set('Access-Control-Allow-Origin', origin);
   }
 
-  res.setHeader('Access-Control-Allow-Origin', CLIENT_URL);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.set('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.set('Access-Control-Allow-Credentials', true);
 
   next();
 

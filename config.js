@@ -6,16 +6,16 @@ const config = () => {
     db: {
       name: env.DB_NAME || 'avktechno',
       username: env.DB_USER || 'root',
-      password: env.DB_PASSWORD || '12345',
+      password: env.DB_PASSWORD || '7757',
       host: env.DB_HOST || 'localhost',
     },
-    baseURL: env.BASE_URL || 'http://90.156.142.46',
+    baseURL: env.BASE_URL || 'http://90.156.157.222',
     domainURL: env.DOMAIN_URL || 'http://avktechno.com',
     server: {
-      port: +env.SERVER_PORT || 4251,
+      port: +env.SERVER_PORT || 4253,
     },
     client: {
-      port: +env.CLIENT_PORT || 80,
+      port: +env.CLIENT_PORT || 4254,
     },
     isProd: env.IS_PROD || isProd,
   }
