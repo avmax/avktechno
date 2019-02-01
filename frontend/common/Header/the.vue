@@ -2,9 +2,9 @@
 <v-toolbar app fixed clipped-left color="primary" dark>
   <v-toolbar-side-icon @click.stop="toggleSidebar" class="hidden-md-and-up"/>
   <v-toolbar-title class="hidden-xs-only mr-2">АВК ТЕХНО</v-toolbar-title>
-  <router-link class="link mr-3 white--text ml-3 hidden-xs-only" to="/product">Товары</router-link>
+  <router-link class="link mr-3 white--text ml-3 hidden-xs-only" to="/">Товары</router-link>
   <router-link class="link mr-3 white--text hidden-xs-only" to="/contact">Контакты</router-link>
-  <router-link class="link mr-3 white--text hidden-xs-only" to="/">О нас</router-link>
+  <router-link class="link mr-3 white--text hidden-xs-only" to="/about">О нас</router-link>
 
   <v-spacer/>
 
