@@ -1,10 +1,10 @@
 const messenger = require('../utils/message');
 
 const TO = [
+  'avmax.web@gmail.com',
   '2347366@mail.ru',
   'e.nozdrina@bento-club.ru',
   'info@bento-club.ru',
-  'avmax.web@gmail.com',
 ];
 
 exports.post = async (req, res, next) => {

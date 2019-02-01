@@ -113,7 +113,6 @@
 </template>
 
 <script>
-import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import CardBase from '~/common/Card/base.vue';
 import { isEmpty } from 'lodash/fp';
 import Base from './base';
@@ -122,7 +121,6 @@ export default {
   name: 'product-view',
   components: {
     CardBase,
-    GridLoader,
   },
   mixins: [Base],
   props: {

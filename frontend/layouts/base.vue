@@ -2,12 +2,12 @@
   <v-app id="avmax">
 
     <div v-html="yaMetrics"></div>
+    <div v-html="yaMetricsOfficial"></div>
 
     <the-header>
       <slot name="header" slot="header"/>
     </the-header>
 
-    <template v-if="!isSpinner">
       <slot name="panels"/>
       <the-sidebar/>
 
@@ -21,13 +21,6 @@
           </v-layout>
         </v-container>
       </v-content>
-    </template>
-
-    <template v-else>
-      <v-layout  row align-center justify-center>
-        <grid-loader :loading="true" color="#FFD000"/>
-      </v-layout>
-    </template>
 
     <the-footer/>
   </v-app>
@@ -45,6 +38,7 @@ import {
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { mapState } from 'vuex';
 import yaMetrics from '../utils/ya-metrics.js';
+import yaMetricsOfficial from '../utils/ya-metrics-official.js';
 
 export default {
   name: 'layout-base',
@@ -58,6 +52,7 @@ export default {
   data() {
     return {
       yaMetrics,
+      yaMetricsOfficial,
     };
   },
   computed: {

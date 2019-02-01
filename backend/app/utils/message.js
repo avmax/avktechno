@@ -18,7 +18,7 @@ const mailOptions = {
 
 const opts = (message, target) => ({
     ...mailOptions, text: message || '=',
-    to: target || TO,
+    to: target || FROM,
   });
 
 const messenger = {
