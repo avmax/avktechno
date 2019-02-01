@@ -1,25 +1,24 @@
 const nodemailer = require('nodemailer');
 
 const FROM = 'avmax.web@gmail.com';
-const TO = 'e.kanaeva@avktechno.com';
-// const TO = 'a.ponomarenko@takewing.ru';
+const TO = 'manager@bento-club.ru';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'avmax.web@gmail.com',
-    pass: 'wfJJi7717yY'
+    pass: 'ooRjv7757_yyY'
   }
 });
 
 const mailOptions = {
   from: FROM,
-  subject: 'АВК-ТЕХНО: запрос на покупку товаров.',
+  subject: 'БЕНТО КЛУБ: запрос на покупку товаров.',
 };
 
 const opts = (message, target) => ({
     ...mailOptions, text: message || '=',
-    to: TO,
+    to: target || TO,
   });
 
 const messenger = {

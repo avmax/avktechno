@@ -7,6 +7,7 @@
       :key="item.id"
     >
       <v-list-tile
+	active-class="default-class secondary--text lighten-1"
         slot="item"
         :to="{ name: 'category-id', params: { id: item.id } }"
       >
@@ -19,6 +20,7 @@
       </v-list-tile>
       <v-list-tile
         v-for="id in item.refs.category"
+	active-class="default-class secondary--text lighten-1"
         :to="{ name: 'category-id', params: { id: id } }"
         :key="id"
       >

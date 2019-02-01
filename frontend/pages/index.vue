@@ -3,13 +3,12 @@
   <v-container class="page__inner px-0 py-4">
     <v-layout class="page__header" justify-space-between>
       <h2 class="mb-3">О компании</h2>
-      <v-avatar size="96px" class="page__logo hidden-sm-and-down ml-1"><img src="/oteks.logo.jpg" alt="Otex logo"></v-avatar>
     </v-layout>
     <v-layout column class="page__content">
       <section>
         <p>
-          Компания <strong>БЕНТО КЛУБ</strong> - официальный дилер компании <strong><a class="secondary--text" href="http://otex.su/">Отэкс</a></strong> <v-avatar class="ml-1 hidden-md-and-up"><img src="/oteks.logo.jpg" alt="Otex logo"></v-avatar> 	<br>
-          Наша компания - официальный дилер компании Отэкс, крупнейшего производителя бентонитов и полимеров БЕНТЕКС в России.
+	Наша компания осуществляет комплексные поставки материалов для различных областей бурения от ведущих российских и зарубежных производителей. 
+	С момента основания и по сегодняшний день, компания <strong>Бенто Клуб</strong> прочно занимает лидирующие позиции в области поставки бентонитов и полимеров для горизонтально-направленного и вертикального бурения.
         </p>
       </section>
 

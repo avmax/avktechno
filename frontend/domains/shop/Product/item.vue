@@ -1,5 +1,5 @@
 <template>
-<v-card class="product-item">
+<v-card class="product-item" nuxt :to="{ name: 'product-id', params: { id: model.id }}">
   <v-card-media class="product-item__media mb-3" :height="150" :src="model.imgUrl"/>
   <v-card-title class="product-item__text product-item__text_title title pt-0">{{model.name}}</v-card-title>
   <v-card-text class="product-item__text subheading pt-0 pb-1">Цена: {{computedPrice}}</v-card-text>

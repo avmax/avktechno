@@ -15,7 +15,7 @@
       </v-card-title>
       <v-card-text class="product-view__card-actions headline pt-0">
         <div
-        class="product-view__card-price title mx-0 mb-3 d-block primary--text"
+        class="product-view__card-price title mx-0 mb-3 d-block secondary--text"
         label
         outline
         disabled

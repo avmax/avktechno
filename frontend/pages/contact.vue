@@ -9,9 +9,8 @@
         <div class="contacts__section">
           <p class="title pt-3">Наши менеджеры:</p>
           <p class="pl-4"><a href="tel:+74952800554" class="secondary--text lighten-1">+7 (495) 280 05 54</a></p>
-          <p class="pl-4"><a href="tel:+74953746724" class="secondary--text lighten-1">+7 (495) 374 67 24</a></p>
+          <p class="pl-4"><a href="mailto:manager@bento-club.ru" class="secondary--text lighten-1">manager@bento-club.ru</a></p>
           <p class="pl-4"><a href="mailto:e.nozdrina@bento-club.ru" class="secondary--text lighten-1">e.nozdrina@bento-club.ru</a></p>
-          <p class="pl-4"><a href="mailto:info@bento-club.ru" class="secondary--text lighten-1">info@bento-club.ru</a></p>
         </div>
         <div class="contacts__section">
           <p class="title pt-3">Адрес офиса и склада:</p>
