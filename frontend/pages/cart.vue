@@ -143,6 +143,10 @@ export default {
             message: 'Спасибо! Вот-вот свяжемся с Вами!',
             type: NOTIFICATION_TYPES.success,
           });
+
+	  window.ym('52183627', 'Заказ оформлен', '1');
+	  window.ym('51756782', 'Заказ оформлен', '1');
+
           this.form.isPending = false;
           setTimeout(() => commit(NOTIFICATION_LAST_CLOSE), 3000);
           form.reset();
