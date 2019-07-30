@@ -42,14 +42,14 @@
   <v-card-actions class="product-item__actions pa-3">
     <v-layout wrap class="ma-0">
       <v-flex xs12 class="pa-0 mb-2">
-        <!-- <v-btn
+        <v-btn
           :to="{ name: 'product-id', params: { id: model.id }}"
           nuxt
           block
           secondary
           class="product-item__action-item ml-0">
           Узнать подробнее
-        </v-btn> -->
+        </v-btn>
       </v-flex>
       <v-flex xs12 class="pa-0" style="display: flex;">
         <v-btn class="product-item__action-item pa-0 ma-0 mr-2"

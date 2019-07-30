@@ -6,7 +6,6 @@ const yaMetrics = `
    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
    ym(52183627, "init", {
-        id:52183627,
         clickmap:true,
         trackLinks:true,
         accurateTrackBounce:true

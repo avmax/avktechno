@@ -1,7 +1,6 @@
 <template>
   <v-app id="avmax">
 
-    <div v-html="yaMetrics"></div>
     <div v-html="yaMetricsOfficial"></div>
 
     <the-header>
@@ -37,7 +36,7 @@ import {
 } from '~/barrel/state';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { mapState } from 'vuex';
-import yaMetrics from '../utils/ya-metrics.js';
+// import yaMetrics from '../utils/ya-metrics.js';
 import yaMetricsOfficial from '../utils/ya-metrics-official.js';
 
 export default {
@@ -51,7 +50,7 @@ export default {
   },
   data() {
     return {
-      yaMetrics,
+      // yaMetrics,
       yaMetricsOfficial,
     };
   },
