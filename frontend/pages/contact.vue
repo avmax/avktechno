@@ -9,12 +9,15 @@
         <div class="contacts__section">
           <p class="title pt-3">Телефон в Москве:</p>
           <p class="pl-4"><a href="tel:+74952800575" class="primary--text lighten-1">+7 (495) 280 05 75</a></p>
+          <p class="pl-4"><a href="tel:+74994901396" class="primary--text lighten-1">+7 (499) 490 13 96</a></p>
           <p class="pl-4"><a href="mailto:info@avktechno.com" class="primary--text lighten-1">info@avktechno.com</a></p>
           <p class="title pt-3">Наши менеджеры:</p>
           <p class="pl-4">Екатерина:</p>
           <p class="pl-4"><a href="tel:+79776900403" class="primary--text lighten-1">+7 (977) 690 04 03</a></p>
-          <p class="pl-4"><a href="tel:+79776900403" class="primary--text lighten-1">+7 (499) 490 13 96</a></p>
           <p class="pl-4"><a href="mailto:e.kanaeva@avktechno.com" class="primary--text lighten-1">e.kanaeva@avktechno.com</a></p>
+          <p class="pl-4">Алексей:</p>
+          <p class="pl-4"><a href="tel:+79268182926" class="primary--text lighten-1">+7 (926) 818 29 26</a></p>
+          <p class="pl-4"><a href="mailto:sale@avktechno.com" class="primary--text lighten-1">sale@avktechno.com</a></p>
         </div>
         <div class="contacts__section">
           <p class="title pt-3">Адрес офиса в Москве:</p>
