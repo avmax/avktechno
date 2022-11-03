@@ -28,7 +28,7 @@
     "sequelize": "^4.28.6"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-live-server": "^0.0.31",
     "gulp-sync": "^0.1.4"
   },
